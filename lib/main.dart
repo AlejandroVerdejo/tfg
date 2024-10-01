@@ -15,19 +15,17 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     settings;
     users;
-    // var user;
-    if (settings["saver_user"] == true) {
-      var user = {
-                  "username": users[settings["saved_user_user"]]["username"],
-                  "password": users[settings["saved_user_user"]]["password"],
-                  "level": users[settings["saved_user_user"]]["level"]
-      };
-    }
+    // ignore: unused_local_variable
+    Map<String, dynamic> user;
 
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: settings["saved_user"] == true ? HomeScreen() : LoginScreen(),
+          child: settings["saved_user"] == true ? HomeScreen(user: user = {
+                  "username": users[settings["saved_user_user"]]["username"],
+                  "password": users[settings["saved_user_user"]]["password"],
+                  "level": users[settings["saved_user_user"]]["level"]
+      }) : const LoginScreen(),
         ),
       ),
     );

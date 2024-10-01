@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/tempdata.dart';
+import 'package:tfg_library/widgets/catalog/booklistelement.dart';
+import 'package:tfg_library/widgets/text/bartext.dart';
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({
@@ -14,13 +18,19 @@ class _CatalogScreenState extends State<CatalogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: Text("Catalogo"),
-        backgroundColor: Colors.purple,
+        foregroundColor: colors["barTextColor"],
+        title: const BarText(
+          text: "Catalogo",
+        ),
+        backgroundColor: colors["headerBackgroundColor"],
       ),
-      body: Center(
-        child: Text("Prueba"),
+      body: ListView(
+        children: [
+          BookListElement(book: books[1],),
+          BookListElement(book: books[2],),
+        ],
       ),
     );
   }
 }
+
