@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -26,7 +28,7 @@ class BookListElement extends StatelessWidget {
                   children: [
                     Image.asset(
                       "assets/images/book.png",
-                      width: 200,
+                      width: !kIsWeb && Platform.isAndroid ? 100 : 200,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +48,7 @@ class BookListElement extends StatelessWidget {
                     )
                   ],
                 ),
-                DescriptionRichText(text: book["description"])
+                DescriptionRichText(text: book["description"]),
               ],
             ),
           ),

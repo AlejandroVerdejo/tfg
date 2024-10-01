@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,36 +35,38 @@ const Map<String, dynamic> colors = {
   },
 };
 
+// !kIsWeb && Platform.isAndroid ? Android : !Android
+
 Map<String, dynamic> styles = {
   "light": {
     "normalTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: 20,
+      fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
       color: colors["light"]["mainTextColor"],
     ),
     "headerTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: 50,
+      fontSize: !kIsWeb && Platform.isAndroid ? 40 : 50,
       color: colors["light"]["headerTextColor"],
     ),
     "barTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: 20,
+      fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
       color: colors["light"]["barTextColor"],
     ),
     "descriptionRichTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: 16,
+      fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
       color: colors["light"]["mainTextColor"],
     ),
     "loginTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: 50,
+      fontSize: !kIsWeb && Platform.isAndroid ? 40 : 50,
       color: colors["light"]["mainTextColor"],
     ),
     "sideMenuTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w600,
-      fontSize: 16,
+      fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
       color: colors["light"]["mainTextColor"],
     ),
   },
