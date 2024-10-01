@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/screens/catalogscreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/screens/profilescreen.dart';
@@ -74,9 +75,9 @@ class SideMenu extends StatelessWidget {
           // SizedBox(height: double.maxFinite,),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.sunny),
-            title: Text(
-              "Tema: Claro",
+            leading: Icon(settings["theme"] == "light" ? Icons.sunny : Icons.nightlight),
+            title: Text(settings["theme"] == "light" ?
+              "Tema: Claro" : "Tema: Oscuro",
               style: styles["sideMenuTextStyle"],
             ),
           ),
