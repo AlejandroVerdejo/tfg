@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/styles.dart';
 
 class BarText extends StatelessWidget {
@@ -13,7 +14,7 @@ class BarText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: styles["barTextStyle"],
+      style: styles[settings["theme"]]["barTextStyle"],
     );
   }
 }

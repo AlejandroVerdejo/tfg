@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/tempdata.dart';
@@ -16,19 +17,19 @@ class RegisterScreen extends StatelessWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
-        backgroundColor: colors["mainBackgroundColor"],
+        backgroundColor: colors[settings["theme"]]["mainBackgroundColor"],
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Registrarse",
-                style: styles["loginTextStyle"],
+                style: styles[settings["theme"]]["loginTextStyle"],
               ),
               Image.asset(
                 "assets/images/app_icon.png",
                 width: 180,
-                color: colors["mainTextColor"],
+                color: colors[settings["theme"]]["mainTextColor"],
               ),
               const SizedBox(
                 height: 50,
@@ -36,13 +37,14 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(
                 width: 350,
                 child: TextField(
-                  style: styles["normalTextStyle"],
+                  style: styles[settings["theme"]]["normalTextStyle"],
                   controller: userController,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: "Usuario",
-                      labelStyle: styles["normalTextStyle"],
-                      floatingLabelStyle: styles["normalTextStyle"],
+                      labelStyle: styles[settings["theme"]]["normalTextStyle"],
+                      floatingLabelStyle: styles[settings["theme"]]
+                          ["normalTextStyle"],
                       floatingLabelBehavior: FloatingLabelBehavior.always),
                 ),
               ),
@@ -53,13 +55,14 @@ class RegisterScreen extends StatelessWidget {
                 width: 350,
                 child: TextField(
                   obscureText: true,
-                  style: styles["normalTextStyle"],
+                  style: styles[settings["theme"]]["normalTextStyle"],
                   controller: passwordController,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: "Constraseña",
-                      labelStyle: styles["normalTextStyle"],
-                      floatingLabelStyle: styles["normalTextStyle"],
+                      labelStyle: styles[settings["theme"]]["normalTextStyle"],
+                      floatingLabelStyle: styles[settings["theme"]]
+                          ["normalTextStyle"],
                       floatingLabelBehavior: FloatingLabelBehavior.always),
                 ),
               ),

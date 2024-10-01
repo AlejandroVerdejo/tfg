@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/styles.dart';
 
 class NormalRichText extends StatelessWidget {
@@ -12,6 +13,6 @@ class NormalRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-        text: TextSpan(text: text, style: styles["normalTextStyle"]));
+        text: TextSpan(text: text, style: styles[settings["theme"]]["normalTextStyle"]));
   }
 }

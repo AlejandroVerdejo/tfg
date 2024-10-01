@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/styles.dart';
 
 class DescriptionRichText extends StatelessWidget {
@@ -14,6 +15,6 @@ class DescriptionRichText extends StatelessWidget {
     return RichText(
       maxLines: 3,
       overflow: TextOverflow.fade,
-        text: TextSpan(text: text, style: styles["descriptionRichTextStyle"]));
+        text: TextSpan(text: text, style: styles[settings["theme"]]["descriptionRichTextStyle"]));
   }
 }

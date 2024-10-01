@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/styles.dart';
 
 class HeaderText extends StatelessWidget {
@@ -13,7 +14,7 @@ class HeaderText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: styles["headerTextStyle"],
+      style: styles[settings["theme"]]["headerTextStyle"],
     );
   }
 }

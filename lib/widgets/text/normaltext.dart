@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/styles.dart';
 
 class NormalText extends StatelessWidget {
@@ -13,7 +14,7 @@ class NormalText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: styles["normalTextStyle"],
+      style: styles[settings["theme"]]["normalTextStyle"],
     );
   }
 }

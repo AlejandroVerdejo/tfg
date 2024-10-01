@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/profile/profileheader.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
@@ -20,14 +21,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: colors["barTextColor"],
-        title: BarText(text: "Perfil"),
-        backgroundColor: colors["headerBackgroundColor"],
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.5),
+            child: Container(
+              color: colors[settings["theme"]]["headerBorderColor"],
+              height: 1.5,
+            )),
+        foregroundColor: colors[settings["theme"]]["barTextColor"],
+        title: const BarText(text: "Perfil"),
+        backgroundColor: colors[settings["theme"]]["headerBackgroundColor"],
       ),
       body: ListView(
         children: [
           ProfileHeader(user: user),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,14 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: [
-                    Text("libro x "),
-                    Text("libro x "),
-                    Text("libro x "),
-                    Text("libro x "),
-                  ],
-                )
               ],
             ),
           )
