@@ -14,7 +14,8 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-        decoration: BoxDecoration(color: colors[settings["theme"]]["headerBackgroundColor"]),
+        decoration: BoxDecoration(
+            color: colors[settings["theme"]]["headerBackgroundColor"]),
         child: Column(
           children: [
             Row(

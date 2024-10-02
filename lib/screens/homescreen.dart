@@ -1,7 +1,5 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tfg_library/conf.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
@@ -11,46 +9,67 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.user});
 
   final Map<String, dynamic> user;
+  // final String? theme;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Metodo para obtener la preferencia del tema
+  Future<Map<String, dynamic>> _loadPreferences() async {
+    // Carga las preferencias
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Obtiene  el valor de la preferencia
+    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    // Devuelve un mapa con las preferencias
+    return {"theme": theme};
+  }
+
+  void _updateTheme() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var user = widget.user;
 
-    String platform = "";
-
-    if (kIsWeb) {
-      platform = "Browser";
-    } else {
-      if (Platform.isAndroid) {
-        platform = "Android";
-      }
-      if (Platform.isWindows) {
-        platform = "Windows";
-      }
-      if (Platform.isFuchsia) {
-        platform = "Fuchsia";
-      }
-    }
-
-    return Scaffold(
-        appBar: AppBar(
-          bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(1.5),
-              child: Container(
-                color: colors[settings["theme"]]["headerBorderColor"],
-                height: 1.5,
-              )),
-          foregroundColor: colors[settings["theme"]]["barTextColor"],
-          title: const BarText(text: ""),
-          backgroundColor: colors[settings["theme"]]["headerBackgroundColor"],
-        ),
-        drawer: SideMenu(user: user),
-        backgroundColor: colors[settings["theme"]]["mainBackgroundColor"],
-        body: NormalText(text: platform));
+    return FutureBuilder(
+        future: _loadPreferences(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Carga
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            // Error
+            return const Center(
+              child: Text("Error"),
+            );
+          } else {
+            // Ejecucion
+            final data = snapshot.data!;
+            return Scaffold(
+              appBar: AppBar(
+                bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(1.5),
+                    child: Container(
+                      color: colors[data["theme"]]["headerBorderColor"],
+                      height: 1.5,
+                    )),
+                foregroundColor: colors[data["theme"]]["barTextColor"],
+                title: const BarText(text: ""),
+                backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+              ),
+              drawer: SideMenu(
+                user: user,
+                onRefresh: _updateTheme,
+              ),
+              backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
+              body: Center(child: NormalText(text: "${data["theme"]}")),
+            );
+          }
+        });
   }
 }

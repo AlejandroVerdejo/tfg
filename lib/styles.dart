@@ -18,6 +18,7 @@ const Map<String, dynamic> colors = {
     "headerTextColor": Color.fromRGBO(242, 242, 243, 1),
     // "barTextColor": Color.fromRGBO(214, 214, 224, 1),
     "barTextColor": Color.fromRGBO(242, 242, 243, 1),
+    "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
   },
   "dark": {
     "mainBackgroundColor": Color.fromRGBO(73, 69, 79, 1),
@@ -32,74 +33,69 @@ const Map<String, dynamic> colors = {
     "headerTextColor": Color.fromRGBO(242, 242, 243, 1),
     // "barTextColor": Color.fromRGBO(214, 214, 224, 1),
     "barTextColor": Color.fromRGBO(242, 242, 243, 1),
+    "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
   },
 };
 
-// !kIsWeb && Platform.isAndroid ? Android : !Android
+//* !kIsWeb && Platform.isAndroid ? Android : !Android
 
-Map<String, dynamic> styles = {
-  "light": {
+getStyle(String style, String theme) {
+  Map<String, dynamic> styles = {
     "normalTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
-      color: colors["light"]["mainTextColor"],
+      color: colors[theme]["mainTextColor"],
     ),
     "headerTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: !kIsWeb && Platform.isAndroid ? 40 : 50,
-      color: colors["light"]["headerTextColor"],
+      color: colors[theme]["headerTextColor"],
     ),
     "barTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
-      color: colors["light"]["barTextColor"],
+      color: colors[theme]["barTextColor"],
     ),
     "descriptionRichTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
-      color: colors["light"]["mainTextColor"],
+      color: colors[theme]["mainTextColor"],
     ),
     "loginTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: !kIsWeb && Platform.isAndroid ? 40 : 50,
-      color: colors["light"]["mainTextColor"],
+      color: colors[theme]["mainTextColor"],
     ),
     "sideMenuTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w600,
       fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
-      color: colors["light"]["mainTextColor"],
+      color: colors[theme]["mainTextColor"],
     ),
-  },
-  "dark": {
-    "normalTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w500,
-      fontSize: 20,
-      color: colors["dark"]["mainTextColor"],
+    "loginFieldBorderSide": BorderSide(
+      color: colors[theme]["mainTextColor"],
     ),
-    "headerTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w500,
-      fontSize: 50,
-      color: colors["dark"]["headerTextColor"],
+    "loginFieldSelectionTheme": TextSelectionThemeData(
+      selectionColor: colors[theme]["headerBackgroundColor"],
+      cursorColor: colors[theme]["headerBackgroundColor"],
+      selectionHandleColor: colors[theme]["headerBackgroundColor"],
     ),
-    "barTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w500,
-      fontSize: 20,
-      color: colors["dark"]["barTextColor"],
+    "loginButtonStyle": OutlinedButton.styleFrom(
+      side: BorderSide(color: colors[theme]["mainTextColor"]),
+      fixedSize: const Size(300, 50),
+      foregroundColor: colors[theme]["mainTextColor"],
+      textStyle: GoogleFonts.nunito(
+        fontWeight: FontWeight.w500,
+        fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
+      ),
     ),
-    "descriptionRichTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w500,
-      fontSize: 16,
-      color: colors["dark"]["mainTextColor"],
+    "loginTextButtonStyle": TextButton.styleFrom(
+      foregroundColor: colors[theme]["linkTextColor"],
+      textStyle: GoogleFonts.nunito(
+        fontWeight: FontWeight.w500,
+        fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
+      ),
     ),
-    "loginTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w500,
-      fontSize: 50,
-      color: colors["dark"]["mainTextColor"],
-    ),
-    "sideMenuTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w600,
-      fontSize: 16,
-      color: colors["dark"]["mainTextColor"],
-    ),
-  },
-};
+  };
+
+  return styles[style];
+}
