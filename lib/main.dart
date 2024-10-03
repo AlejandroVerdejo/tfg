@@ -10,10 +10,15 @@ void main() async {
       .ensureInitialized(); // Asegura que los bindings de Flutter estén inicializados
   SharedPreferences prefs = await SharedPreferences
       .getInstance(); // Esperar a que se carguen las preferencias
-  if (!prefs.containsKey('theme')) {
+  if (!prefs.containsKey("theme")) {
     // Si no existe la clave
     await prefs.setString(
-        'theme', "light"); // Establecer el valor predeterminado
+        "theme", "dark"); // Establecer el valor predeterminado
+  }
+  if (!prefs.containsKey("saved_user")) {
+    // Si no existe la clave
+    await prefs.setString(
+        "saved_user", ""); // Establecer el valor predeterminado
   }
   // runApp(MainApp(var)); // Pasar el valor al widget principal
   runApp(const MainApp());

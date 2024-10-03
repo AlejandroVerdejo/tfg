@@ -1,8 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tfg_library/widgets/catalog/book.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
 
@@ -18,7 +18,13 @@ class BookListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        log("tap");
+        // log("tap");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Book(
+                      book: book,
+                    )));
       },
       child: ConstrainedBox(
         constraints:
