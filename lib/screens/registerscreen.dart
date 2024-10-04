@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/tempdata.dart';
@@ -41,8 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
+            return Center(
+              child: Text("${getLang("error")}"),
             );
           } else {
             // Ejecucion
@@ -54,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Registrarse",
+                        "${getLang("register")}",
                         style: getStyle("loginTextStyle", data["theme"]),
                       ),
                       Image.asset(
@@ -82,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "Usuario",
+                                labelText: "${getLang("user")}",
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -113,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "Constraseña",
+                                labelText: "${getLang("password")}",
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -138,8 +139,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   builder: (context) => const LoginScreen()),
                             );
                           },
-                          child: const Text(
-                            "¿Ya tienes una cuenta? Inicia sesión aquí.",
+                          child: Text(
+                            "${getLang("login_createHere")}",
                           )),
                       const SizedBox(
                         height: 25,
@@ -147,8 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       OutlinedButton(
                         style: getStyle("loginButtonStyle", data["theme"]),
                         onPressed: () {},
-                        child: const Text(
-                          "Registrarse",
+                        child: Text(
+                          "${getLang("register")}",
                         ),
                       )
                     ],

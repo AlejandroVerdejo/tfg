@@ -4,6 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const bodyPadding = EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10);
+
+double elementImageSize = !kIsWeb && Platform.isAndroid ? 100 : 200;
+double bookImageSize = !kIsWeb && Platform.isAndroid ? 200 : 400;
+
 const Map<String, dynamic> colors = {
   "light": {
     "mainBackgroundColor": Color.fromRGBO(242, 242, 243, 1),
@@ -19,6 +24,7 @@ const Map<String, dynamic> colors = {
     // "barTextColor": Color.fromRGBO(214, 214, 224, 1),
     "barTextColor": Color.fromRGBO(242, 242, 243, 1),
     "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
+    "chipBackgroundColor": Color.fromRGBO(231, 231, 238, 1),
   },
   "dark": {
     "mainBackgroundColor": Color.fromRGBO(73, 69, 79, 1),
@@ -34,6 +40,7 @@ const Map<String, dynamic> colors = {
     // "barTextColor": Color.fromRGBO(214, 214, 224, 1),
     "barTextColor": Color.fromRGBO(242, 242, 243, 1),
     "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
+    "chipBackgroundColor": Color.fromRGBO(96, 93, 100, 1),
   },
 };
 
@@ -94,6 +101,11 @@ getStyle(String style, String theme) {
         fontWeight: FontWeight.w500,
         fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
       ),
+    ),
+    "genreFilterChipStyle": GoogleFonts.nunito(
+      fontWeight: FontWeight.w500,
+      fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
+      color: colors[theme]["mainTextColor"],
     ),
   };
 

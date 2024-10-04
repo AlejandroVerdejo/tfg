@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/tempdata.dart';
-import 'package:tfg_library/widgets/catalog/booklistelement.dart';
+import 'package:tfg_library/widgets/catalog/booklist.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
+import 'package:tfg_library/widgets/text/normaltext.dart';
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({
@@ -24,6 +26,21 @@ class _CatalogScreenState extends State<CatalogScreen> {
     // Devuelve un mapa con las preferencias
     return {"theme": theme};
   }
+
+  bool expanded = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Asigna un valor diferente en la primera carga
+    expanded = false;
+  }
+
+  List<String> selectedGenres = [];
+
+  List<String> selectedEditorials = [];
+
+  List<String> selectedLanguages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +69,78 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       height: 1.5,
                     )),
                 foregroundColor: colors[data["theme"]]["barTextColor"],
-                title: const BarText(
-                  text: "Catalogo",
+                title: BarText(
+                  text: "${getLang("catalog")}",
                 ),
                 backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
               ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-              body: ListView(
-                children: [
-                  BookListElement(
-                    book: books[1],
+              body: Padding(
+                padding: bodyPadding,
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ExpansionTile(
+                        initiallyExpanded: expanded,
+                        // onExpansionChanged: ,
+                        title: NormalText(
+                          text: "${getLang("filters")}",
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                NormalText(text: "${getLang("genres")}"),
+                                const Divider(),
+                                Wrap(
+                                  spacing: 8.0,
+                                  runSpacing: 8.0,
+                                  children: genres.map((tag) {
+                                    return FilterChip(
+                                      labelStyle: getStyle(
+                                          "genreFilterChipStyle",
+                                          data["theme"]),
+                                      selectedColor: colors[data["theme"]]
+                                          ["linkTextColor"],
+                                      backgroundColor: colors[data["theme"]]
+                                          ["chipBackgroundColor"],
+                                      label: Text(tag),
+                                      selected: selectedGenres.contains(tag),
+                                      onSelected: (bool selected) {
+                                        setState(() {
+                                          expanded = true;
+                                          if (selected) {
+                                            selectedGenres.add(tag);
+                                          } else {
+                                            selectedGenres.remove(tag);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
+                                const Divider(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(),
+                      Expanded(
+                          child: BookList(
+                        filter: selectedGenres,
+                      )),
+                    ],
                   ),
-                  BookListElement(
-                    book: books[2],
-                  ),
-                ],
+                ),
               ),
             );
           }

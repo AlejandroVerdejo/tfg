@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/screens/catalogscreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/screens/profilescreen.dart';
@@ -43,8 +44,8 @@ class _SideMenuState extends State<SideMenu> {
             );
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
+            return Center(
+              child: Text("${getLang("error")}"),
             );
           } else {
             // Ejecucion
@@ -77,7 +78,7 @@ class _SideMenuState extends State<SideMenu> {
                       color: colors[data["theme"]]["mainTextColor"],
                     ),
                     title: Text(
-                      "Perfil",
+                      "${getLang("profile")}",
                       style: getStyle("sideMenuTextStyle", data["theme"]!),
                     ),
                     onTap: () {
@@ -94,7 +95,7 @@ class _SideMenuState extends State<SideMenu> {
                       color: colors[data["theme"]]["mainTextColor"],
                     ),
                     title: Text(
-                      "Catalogo",
+                      "${getLang("catalog")}",
                       style: getStyle("sideMenuTextStyle", data["theme"]!),
                     ),
                     onTap: () {
@@ -110,7 +111,7 @@ class _SideMenuState extends State<SideMenu> {
                       color: colors[data["theme"]]["mainTextColor"],
                     ),
                     title: Text(
-                      "Ajustes",
+                      "${getLang("settings")}",
                       style: getStyle("sideMenuTextStyle", data["theme"]!),
                     ),
                     onTap: () {},
@@ -123,7 +124,9 @@ class _SideMenuState extends State<SideMenu> {
                       color: colors[data["theme"]]["mainTextColor"],
                     ),
                     title: Text(
-                      data["theme"] == "light" ? "Tema Claro" : "Tema Oscuro",
+                      data["theme"] == "light"
+                          ? "${getLang("lightTheme")}"
+                          : "${getLang("darkTheme")}",
                       style: getStyle("sideMenuTextStyle", data["theme"]!),
                     ),
                     onTap: () async {
@@ -143,7 +146,7 @@ class _SideMenuState extends State<SideMenu> {
                       color: colors[data["theme"]]["mainTextColor"],
                     ),
                     title: Text(
-                      "Cerrar sesión",
+                      "${getLang("logout")}",
                       style: getStyle("sideMenuTextStyle", data["theme"]!),
                     ),
                     onTap: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 
 class NormalRichText extends StatefulWidget {
@@ -35,8 +36,8 @@ class _NormalRichTextState extends State<NormalRichText> {
             );
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
+            return Center(
+              child: Text("${getLang("state")}"),
             );
           } else {
             // Ejecucion

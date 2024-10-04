@@ -40,11 +40,14 @@ class _NormalTextState extends State<NormalText> {
             );
           } else {
             // Ejecucion
-            return Text(
-              widget.text,
-              style: getStyle("normalTextStyle", snapshot.data!),
-              softWrap: true,
-              maxLines: null,
+            return Padding(
+              padding: const EdgeInsets.only(top: 1.5, bottom: 1.5),
+              child: Text(
+                widget.text,
+                style: getStyle("normalTextStyle", snapshot.data!),
+                softWrap: true,
+                maxLines: null,
+              ),
             );
           }
         });

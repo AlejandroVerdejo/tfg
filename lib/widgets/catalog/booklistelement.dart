@@ -1,7 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/book.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -26,37 +25,51 @@ class BookListElement extends StatelessWidget {
                       book: book,
                     )));
       },
-      child: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 30, right: 30, top: 10, bottom: 10),
-              child: Column(
+      child: Opacity(
+        opacity: book["aviable"] == 0 ? 0.5 : 1,
+        child: ConstrainedBox(
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+          child: Column(
+            children: [
+              Column(
                 children: [
                   Row(
                     children: [
-                      Image.asset(
-                        "assets/images/book.png",
-                        width: !kIsWeb && Platform.isAndroid ? 100 : 200,
+                      Padding(
+                        padding: const EdgeInsets.all(18),
+                        child: Image.asset(
+                          "assets/images/${book["image"]}",
+                          width: elementImageSize,
+                        ),
                       ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            NormalText(text: book["title"]),
-                            NormalText(text: book["author"]),
                             NormalText(
-                                text: book["aviable"] == 1
-                                    ? "Disponible"
-                                    : "No disponible"),
+                                text: "${getLang("title")}: ${book["title"]}"),
+                            NormalText(
+                                text:
+                                    "${getLang("author")}: ${book["author"]}"),
+                            NormalText(
+                                text:
+                                    "${getLang("editorial")}: ${book["editorial"]}"),
+                            NormalText(
+                                text:
+                                    "${getLang("language")}: ${book["language"]}"),
+                            NormalText(
+                                text:
+                                    "${getLang("state")}: ${book["aviable"] == 1 ? "${getLang("aviable")}" : "${getLang("not_aviable")}"}"),
+                            NormalText(
+                                text:
+                                    "${getLang("category")}: ${book["category"]}"),
                             NormalText(
                                 // text: book["genres"].length <= 3
                                 //     ? "Generos: ${book["genres"].join(", ")}"
                                 //     : "Generos: ${book["genres"].sublist(0, 3).join(", ")}..."),
-                                text: book["genres"].join(", ")),
+                                text:
+                                    "${getLang("genres")}: ${book["genres"].join(", ")}"),
                           ],
                         ),
                       )
@@ -65,9 +78,9 @@ class BookListElement extends StatelessWidget {
                   DescriptionRichText(text: book["description"]),
                 ],
               ),
-            ),
-            const Divider()
-          ],
+              const Divider()
+            ],
+          ),
         ),
       ),
     );

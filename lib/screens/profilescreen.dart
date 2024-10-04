@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/profile/profileheader.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
@@ -55,23 +56,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 1.5,
                     )),
                 foregroundColor: colors[data["theme"]]["barTextColor"],
-                title: const BarText(text: "Perfil"),
+                title: BarText(text: "${getLang("profile")}"),
                 backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
               ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
               body: ListView(
                 children: [
                   ProfileHeader(user: user),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 30),
+                   Padding(
+                    padding: const EdgeInsets.only(left: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
-                        NormalText(text: "Prestamos activos: (nº)"),
-                        SizedBox(
+                        NormalText(text: "${getLang("profile_activeRents")}: (nº)"),
+                        const SizedBox(
                           height: 10,
                         ),
                       ],

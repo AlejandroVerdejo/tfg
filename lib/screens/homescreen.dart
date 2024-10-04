@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
@@ -44,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
+            return Center(
+              child: Text("${getLang("error")}"),
             );
           } else {
             // Ejecucion

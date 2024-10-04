@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/registerscreen.dart';
 import 'package:tfg_library/styles.dart';
@@ -42,8 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
+            return Center(
+              child: Text("${getLang("error")}"),
             );
           } else {
             // Ejecucion
@@ -55,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Iniciar Sesión",
+                        "${getLang("login")}",
                         style: getStyle("loginTextStyle", data["theme"]),
                       ),
                       Image.asset(
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "Usuario",
+                                labelText: "${getLang("user")}",
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -114,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "Constraseña",
+                                labelText: "${getLang("password")}",
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -139,8 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   builder: (context) => const RegisterScreen()),
                             );
                           },
-                          child: const Text(
-                            "¿No tienes una cuenta? Creala aquí.",
+                          child: Text(
+                            "${getLang("login_createHere")}",
                           )),
                       const SizedBox(
                         height: 25,
@@ -164,8 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         HomeScreen(user: user)));
                           }
                         },
-                        child: const Text(
-                          "Iniciar sesión",
+                        child: Text(
+                          "${getLang("login")}",
                         ),
                       )
                     ],
