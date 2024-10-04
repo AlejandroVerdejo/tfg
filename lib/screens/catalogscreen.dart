@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/tempdata.dart';
+import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/catalog/booklist.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -85,6 +86,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       ),
                       ExpansionTile(
                         initiallyExpanded: expanded,
+                        iconColor: colors[data["theme"]]["linkTextColor"],
                         // onExpansionChanged: ,
                         title: NormalText(
                           text: "${getLang("filters")}",
@@ -96,7 +98,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 NormalText(text: "${getLang("genres")}"),
-                                const Divider(),
+                                const BetterDivider(),
                                 Wrap(
                                   spacing: 8.0,
                                   runSpacing: 8.0,
@@ -124,7 +126,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                     );
                                   }).toList(),
                                 ),
-                                const Divider(),
+                                const BetterDivider(),
                               ],
                             ),
                           ),
@@ -133,7 +135,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Divider(),
+                      const BetterDivider(),
                       Expanded(
                           child: BookList(
                         filter: selectedGenres,

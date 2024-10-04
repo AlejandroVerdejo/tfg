@@ -5,6 +5,7 @@ import 'package:tfg_library/screens/catalogscreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/screens/profilescreen.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 
 class SideMenu extends StatefulWidget {
@@ -117,7 +118,7 @@ class _SideMenuState extends State<SideMenu> {
                     onTap: () {},
                   ),
                   // SizedBox(height: double.maxFinite,),
-                  const Divider(),
+                  const BetterDivider(),
                   ListTile(
                     leading: Icon(
                       data["theme"] == "light" ? Icons.sunny : Icons.nightlight,

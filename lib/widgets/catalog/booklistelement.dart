@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/catalog/book.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -37,7 +38,8 @@ class BookListElement extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(18),
+                        padding: const EdgeInsets.only(
+                            top: 30, left: 30, bottom: 30, right: 80),
                         child: Image.asset(
                           "assets/images/${book["image"]}",
                           width: elementImageSize,
@@ -78,7 +80,7 @@ class BookListElement extends StatelessWidget {
                   DescriptionRichText(text: book["description"]),
                 ],
               ),
-              const Divider()
+              const BetterDivider()
             ],
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normalrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -76,7 +77,7 @@ class _BookState extends State<Book> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(top: 15, bottom: 15),
-                            child: Divider(),
+                            child: BetterDivider(),
                           ),
                           NormalText(
                               text:
@@ -110,10 +111,6 @@ class _BookState extends State<Book> {
                           NormalText(
                               text:
                                   "${getLang("genres")}: ${widget.book["genres"].join(", ")}"),
-                          // const Padding(
-                          //   padding: EdgeInsets.only(top: 20, bottom: 20),
-                          //   child: Divider(),
-                          // ),
                           NormalRichText(
                               text:
                                   "${getLang("sinopsis")}: ${widget.book["description"]}"),
