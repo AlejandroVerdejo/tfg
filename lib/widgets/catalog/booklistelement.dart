@@ -4,7 +4,7 @@ import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/catalog/book.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/text/listdatatext.dart';
 
 class BookListElement extends StatelessWidget {
   const BookListElement({
@@ -38,8 +38,7 @@ class BookListElement extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 30, left: 30, bottom: 30, right: 80),
+                        padding: imageBookListPadding,
                         child: Image.asset(
                           "assets/images/${book["image"]}",
                           width: elementImageSize,
@@ -49,33 +48,36 @@ class BookListElement extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            NormalText(
-                                text: "${getLang("title")}: ${book["title"]}"),
-                            NormalText(
-                                text:
-                                    "${getLang("author")}: ${book["author"]}"),
-                            NormalText(
-                                text:
-                                    "${getLang("editorial")}: ${book["editorial"]}"),
-                            NormalText(
-                                text:
-                                    "${getLang("language")}: ${book["language"]}"),
-                            NormalText(
-                                text:
-                                    "${getLang("state")}: ${book["aviable"] == 1 ? "${getLang("aviable")}" : "${getLang("not_aviable")}"}"),
-                            NormalText(
-                                text:
-                                    "${getLang("category")}: ${book["category"]}"),
-                            NormalText(
-                                // text: book["genres"].length <= 3
-                                //     ? "Generos: ${book["genres"].join(", ")}"
-                                //     : "Generos: ${book["genres"].sublist(0, 3).join(", ")}..."),
-                                text:
-                                    "${getLang("genres")}: ${book["genres"].join(", ")}"),
+                            ListDataText(
+                                title: "${getLang("title")}",
+                                text: "${book["title"]}"),
+                            ListDataText(
+                                title: "${getLang("author")}",
+                                text: "${book["author"]}"),
+                            ListDataText(
+                                title: "${getLang("editorial")}",
+                                text: "${book["editorial"]}"),
+                            ListDataText(
+                                title: "${getLang("language")}",
+                                text: "${book["language"]}"),
+                            ListDataText(
+                                title: "${getLang("state")}",
+                                text: book["aviable"] == 1
+                                    ? "${getLang("aviable")}"
+                                    : "${getLang("not_aviable")}"),
+                            ListDataText(
+                                title: "${getLang("category")}",
+                                text: "${book["category"]}"),
+                            ListDataText(
+                                title: "${getLang("genres")}",
+                                text: "${book["genres"].join(", ")}"),
                           ],
                         ),
                       )
                     ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   DescriptionRichText(text: book["description"]),
                 ],

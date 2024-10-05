@@ -17,7 +17,7 @@ class BookList extends StatelessWidget {
     if (filter.isNotEmpty) {
       List<Map<String, dynamic>> filteredbooks = books.where((map) {
         var genres = map["genres"];
-        return genres.any((genre) => filter.contains(genre));
+        return filter.every((genre) => genres.contains(genre));
       }).toList();
       bookslist = filteredbooks;
     } else {

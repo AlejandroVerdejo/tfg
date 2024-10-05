@@ -1,0 +1,33 @@
+{
+    "users": {
+        "correo@correo.com": {
+            "username": "",
+            "password": "",
+            "email": "",
+            "level": 0,
+            "active": 0,
+            "rents": [],
+            "wishlist": [],
+            "faults": 0
+        }
+    },
+    "books": {
+        "1": {
+            "title": "",
+            "author": "",
+            "isbn": "",
+            "editorial": "",
+            "publication_date": "",
+            "language": "",
+            "aviable": 0,
+            "description": "",
+            "image": "",
+            "genres": [],
+            "category": ""
+        }
+    },
+    "genres": {},
+    "categories": {},
+    "editorials": {},
+    "languages": {}
+}

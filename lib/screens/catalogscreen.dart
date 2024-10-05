@@ -46,106 +46,107 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadPreferences(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            // Error
-            return const Center(
-              child: Text("Error"),
-            );
-          } else {
-            // Ejecucion
-            final data = snapshot.data!;
-            return Scaffold(
-              appBar: AppBar(
-                bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(1.5),
-                    child: Container(
-                      color: colors[data["theme"]]["headerBorderColor"],
-                      height: 1.5,
-                    )),
-                foregroundColor: colors[data["theme"]]["barTextColor"],
-                title: BarText(
-                  text: "${getLang("catalog")}",
-                ),
-                backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+      future: _loadPreferences(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Carga
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          // Error
+          return const Center(
+            child: Text("Error"),
+          );
+        } else {
+          // Ejecucion
+          final data = snapshot.data!;
+          return Scaffold(
+            appBar: AppBar(
+              bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(1.5),
+                  child: Container(
+                    color: colors[data["theme"]]["headerBorderColor"],
+                    height: 1.5,
+                  )),
+              foregroundColor: colors[data["theme"]]["barTextColor"],
+              title: BarText(
+                text: "${getLang("catalog")}",
               ),
-              backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-              body: Padding(
-                padding: bodyPadding,
-                child: Expanded(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
+              backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+            ),
+            backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
+            body: Padding(
+              padding: bodyPadding,
+              child: Expanded(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ExpansionTile(
+                      initiallyExpanded: expanded,
+                      iconColor: colors[data["theme"]]["linkTextColor"],
+                      // onExpansionChanged: ,
+                      title: NormalText(
+                        text: "${getLang("filters")}",
                       ),
-                      ExpansionTile(
-                        initiallyExpanded: expanded,
-                        iconColor: colors[data["theme"]]["linkTextColor"],
-                        // onExpansionChanged: ,
-                        title: NormalText(
-                          text: "${getLang("filters")}",
-                        ),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(text: "${getLang("genres")}"),
-                                const BetterDivider(),
-                                Wrap(
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: genres.map((tag) {
-                                    return FilterChip(
-                                      labelStyle: getStyle(
-                                          "genreFilterChipStyle",
-                                          data["theme"]),
-                                      selectedColor: colors[data["theme"]]
-                                          ["linkTextColor"],
-                                      backgroundColor: colors[data["theme"]]
-                                          ["chipBackgroundColor"],
-                                      label: Text(tag),
-                                      selected: selectedGenres.contains(tag),
-                                      onSelected: (bool selected) {
-                                        setState(() {
-                                          expanded = true;
-                                          if (selected) {
-                                            selectedGenres.add(tag);
-                                          } else {
-                                            selectedGenres.remove(tag);
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-                                const BetterDivider(),
-                              ],
-                            ),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              NormalText(text: "${getLang("genres")}"),
+                              const BetterDivider(),
+                              Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                children: genres.map((tag) {
+                                  return FilterChip(
+                                    labelStyle: getStyle(
+                                        "genreFilterChipStyle", data["theme"]),
+                                    selectedColor: colors[data["theme"]]
+                                        ["linkTextColor"],
+                                    backgroundColor: colors[data["theme"]]
+                                        ["chipBackgroundColor"],
+                                    label: Text(tag),
+                                    selected: selectedGenres.contains(tag),
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        expanded = true;
+                                        if (selected) {
+                                          selectedGenres.add(tag);
+                                        } else {
+                                          selectedGenres.remove(tag);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                              const BetterDivider(),
+                            ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const BetterDivider(),
-                      Expanded(
-                          child: BookList(
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const BetterDivider(),
+                    Expanded(
+                      child: BookList(
                         filter: selectedGenres,
-                      )),
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
   }
 }

@@ -4,8 +4,7 @@ import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
-import 'package:tfg_library/widgets/text/normalrichtext.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/text/listdatatext.dart';
 
 class Book extends StatefulWidget {
   const Book({
@@ -61,6 +60,9 @@ class _BookState extends State<Book> {
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
               body: ListView(
                 children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
                   ConstrainedBox(
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width),
@@ -79,41 +81,44 @@ class _BookState extends State<Book> {
                             padding: EdgeInsets.only(top: 15, bottom: 15),
                             child: BetterDivider(),
                           ),
-                          NormalText(
-                              text:
-                                  "${getLang("title")}: ${widget.book["title"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("author")}: ${widget.book["author"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("editorial")}: ${widget.book["editorial"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("date")}: ${widget.book["date"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("pages")}: ${widget.book["pages"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("language")}: ${widget.book["language"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("isbn")}: ${widget.book["isbn"]}"),
-                          NormalText(
-                              text: "${getLang("age")}: ${widget.book["age"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("state")}: ${widget.book["aviable"] == 1 ? "${getLang("aviable")}" : "${getLang("not_aviable")}"}"),
-                          NormalText(
-                              text:
-                                  "${getLang("category")}: ${widget.book["category"]}"),
-                          NormalText(
-                              text:
-                                  "${getLang("genres")}: ${widget.book["genres"].join(", ")}"),
-                          NormalRichText(
-                              text:
-                                  "${getLang("sinopsis")}: ${widget.book["description"]}"),
+                          ListDataText(
+                              title: "${getLang("title")}",
+                              text: "${widget.book["title"]}"),
+                          ListDataText(
+                              title: "${getLang("author")}",
+                              text: "${widget.book["author"]}"),
+                          ListDataText(
+                              title: "${getLang("editorial")}",
+                              text: "${widget.book["editorial"]}"),
+                          ListDataText(
+                              title: "${getLang("date")}",
+                              text: "${widget.book["date"]}"),
+                          ListDataText(
+                              title: "${getLang("pages")}",
+                              text: "${widget.book["pages"]}"),
+                          ListDataText(
+                              title: "${getLang("language")}",
+                              text: "${widget.book["language"]}"),
+                          ListDataText(
+                              title: "${getLang("isbn")}",
+                              text: "${widget.book["isbn"]}"),
+                          ListDataText(
+                              title: "${getLang("age")}",
+                              text: "${widget.book["age"]}"),
+                          ListDataText(
+                              title: "${getLang("state")}",
+                              text: widget.book["aviable"] == 1
+                                  ? "${getLang("aviable")}"
+                                  : "${getLang("not_aviable")}"),
+                          ListDataText(
+                              title: "${getLang("category")}",
+                              text: "${widget.book["category"]}"),
+                          ListDataText(
+                              title: "${getLang("genres")}",
+                              text: "${widget.book["genres"].join(", ")}"),
+                          ListDataText(
+                              title: "${getLang("sinopsis")}",
+                              text: "${widget.book["description"]}"),
                         ],
                       ),
                     ),
