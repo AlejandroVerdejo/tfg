@@ -5,6 +5,7 @@ import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/listdatatext.dart';
+import 'package:tfg_library/widgets/text/sinopsisbooktext.dart';
 
 class Book extends StatefulWidget {
   const Book({
@@ -73,7 +74,7 @@ class _BookState extends State<Book> {
                         children: [
                           Center(
                             child: Image.asset(
-                              "assets/images/${widget.book["image"]}",
+                              "assets/images/books/${widget.book["image"]}",
                               width: bookImageSize,
                             ),
                           ),
@@ -116,7 +117,7 @@ class _BookState extends State<Book> {
                           ListDataText(
                               title: "${getLang("genres")}",
                               text: "${widget.book["genres"].join(", ")}"),
-                          ListDataText(
+                          SinopsisBookText(
                               title: "${getLang("sinopsis")}",
                               text: "${widget.book["description"]}"),
                         ],

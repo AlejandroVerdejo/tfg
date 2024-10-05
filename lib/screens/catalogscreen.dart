@@ -63,6 +63,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         } else {
           // Ejecucion
           final data = snapshot.data!;
+          categories.sort();
           return Scaffold(
             appBar: AppBar(
               bottom: PreferredSize(
@@ -100,124 +101,141 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const BetterDivider(),
-                              // Filtros para | Categorias |
+                              //* Filtros para | Categorias |
                               NormalText(text: "${getLang("categories")}"),
                               const BetterDivider(),
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 8.0,
-                                children: categories.map((tag) {
-                                  return FilterChip(
-                                    labelStyle: getStyle(
-                                        "genreFilterChipStyle", data["theme"]),
-                                    selectedColor: colors[data["theme"]]
-                                        ["linkTextColor"],
-                                    backgroundColor: colors[data["theme"]]
-                                        ["chipBackgroundColor"],
-                                    label: Text(tag),
-                                    selected: selectedCategories.contains(tag),
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        expanded = true;
-                                        if (selected) {
-                                          selectedCategories.add(tag);
-                                        } else {
-                                          selectedCategories.remove(tag);
-                                        }
-                                      });
-                                    },
-                                  );
-                                }).toList(),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Wrap(
+                                  spacing: 8.0,
+                                  runSpacing: 8.0,
+                                  children: categories.map((tag) {
+                                    return FilterChip(
+                                      labelStyle: getStyle(
+                                          "genreFilterChipStyle",
+                                          data["theme"]),
+                                      selectedColor: colors[data["theme"]]
+                                          ["linkTextColor"],
+                                      backgroundColor: colors[data["theme"]]
+                                          ["chipBackgroundColor"],
+                                      label: Text(tag),
+                                      selected:
+                                          selectedCategories.contains(tag),
+                                      onSelected: (bool selected) {
+                                        setState(() {
+                                          expanded = true;
+                                          if (selected) {
+                                            selectedCategories.add(tag);
+                                          } else {
+                                            selectedCategories.remove(tag);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                               const BetterDivider(),
-                              // Filtros para | Generos |
+                              //* Filtros para | Generos |
                               NormalText(text: "${getLang("genres")}"),
                               const BetterDivider(),
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 8.0,
-                                children: genres.map((tag) {
-                                  return FilterChip(
-                                    labelStyle: getStyle(
-                                        "genreFilterChipStyle", data["theme"]),
-                                    selectedColor: colors[data["theme"]]
-                                        ["linkTextColor"],
-                                    backgroundColor: colors[data["theme"]]
-                                        ["chipBackgroundColor"],
-                                    label: Text(tag),
-                                    selected: selectedGenres.contains(tag),
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        expanded = true;
-                                        if (selected) {
-                                          selectedGenres.add(tag);
-                                        } else {
-                                          selectedGenres.remove(tag);
-                                        }
-                                      });
-                                    },
-                                  );
-                                }).toList(),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Wrap(
+                                  spacing: 8.0,
+                                  runSpacing: 8.0,
+                                  children: genres.map((tag) {
+                                    return FilterChip(
+                                      labelStyle: getStyle(
+                                          "genreFilterChipStyle",
+                                          data["theme"]),
+                                      selectedColor: colors[data["theme"]]
+                                          ["linkTextColor"],
+                                      backgroundColor: colors[data["theme"]]
+                                          ["chipBackgroundColor"],
+                                      label: Text(tag),
+                                      selected: selectedGenres.contains(tag),
+                                      onSelected: (bool selected) {
+                                        setState(() {
+                                          expanded = true;
+                                          if (selected) {
+                                            selectedGenres.add(tag);
+                                          } else {
+                                            selectedGenres.remove(tag);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                               const BetterDivider(),
-                              // Filtros para | Editoriales |
+                              //* Filtros para | Editoriales |
                               NormalText(text: "${getLang("editorials")}"),
                               const BetterDivider(),
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 8.0,
-                                children: editorials.map((tag) {
-                                  return FilterChip(
-                                    labelStyle: getStyle(
-                                        "genreFilterChipStyle", data["theme"]),
-                                    selectedColor: colors[data["theme"]]
-                                        ["linkTextColor"],
-                                    backgroundColor: colors[data["theme"]]
-                                        ["chipBackgroundColor"],
-                                    label: Text(tag),
-                                    selected: selectedEditorials.contains(tag),
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        expanded = true;
-                                        if (selected) {
-                                          selectedEditorials.add(tag);
-                                        } else {
-                                          selectedEditorials.remove(tag);
-                                        }
-                                      });
-                                    },
-                                  );
-                                }).toList(),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Wrap(
+                                  spacing: 8.0,
+                                  runSpacing: 8.0,
+                                  children: editorials.map((tag) {
+                                    return FilterChip(
+                                      labelStyle: getStyle(
+                                          "genreFilterChipStyle",
+                                          data["theme"]),
+                                      selectedColor: colors[data["theme"]]
+                                          ["linkTextColor"],
+                                      backgroundColor: colors[data["theme"]]
+                                          ["chipBackgroundColor"],
+                                      label: Text(tag),
+                                      selected:
+                                          selectedEditorials.contains(tag),
+                                      onSelected: (bool selected) {
+                                        setState(() {
+                                          expanded = true;
+                                          if (selected) {
+                                            selectedEditorials.add(tag);
+                                          } else {
+                                            selectedEditorials.remove(tag);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                               const BetterDivider(),
-                              //  Filtros para | Idiomas |
+                              //* Filtros para | Idiomas |
                               NormalText(text: "${getLang("languages")}"),
                               const BetterDivider(),
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 8.0,
-                                children: languages.map((tag) {
-                                  return FilterChip(
-                                    labelStyle: getStyle(
-                                        "genreFilterChipStyle", data["theme"]),
-                                    selectedColor: colors[data["theme"]]
-                                        ["linkTextColor"],
-                                    backgroundColor: colors[data["theme"]]
-                                        ["chipBackgroundColor"],
-                                    label: Text(tag),
-                                    selected: selectedLanguages.contains(tag),
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        expanded = true;
-                                        if (selected) {
-                                          selectedLanguages.add(tag);
-                                        } else {
-                                          selectedLanguages.remove(tag);
-                                        }
-                                      });
-                                    },
-                                  );
-                                }).toList(),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Wrap(
+                                  spacing: 8.0,
+                                  runSpacing: 8.0,
+                                  children: languages.map((tag) {
+                                    return FilterChip(
+                                      labelStyle: getStyle(
+                                          "genreFilterChipStyle", data["theme"]),
+                                      selectedColor: colors[data["theme"]]
+                                          ["linkTextColor"],
+                                      backgroundColor: colors[data["theme"]]
+                                          ["chipBackgroundColor"],
+                                      label: Text(tag),
+                                      selected: selectedLanguages.contains(tag),
+                                      onSelected: (bool selected) {
+                                        setState(() {
+                                          expanded = true;
+                                          if (selected) {
+                                            selectedLanguages.add(tag);
+                                          } else {
+                                            selectedLanguages.remove(tag);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                               const BetterDivider(),
                               Center(

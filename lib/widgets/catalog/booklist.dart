@@ -18,7 +18,13 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    books.sort((b, a) => a["aviable"].compareTo(b["aviable"]));
+    books.sort((a, b) {
+      int aviableComp = b["aviable"].compareTo(a["aviable"]);
+      if (aviableComp != 0) {
+        return aviableComp;
+      }
+      return a["title"].compareTo(b["title"]);
+    });
     List<Map<String, dynamic>> bookslist;
     bookslist = books;
     // Filtrar por | Categorias |
@@ -52,6 +58,7 @@ class BookList extends StatelessWidget {
     }    
 
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: bookslist.length,
       // ignore: body_might_complete_normally_nullable
       itemBuilder: (context, index) => BookListElement(
