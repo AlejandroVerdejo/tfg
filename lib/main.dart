@@ -49,12 +49,7 @@ class _MainAppState extends State<MainApp> {
       home: Scaffold(
         body: Center(
           child: settings["saved_user"] == true
-              ? HomeScreen(
-                  user: user = {
-                  "username": users[settings["saved_user_user"]]["username"],
-                  "password": users[settings["saved_user_user"]]["password"],
-                  "level": users[settings["saved_user_user"]]["level"]
-                })
+              ? HomeScreen(user: user = users[settings["saved_user_user"]])
               : const LoginScreen(),
         ),
       ),

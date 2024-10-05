@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// const bodyPadding = EdgeInsets.only(left: 60, right: 60, top: 10, bottom: 10);
 EdgeInsets bodyPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+EdgeInsets profileHeaderPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
 EdgeInsets imageBookListPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15) : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 80);
 double elementImageSize = !kIsWeb && Platform.isAndroid ? 100 : 200;
 double bookImageSize = !kIsWeb && Platform.isAndroid ? 200 : 400;

@@ -44,6 +44,17 @@ class BookListElement extends StatelessWidget {
                           width: elementImageSize,
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            width: 1,
+                            height: 160,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
