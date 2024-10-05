@@ -30,6 +30,9 @@ const lang = {
     "filters": "Filtros",
     "age": "Edad de lectura",
     "category": "Categoria",
+    "categories": "Categorias",
+    "languages": "Idiomas",
+    "cleanFilters": "Eliminar filtros"
   }
 };
 

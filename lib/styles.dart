@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 // const bodyPadding = EdgeInsets.only(left: 60, right: 60, top: 10, bottom: 10);
 EdgeInsets bodyPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
 EdgeInsets imageBookListPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15) : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 80);
-
 double elementImageSize = !kIsWeb && Platform.isAndroid ? 100 : 200;
 double bookImageSize = !kIsWeb && Platform.isAndroid ? 200 : 400;
 
@@ -103,6 +102,15 @@ getStyle(String style, String theme) {
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
         fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
+      ),
+    ),
+    "filtersButtonStyle": OutlinedButton.styleFrom(
+      fixedSize: !kIsWeb && Platform.isAndroid ? const Size(200, 30) : const Size(300, 50) ,
+      foregroundColor: colors[theme]["mainTextColor"],
+      backgroundColor: colors[theme]["chipBackgroundColor"],
+      textStyle: GoogleFonts.nunito(
+        fontWeight: FontWeight.w500,
+        fontSize: !kIsWeb && Platform.isAndroid ? 12 : 18,
       ),
     ),
     "loginTextButtonStyle": TextButton.styleFrom(
