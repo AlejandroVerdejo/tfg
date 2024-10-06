@@ -34,7 +34,9 @@ List<Map<String, dynamic>> books = [
     "isbn": "1646090705",
     "language": "Inglés",
     "pages": 176,
-    "image": "the_apothecary_diaries_1.jpg",
+    // "image": "the_apothecary_diaries_1.jpg",
+    "image":
+        "https://firebasestorage.googleapis.com/v0/b/tfg-library.appspot.com/o/book-images%2Fthe_apothecary_diaries_1.jpg?alt=media&token=61c0c25b-8920-4658-8927-9a0cfeb70a74",
     "age": "14-17",
   },
   {
@@ -50,7 +52,9 @@ List<Map<String, dynamic>> books = [
     "isbn": "8401337623",
     "language": "Español",
     "pages": 592,
-    "image": "el_camino_de_las_sombras.png",
+    // "image": "el_camino_de_las_sombras.png",
+    "image":
+        "https://firebasestorage.googleapis.com/v0/b/tfg-library.appspot.com/o/book-images%2Fel_camino_de_las_sombras.png?alt=media&token=0a485950-9415-4b6f-b1a8-810e98788e00",
     "age": "a partir de 1",
   },
   {
@@ -66,7 +70,9 @@ List<Map<String, dynamic>> books = [
     "isbn": "9788401339059",
     "language": "Español",
     "pages": 576,
-    "image": "al_filo_de_las_sombras.png",
+    // "image": "al_filo_de_las_sombras.png",
+    "image":
+        "https://firebasestorage.googleapis.com/v0/b/tfg-library.appspot.com/o/book-images%2Fal_filo_de_las_sombras.png?alt=media&token=1708b79f-c555-458b-9050-8f4b9c3aa32b",
     "age": "a partir de 1",
   },
   {
@@ -82,7 +88,9 @@ List<Map<String, dynamic>> books = [
     "isbn": "9788467947397",
     "language": "Español",
     "pages": 184,
-    "image": "frieren_01.png",
+    // "image": "frieren_01.png",
+    "image":
+        "https://firebasestorage.googleapis.com/v0/b/tfg-library.appspot.com/o/book-images%2Ffrieren_01.png?alt=media&token=9b530bb6-c0ac-445d-9384-65dee4be8888",
     "age": "no especificada",
   },
 ];

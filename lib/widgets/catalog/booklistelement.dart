@@ -40,8 +40,12 @@ class BookListElement extends StatelessWidget {
                       children: [
                         Padding(
                           padding: imageBookListPadding,
-                          child: Image.asset(
-                            "assets/images/books/${book["image"]}",
+                          // child: Image.asset(
+                          //   "assets/images/books/${book["image"]}",
+                          //   width: elementImageSize,
+                          // ),
+                          child: Image.network(
+                            "${book["image"]}",
                             width: elementImageSize,
                           ),
                         ),
