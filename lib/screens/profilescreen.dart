@@ -92,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 text:
                                     "${getLang("profile_activeRents")}: ${activeRents.length}"),
                           ),
-                          activeRents.length > 0
+                          activeRents.length > 0 && !isAndroid
                               ? HelpTooltip(message: "${getLang("hScrollTooltip")}", theme: data["theme"],)
                               : const SizedBox.shrink(),
                         ],

@@ -100,10 +100,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               text: "${getLang("filters")}",
                             ),
                           ),
-                          HelpTooltip(
-                            message: "${getLang("hScrollTooltip")}",
-                            theme: data["theme"],
-                          )
+                          !isAndroid
+                              ? HelpTooltip(
+                                  message: "${getLang("hScrollTooltip")}",
+                                  theme: data["theme"],
+                                )
+                              : const SizedBox.shrink()
                         ],
                       ),
                       children: [
