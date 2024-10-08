@@ -3,8 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 
-class NormalText extends StatefulWidget {
-  const NormalText({
+class RentText extends StatefulWidget {
+  const RentText({
     super.key,
     required this.text,
     this.alignment,
@@ -14,10 +14,10 @@ class NormalText extends StatefulWidget {
   final TextAlign? alignment;
 
   @override
-  State<NormalText> createState() => _NormalTextState();
+  State<RentText> createState() => _RentTextState();
 }
 
-class _NormalTextState extends State<NormalText> {
+class _RentTextState extends State<RentText> {
   // Metodo para obtener la preferencia del tema
   Future<String> _loadTheme() async {
     // Carga las preferencias
@@ -47,7 +47,7 @@ class _NormalTextState extends State<NormalText> {
               padding: const EdgeInsets.only(top: 1.5, bottom: 1.5),
               child: Text(
                 widget.text,
-                style: getStyle("normalTextStyle", snapshot.data!),
+                style: getStyle("rentTextStyle", snapshot.data!),
                 softWrap: true,
                 maxLines: null,
                 textAlign: widget.alignment ?? TextAlign.start,

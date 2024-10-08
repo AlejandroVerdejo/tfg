@@ -4,12 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-EdgeInsets bodyPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
-EdgeInsets profileHeaderPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
-EdgeInsets imageBookListPadding = !kIsWeb && Platform.isAndroid ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15) : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 80);
-double elementImageSize = !kIsWeb && Platform.isAndroid ? 100 : 200;
-double bookImageSize = !kIsWeb && Platform.isAndroid ? 200 : 400;
+bool isAndroid = !kIsWeb && Platform.isAndroid ? true : false;
 
+EdgeInsets bodyPadding = isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+EdgeInsets profileHeaderPadding = isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+EdgeInsets imageBookListPadding = isAndroid ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15) : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 30);
+double elementImageSize = isAndroid ? 100 : 200;
+double rentsElementWidth = isAndroid ? 125 : 250;
+double rentsElementHeight = isAndroid ? 150 : 300;
+double bookImageSize = isAndroid ? 200 : 400;
+double verticalDividerHeight = isAndroid ? 160 : 320;
 
 const Map<String, dynamic> colors = {
   "light": {
@@ -48,43 +52,43 @@ const Map<String, dynamic> colors = {
   },
 };
 
-//* !kIsWeb && Platform.isAndroid ? Android : !Android
+//* isAndroid ? Android : !Android
 
 getStyle(String style, String theme) {
   Map<String, dynamic> styles = {
     "normalTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: !kIsWeb && Platform.isAndroid ? 14 : 20,
+      fontSize: isAndroid ? 14 : 20,
       color: colors[theme]["mainTextColor"],
     ),
     "normalTitleTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w700,
-      fontSize: !kIsWeb && Platform.isAndroid ? 14 : 20,
+      fontSize: isAndroid ? 14 : 20,
       color: colors[theme]["mainTextColor"],
     ),
     "headerTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: !kIsWeb && Platform.isAndroid ? 40 : 50,
+      fontSize: isAndroid ? 40 : 50,
       color: colors[theme]["headerTextColor"],
     ),
     "barTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: !kIsWeb && Platform.isAndroid ? 14 : 20,
+      fontSize: isAndroid ? 14 : 20,
       color: colors[theme]["barTextColor"],
     ),
     "descriptionRichTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: !kIsWeb && Platform.isAndroid ? 12 : 16,
+      fontSize: isAndroid ? 12 : 16,
       color: colors[theme]["mainTextColor"],
     ),
     "loginTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: !kIsWeb && Platform.isAndroid ? 40 : 50,
+      fontSize: isAndroid ? 40 : 50,
       color: colors[theme]["mainTextColor"],
     ),
     "sideMenuTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w600,
-      fontSize: !kIsWeb && Platform.isAndroid ? 12 : 16,
+      fontSize: isAndroid ? 12 : 16,
       color: colors[theme]["mainTextColor"],
     ),
     "loginFieldBorderSide": BorderSide(
@@ -101,30 +105,40 @@ getStyle(String style, String theme) {
       foregroundColor: colors[theme]["mainTextColor"],
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
-        fontSize: !kIsWeb && Platform.isAndroid ? 16 : 20,
+        fontSize: isAndroid ? 16 : 20,
       ),
     ),
     "filtersButtonStyle": OutlinedButton.styleFrom(
-      fixedSize: !kIsWeb && Platform.isAndroid ? const Size(200, 30) : const Size(300, 50) ,
+      fixedSize: isAndroid ? const Size(200, 30) : const Size(300, 50) ,
       foregroundColor: colors[theme]["mainTextColor"],
       backgroundColor: colors[theme]["chipBackgroundColor"],
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
-        fontSize: !kIsWeb && Platform.isAndroid ? 12 : 18,
+        fontSize: isAndroid ? 12 : 18,
       ),
     ),
     "loginTextButtonStyle": TextButton.styleFrom(
       foregroundColor: colors[theme]["linkTextColor"],
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
-        fontSize: !kIsWeb && Platform.isAndroid ? 14 : 16,
+        fontSize: isAndroid ? 14 : 16,
       ),
     ),
     "genreFilterChipStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
-      fontSize: !kIsWeb && Platform.isAndroid ? 10 : 14,
+      fontSize: isAndroid ? 10 : 14,
       color: colors[theme]["mainTextColor"],
     ),
+    "passedRentTextStyle": GoogleFonts.nunito(
+      fontWeight: FontWeight.w500,
+      fontSize: isAndroid ? 12 : 16,
+      color: Colors.red,
+    ),   
+    "rentTextStyle": GoogleFonts.nunito(
+      fontWeight: FontWeight.w500,
+      fontSize: isAndroid ? 12 : 16,
+      color: colors[theme]["mainTextColor"],
+    ),        
   };
 
   return styles[style];

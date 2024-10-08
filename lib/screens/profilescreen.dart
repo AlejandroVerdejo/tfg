@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/tempdata.dart';
+import 'package:tfg_library/widgets/betterdivider.dart';
+import 'package:tfg_library/widgets/helptooltip.dart';
 import 'package:tfg_library/widgets/profile/profileheader.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/text/rentdatetext.dart';
+import 'package:tfg_library/widgets/text/renttext.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -47,6 +52,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         } else {
           final data = snapshot.data!;
+          var activeRents;
+          if (user["rents"].length > 0) {
+            // var activeRents = user["rents"].where((rent) => rent["active"]).toList();
+            activeRents = (user["rents"] as List<Map<String, dynamic>>)
+                .where((rent) => rent["active"] == true)
+                .toList();
+          }
+          // var rentsId = user["rents"] as List<String>;
           return Scaffold(
             appBar: AppBar(
               bottom: PreferredSize(
@@ -65,19 +78,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 ProfileHeader(user: user),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30),
+                  padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
                         height: 30,
                       ),
-                      NormalText(
-                          text:
-                              "${getLang("profile_activeRents")}: ${user["rents"].length}"),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: NormalText(
+                                text:
+                                    "${getLang("profile_activeRents")}: ${activeRents.length}"),
+                          ),
+                          activeRents.length > 0
+                              ? HelpTooltip(message: "${getLang("hScrollTooltip")}", theme: data["theme"],)
+                              : const SizedBox.shrink(),
+                        ],
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
+                      activeRents.isNotEmpty
+                          ? SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Wrap(
+                                    // crossAxisAlignment: WrapCrossAlignment.center,
+                                    spacing: 10,
+                                    children: activeRents.map<Widget>((rent) {
+                                      var book = books[rent["book"]];
+                                      return Container(
+                                        width: rentsElementWidth,
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: rentsElementHeight,
+                                              child: Image.asset(
+                                                "assets/images/books/${book["image_asset"]}",
+                                                width: elementImageSize,
+                                              ),
+                                            ),
+                                            const BetterDivider(),
+                                            RentText(
+                                              text: book["title"],
+                                              alignment: TextAlign.center,
+                                            ),
+                                            RentDateText(
+                                              text: rent["date"],
+                                              alignment: TextAlign.center,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox.shrink()
                     ],
                   ),
                 )

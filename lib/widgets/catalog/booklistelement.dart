@@ -40,22 +40,23 @@ class BookListElement extends StatelessWidget {
                       children: [
                         Padding(
                           padding: imageBookListPadding,
-                          // child: Image.asset(
-                          //   "assets/images/books/${book["image"]}",
-                          //   width: elementImageSize,
-                          // ),
-                          child: Image.network(
-                            "${book["image"]}",
-                            width: elementImageSize,
-                          ),
+                          child: isAndroid
+                              ? Image.network(
+                                  "${book["image_url"]}",
+                                  width: elementImageSize,
+                                )
+                              : Image.asset(
+                                  "assets/images/books/${book["image_asset"]}",
+                                  width: elementImageSize,
+                                ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 30),
                           child: Opacity(
                             opacity: 0.5,
                             child: Container(
                               width: 1,
-                              height: 160,
+                              height: verticalDividerHeight,
                               color: Colors.white,
                             ),
                           ),

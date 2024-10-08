@@ -5,6 +5,7 @@ import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/catalog/booklist.dart';
+import 'package:tfg_library/widgets/helptooltip.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
 
@@ -37,16 +38,17 @@ class _CatalogScreenState extends State<CatalogScreen> {
     expanded = false;
   }
 
-  List<String> selectedGenres = [];
-
   List<String> selectedCategories = [];
-
+  List<String> selectedGenres = [];
   List<String> selectedEditorials = [];
-
   List<String> selectedLanguages = [];
 
   @override
   Widget build(BuildContext context) {
+    categories.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    genres.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    editorials.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    languages.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
     return FutureBuilder(
       future: _loadPreferences(),
       builder: (context, snapshot) {
@@ -91,8 +93,18 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       initiallyExpanded: expanded,
                       iconColor: colors[data["theme"]]["linkTextColor"],
                       // onExpansionChanged: ,
-                      title: NormalText(
-                        text: "${getLang("filters")}",
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: NormalText(
+                              text: "${getLang("filters")}",
+                            ),
+                          ),
+                          HelpTooltip(
+                            message: "${getLang("hScrollTooltip")}",
+                            theme: data["theme"],
+                          )
+                        ],
                       ),
                       children: [
                         Padding(
@@ -106,33 +118,37 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               const BetterDivider(),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: categories.map((tag) {
-                                    return FilterChip(
-                                      labelStyle: getStyle(
-                                          "genreFilterChipStyle",
-                                          data["theme"]),
-                                      selectedColor: colors[data["theme"]]
-                                          ["linkTextColor"],
-                                      backgroundColor: colors[data["theme"]]
-                                          ["chipBackgroundColor"],
-                                      label: Text(tag),
-                                      selected:
-                                          selectedCategories.contains(tag),
-                                      onSelected: (bool selected) {
-                                        setState(() {
-                                          expanded = true;
-                                          if (selected) {
-                                            selectedCategories.add(tag);
-                                          } else {
-                                            selectedCategories.remove(tag);
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
+                                child: Row(
+                                  children: [
+                                    Wrap(
+                                      spacing: 8.0,
+                                      runSpacing: 8.0,
+                                      children: categories.map((tag) {
+                                        return FilterChip(
+                                          labelStyle: getStyle(
+                                              "genreFilterChipStyle",
+                                              data["theme"]),
+                                          selectedColor: colors[data["theme"]]
+                                              ["linkTextColor"],
+                                          backgroundColor: colors[data["theme"]]
+                                              ["chipBackgroundColor"],
+                                          label: Text(tag),
+                                          selected:
+                                              selectedCategories.contains(tag),
+                                          onSelected: (bool selected) {
+                                            setState(() {
+                                              expanded = true;
+                                              if (selected) {
+                                                selectedCategories.add(tag);
+                                              } else {
+                                                selectedCategories.remove(tag);
+                                              }
+                                            });
+                                          },
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
                                 ),
                               ),
                               const BetterDivider(),
@@ -216,7 +232,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                   children: languages.map((tag) {
                                     return FilterChip(
                                       labelStyle: getStyle(
-                                          "genreFilterChipStyle", data["theme"]),
+                                          "genreFilterChipStyle",
+                                          data["theme"]),
                                       selectedColor: colors[data["theme"]]
                                           ["linkTextColor"],
                                       backgroundColor: colors[data["theme"]]

@@ -18,52 +18,53 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    books.sort((a, b) {
-      int aviableComp = b["aviable"].compareTo(a["aviable"]);
-      if (aviableComp != 0) {
+    var orderedBooks = Map.fromEntries(books.entries.toList()
+      ..sort((b1, b2) {
+        // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
+        int aviableComp = b2.value["aviable"].compareTo(b1.value["aviable"]);
+        // Ordena por nombre si tienen la misma disponibilidad
+        if (aviableComp == 0) {
+          return b1.value["title"].compareTo(b2.value["title"]);
+        }
         return aviableComp;
-      }
-      return a["title"].compareTo(b["title"]);
-    });
-    List<Map<String, dynamic>> bookslist;
-    bookslist = books;
+      }));
+    Map<String, dynamic> bookslist;
+    bookslist = orderedBooks;
     // Filtrar por | Categorias |
     if (categoriesFilter.isNotEmpty) {
-      List<Map<String, dynamic>> filteredbooks = bookslist.where((map) {
-        return categoriesFilter.contains((map["category"]));
-      }).toList();
-      bookslist = filteredbooks;
+      var filteredBooks = Map.fromEntries(bookslist.entries
+          .where((e) => categoriesFilter.contains(e.value["category"])));
+      bookslist = filteredBooks;
     }
     // Filtrar por | Generos |
     if (genresFilter.isNotEmpty) {
-      List<Map<String, dynamic>> filteredbooks = bookslist.where((map) {
-        var genres = map["genres"];
-        return genresFilter.every((genre) => genres.contains(genre));
-      }).toList();
-      bookslist = filteredbooks;
+      var filteredBooks = Map.fromEntries(bookslist.entries.where((e) =>
+          (e.value["genres"] as List)
+              .every((genre) => genresFilter.contains(genre))));
+      bookslist = filteredBooks;
     }
     // Filtrar por | Editoriales |
     if (editorialsFilter.isNotEmpty) {
-      List<Map<String, dynamic>> filteredbooks = bookslist.where((map) {
-        return editorialsFilter.contains((map["editorial"]));
-      }).toList();
-      bookslist = filteredbooks;
-    }    
+      var filteredBooks = Map.fromEntries(bookslist.entries
+          .where((e) => editorialsFilter.contains(e.value["editorial"])));
+      bookslist = filteredBooks;
+    }
     // Filtrar por | Idiomas |
     if (languagesFilter.isNotEmpty) {
-      List<Map<String, dynamic>> filteredbooks = bookslist.where((map) {
-        return languagesFilter.contains((map["language"]));
-      }).toList();
-      bookslist = filteredbooks;
-    }    
+      var filteredBooks = Map.fromEntries(bookslist.entries
+          .where((e) => languagesFilter.contains(e.value["language"])));
+      bookslist = filteredBooks;
+    }
+    List<MapEntry<String, dynamic>> booklistentries = bookslist.entries.toList();
 
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: bookslist.length,
+      itemCount: booklistentries.length,
       // ignore: body_might_complete_normally_nullable
-      itemBuilder: (context, index) => BookListElement(
-        book: bookslist[index],
-      ),
+      itemBuilder: (context, index) {
+        var bookentry = booklistentries[index];
+        return BookListElement(book: bookentry.value);
+      },
     );
   }
 }

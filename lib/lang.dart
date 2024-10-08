@@ -32,7 +32,9 @@ const lang = {
     "category": "Categoria",
     "categories": "Categorias",
     "languages": "Idiomas",
-    "cleanFilters": "Eliminar filtros"
+    "cleanFilters": "Eliminar filtros",
+    "hScrollTooltip": "Shift + rueda del ratón para desplazarte horizontalmente",
+    "rentDifDays": "días restantes"
   }
 };
 
