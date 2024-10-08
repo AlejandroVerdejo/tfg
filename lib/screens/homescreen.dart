@@ -4,7 +4,6 @@ import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.user});
@@ -68,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onRefresh: _updateTheme,
               ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-              body: Center(child: NormalText(text: "${data["theme"]}")),
+              body: const SizedBox.shrink(),
             );
           }
         });

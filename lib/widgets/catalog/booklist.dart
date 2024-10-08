@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/catalog/booklistelement.dart';
@@ -38,9 +40,13 @@ class BookList extends StatelessWidget {
     }
     // Filtrar por | Generos |
     if (genresFilter.isNotEmpty) {
-      var filteredBooks = Map.fromEntries(bookslist.entries.where((e) =>
-          (e.value["genres"] as List)
-              .every((genre) => genresFilter.contains(genre))));
+      var filteredBooks = Map.fromEntries(bookslist.entries.where((e) {
+        List<String> bookGenres = List<String>.from(e.value["genres"]);
+        return genresFilter.every((genre) => bookGenres.contains(genre));
+      }));
+      // var filteredBooks = Map.fromEntries(bookslist.entries.where((e) =>
+      //     (e.value["genres"] as List)
+      //         .every((genre) => genresFilter.contains(genre))));
       bookslist = filteredBooks;
     }
     // Filtrar por | Editoriales |
@@ -55,7 +61,8 @@ class BookList extends StatelessWidget {
           .where((e) => languagesFilter.contains(e.value["language"])));
       bookslist = filteredBooks;
     }
-    List<MapEntry<String, dynamic>> booklistentries = bookslist.entries.toList();
+    List<MapEntry<String, dynamic>> booklistentries =
+        bookslist.entries.toList();
 
     return ListView.builder(
       shrinkWrap: true,
