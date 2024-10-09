@@ -37,7 +37,8 @@ const lang = {
     "rentDifDays": "días restantes",
     "espectedAviable": "Disponibilidad esperada",
     "wishlist": "Lista de deseados",
-    "waitlist": "Recordatorios"
+    "waitlist": "Recordatorios",
+    "deleteFromList": "Eliminar elemento de la lista"
   }
 };
 

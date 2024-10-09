@@ -270,7 +270,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                     },
                                     child: Text(getLang("cleanFilters"))),
                               ),
-                              // const BetterDivider(),
+                              const SizedBox(
+                                height: 10,
+                              ),
                             ],
                           ),
                         ),

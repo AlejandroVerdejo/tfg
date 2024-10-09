@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/catalog/booklistelement.dart';
 
@@ -88,6 +89,46 @@ class BookList extends StatelessWidget {
       // ignore: body_might_complete_normally_nullable
       itemBuilder: (context, index) {
         var bookentry = booklistentries[index];
+        if (wishList != null && wishList!.isNotEmpty) {
+          return Stack(
+            children: [
+              BookListElement(book: bookentry.value),
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Tooltip(
+                  message: getLang("deleteFromList"),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      )),
+                ),
+              ),
+            ],
+          );
+        }
+        if (waitList != null && waitList!.isNotEmpty) {
+          return Stack(
+            children: [
+              BookListElement(book: bookentry.value),
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Tooltip(
+                  message: getLang("deleteFromList"),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      )),
+                ),
+              ),
+            ],
+          );
+        }
         return BookListElement(book: bookentry.value);
       },
     );

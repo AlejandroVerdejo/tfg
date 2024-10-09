@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
+import 'package:tfg_library/widgets/betterverticaldivider.dart';
 import 'package:tfg_library/widgets/catalog/book.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/listdatatext.dart';
@@ -50,16 +51,9 @@ class BookListElement extends StatelessWidget {
                                   width: elementImageSize,
                                 ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 30),
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: Container(
-                              width: 1,
-                              height: verticalDividerHeight,
-                              color: Colors.white,
-                            ),
-                          ),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 30),
+                          child: BetterVerticalDivider(),
                         ),
                         Expanded(
                           child: Column(

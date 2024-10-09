@@ -24,8 +24,18 @@ const Map<String, dynamic> users = {
         "active": true,
         "date": "17/12/2024",
       },
+      {
+        "book": "00004",
+        "active": true,
+        "date": "17/09/2024",
+      },
+      {
+        "book": "00001",
+        "active": true,
+        "date": "17/12/2024",
+      },
     ],
-    "wishlist": ["00004"],
+    "wishlist": ["00004", "00001"],
     "waitlist": ["00003"],
   },
 };
@@ -146,3 +156,10 @@ final List<String> categories = [
   "Manga",
   "Novela",
 ];
+
+final Map<String, dynamic> popularity = {
+  "00001":4,
+  "00002":2,
+  "00003":1,
+  "00004":7,
+};

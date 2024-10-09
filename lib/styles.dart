@@ -26,7 +26,7 @@ double verticalDividerHeight = isAndroid ? 160 : 320;
 
 const Map<String, dynamic> colors = {
   "light": {
-    "mainBackgroundColor": Color.fromRGBO(242, 242, 243, 1),
+    "mainBackgroundColor": Color.fromRGBO(221, 219, 221, 1),
     // "headerBackgroundColor": Color.fromRGBO(103,58,183, 1),
     // "headerBackgroundColor": Color.fromRGBO(136, 137, 204, 1),
     "headerBackgroundColor": Color.fromRGBO(187, 101, 136, 1),
@@ -35,7 +35,7 @@ const Map<String, dynamic> colors = {
     // "mainTextColor": Color.fromRGBO(19, 25, 43, 1),
     "mainTextColor": Color.fromRGBO(73, 69, 79, 1),
     // "headerTextColor": Color.fromRGBO(214, 214, 224, 1),
-    "headerTextColor": Color.fromRGBO(242, 242, 243, 1),
+    "headerTextColor": Color.fromRGBO(221, 219, 221, 1),
     // "barTextColor": Color.fromRGBO(214, 214, 224, 1),
     "barTextColor": Color.fromRGBO(242, 242, 243, 1),
     "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
@@ -50,7 +50,7 @@ const Map<String, dynamic> colors = {
     // "headerBorderColor": Color.fromRGBO(61, 62, 95, 1),
     "headerBorderColor": Color.fromRGBO(105, 41, 67, 1),
     // "mainTextColor": Color.fromRGBO(19, 25, 43, 1),
-    "mainTextColor": Color.fromRGBO(242, 242, 243, 1),
+    "mainTextColor": Color.fromRGBO(221, 219, 221, 1),
     // "headerTextColor": Color.fromRGBO(214, 214, 224, 1),
     "headerTextColor": Color.fromRGBO(242, 242, 243, 1),
     // "barTextColor": Color.fromRGBO(214, 214, 224, 1),

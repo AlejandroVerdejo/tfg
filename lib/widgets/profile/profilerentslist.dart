@@ -47,20 +47,16 @@ class ProfileRentsList extends StatelessWidget {
           activeRents.isNotEmpty
               ? SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Wrap(
-                        // crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: 10,
-                        children: activeRents.map<Widget>((rent) {
-                          var book = books[rent["book"]];
-                          return ProfileRentsListElement(
-                            book: book,
-                            rent: rent,
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                  child: Wrap(
+                    // crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 10,
+                    children: activeRents.map<Widget>((rent) {
+                      var book = books[rent["book"]];
+                      return ProfileRentsListElement(
+                        book: book,
+                        rent: rent,
+                      );
+                    }).toList(),
                   ),
                 )
               : const SizedBox.shrink()

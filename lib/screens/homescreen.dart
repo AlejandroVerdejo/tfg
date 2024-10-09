@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
+import 'package:tfg_library/widgets/text/normaltext.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.user});
@@ -67,9 +69,43 @@ class _HomeScreenState extends State<HomeScreen> {
                 onRefresh: _updateTheme,
               ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-              body: const SizedBox.shrink(),
+              body: Padding(
+                padding: bodyPadding,
+                child: ListView(
+                  children: [
+                    NormalText(text: "Libros mas populares"),
+                    PopularBooks()
+                  ],
+                ),
+              ),
             );
           }
         });
+  }
+}
+
+class PopularBooks extends StatelessWidget {
+  const PopularBooks({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var sortedPopularity = Map.fromEntries(popularity.entries.toList()
+      ..sort(
+        (a, b) => b.value.compareTo(a.value),
+      ));
+
+    var popularBooks = sortedPopularity.keys.toList().sublist(0, 3);
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Wrap(
+        spacing: 10,
+        children: popularBooks.map((popularBook) {
+          return Text("${books[popularBook]["title"]}");
+        }),
+      ),
+    );
   }
 }
