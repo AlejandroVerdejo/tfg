@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text("${getLang("error")}"),
+              child: Text(getLang("error")),
             );
           } else {
             // Ejecucion
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${getLang("login")}",
+                        getLang("login"),
                         style: getStyle("loginTextStyle", data["theme"]),
                       ),
                       Image.asset(
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "${getLang("user")}",
+                                labelText: getLang("user"),
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "${getLang("password")}",
+                                labelText: getLang("password"),
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                           child: Text(
-                            "${getLang("login_createHere")}",
+                            getLang("login_createHere"),
                           )),
                       const SizedBox(
                         height: 25,
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                         child: Text(
-                          "${getLang("login")}",
+                          getLang("login"),
                         ),
                       )
                     ],

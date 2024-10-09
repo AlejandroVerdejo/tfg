@@ -5,9 +5,10 @@
             "password": "",
             "email": "",
             "level": 0,
-            "active": 0,
+            "active": true,
             "rents": [],
             "wishlist": [],
+            "waiting": [],
             "faults": 0
         }
     },
@@ -19,15 +20,17 @@
             "editorial": "",
             "publication_date": "",
             "language": "",
-            "aviable": 0,
+            "aviable": true,
             "description": "",
             "image": "",
             "genres": [],
-            "category": ""
+            "category": "",
+            "return_date": ""
         }
     },
     "genres": {},
     "categories": {},
     "editorials": {},
-    "languages": {}
+    "languages": {},
+    "popularity": {}
 }

@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text("${getLang("error")}"),
+              child: Text(getLang("error")),
             );
           } else {
             // Ejecucion
@@ -55,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${getLang("register")}",
+                        getLang("register"),
                         style: getStyle("loginTextStyle", data["theme"]),
                       ),
                       Image.asset(
@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "${getLang("user")}",
+                                labelText: getLang("user"),
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -114,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: "${getLang("password")}",
+                                labelText: getLang("password"),
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -140,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                           },
                           child: Text(
-                            "${getLang("login_createHere")}",
+                            getLang("login_createHere"),
                           )),
                       const SizedBox(
                         height: 25,
@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: getStyle("loginButtonStyle", data["theme"]),
                         onPressed: () {},
                         child: Text(
-                          "${getLang("register")}",
+                          getLang("register"),
                         ),
                       )
                     ],

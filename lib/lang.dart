@@ -34,10 +34,13 @@ const lang = {
     "languages": "Idiomas",
     "cleanFilters": "Eliminar filtros",
     "hScrollTooltip": "Shift + rueda del ratón para desplazarte horizontalmente",
-    "rentDifDays": "días restantes"
+    "rentDifDays": "días restantes",
+    "espectedAviable": "Disponibilidad esperada",
+    "wishlist": "Lista de deseados",
+    "waitlist": "Recordatorios"
   }
 };
 
-String? getLang(String value) {
-  return lang["es"]?[value];
+String getLang(String value) {
+  return "${lang["es"]?[value]}";
 }

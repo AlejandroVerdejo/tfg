@@ -39,7 +39,7 @@ class _ListDataTextState extends State<ListDataText> {
         } else if (snapshot.hasError) {
           // Error
           return Center(
-            child: Text("${getLang("state")}"),
+            child: Text(getLang("state")),
           );
         } else {
           // Ejecucion

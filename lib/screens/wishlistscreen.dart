@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
+import 'package:tfg_library/widgets/catalog/booklist.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.user});
+class WishListScreen extends StatefulWidget {
+  const WishListScreen({
+    super.key,
+    required this.wishlist,
+  });
 
-  final Map<String, dynamic> user;
-  // final String? theme;
+  final List<String> wishlist;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<WishListScreen> createState() => _WishListScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  // Metodo para obtener la preferencia del tema
+class _WishListScreenState extends State<WishListScreen> {
   Future<Map<String, dynamic>> _loadPreferences() async {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,14 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return {"theme": theme};
   }
 
-  void _updateTheme() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    var user = widget.user;
-
     return FutureBuilder(
         future: _loadPreferences(),
         builder: (context, snapshot) {
@@ -59,15 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 1.5,
                     )),
                 foregroundColor: colors[data["theme"]]["barTextColor"],
-                title: const BarText(text: ""),
+                title: BarText(
+                  text: getLang("wishlist"),
+                ),
                 backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
               ),
-              drawer: SideMenu(
-                user: user,
-                onRefresh: _updateTheme,
-              ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-              body: const SizedBox.shrink(),
+              body: Padding(
+                padding: bodyPadding,
+                child: BookList(
+                  wishList: widget.wishlist,
+                ),
+              ),
             );
           }
         });

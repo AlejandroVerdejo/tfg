@@ -39,7 +39,7 @@ class _BookState extends State<Book> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text("${getLang("error")}"),
+              child: Text(getLang("error")),
             );
           } else {
             // Ejecucion
@@ -58,72 +58,131 @@ class _BookState extends State<Book> {
                 ),
                 backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
               ),
+              // bottomNavigationBar: BottomNavigationBar(
+              //   backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+              //   selectedLabelStyle: getStyle("normalTextStyle", data["theme"]),
+              //   unselectedLabelStyle: getStyle("normalTextStyle", data["theme"]),
+              //   items: const [
+              //     BottomNavigationBarItem(
+              //       icon: Icon(Icons.bookmark_border),
+              //       label: "Guardar",
+              //     ),
+              //     BottomNavigationBarItem(
+              //       icon: Icon(Icons.bookmark_border),
+              //       label: "Guardar",
+              //     ),
+              //   ],
+              // ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-              body: ListView(
+              body: Stack(
                 children: [
-                  const SizedBox(
-                    height: 10,
+                  ListView(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width),
+                        child: Padding(
+                          padding: bookBodyPadding,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: isAndroid
+                                    ? Image.network(
+                                        "${widget.book["image_url"]}",
+                                        width: bookImageSize,
+                                      )
+                                    : Image.asset(
+                                        "assets/images/books/${widget.book["image_asset"]}",
+                                        width: bookImageSize,
+                                      ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 15, bottom: 15),
+                                child: BetterDivider(),
+                              ),
+                              ListDataText(
+                                  title: getLang("title"),
+                                  text: "${widget.book["title"]}"),
+                              ListDataText(
+                                  title: getLang("author"),
+                                  text: "${widget.book["author"]}"),
+                              ListDataText(
+                                  title: getLang("editorial"),
+                                  text: "${widget.book["editorial"]}"),
+                              ListDataText(
+                                  title: getLang("date"),
+                                  text: "${widget.book["date"]}"),
+                              ListDataText(
+                                  title: getLang("pages"),
+                                  text: "${widget.book["pages"]}"),
+                              ListDataText(
+                                  title: getLang("language"),
+                                  text: "${widget.book["language"]}"),
+                              ListDataText(
+                                  title: getLang("isbn"),
+                                  text: "${widget.book["isbn"]}"),
+                              ListDataText(
+                                  title: getLang("age"),
+                                  text: "${widget.book["age"]}"),
+                              ListDataText(
+                                  title: getLang("state"),
+                                  text: widget.book["aviable"]
+                                      ? getLang("aviable")
+                                      : getLang("not_aviable")),
+                              ListDataText(
+                                  title: getLang("category"),
+                                  text: "${widget.book["category"]}"),
+                              ListDataText(
+                                  title: getLang("genres"),
+                                  text: "${widget.book["genres"].join(", ")}"),
+                              widget.book["aviable"] ||
+                                      widget.book["return_date"] == null
+                                  ? const SizedBox.shrink()
+                                  : ListDataText(
+                                      title: getLang("espectedAviable"),
+                                      text: "${widget.book["return_date"]}"),
+                              SinopsisBookText(
+                                  title: getLang("sinopsis"),
+                                  text: "${widget.book["description"]}"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width),
-                    child: Padding(
-                      padding: bodyPadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: colors[data["theme"]]["headerBackgroundColor"],
+                      padding: EdgeInsets.zero,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Center(
-                            // child: Image.asset(
-                            //   "assets/images/books/${widget.book["image"]}",
-                            //   width: bookImageSize,
-                            // ),
-                            child: Image.network(
-                              "${widget.book["image"]}",
-                              width: bookImageSize,
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.bookmark_border,
+                              color: colors[data["theme"]]["headerTextColor"],
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 15, bottom: 15),
-                            child: BetterDivider(),
-                          ),
-                          ListDataText(
-                              title: "${getLang("title")}",
-                              text: "${widget.book["title"]}"),
-                          ListDataText(
-                              title: "${getLang("author")}",
-                              text: "${widget.book["author"]}"),
-                          ListDataText(
-                              title: "${getLang("editorial")}",
-                              text: "${widget.book["editorial"]}"),
-                          ListDataText(
-                              title: "${getLang("date")}",
-                              text: "${widget.book["date"]}"),
-                          ListDataText(
-                              title: "${getLang("pages")}",
-                              text: "${widget.book["pages"]}"),
-                          ListDataText(
-                              title: "${getLang("language")}",
-                              text: "${widget.book["language"]}"),
-                          ListDataText(
-                              title: "${getLang("isbn")}",
-                              text: "${widget.book["isbn"]}"),
-                          ListDataText(
-                              title: "${getLang("age")}",
-                              text: "${widget.book["age"]}"),
-                          ListDataText(
-                              title: "${getLang("state")}",
-                              text: widget.book["aviable"] == 1
-                                  ? "${getLang("aviable")}"
-                                  : "${getLang("not_aviable")}"),
-                          ListDataText(
-                              title: "${getLang("category")}",
-                              text: "${widget.book["category"]}"),
-                          ListDataText(
-                              title: "${getLang("genres")}",
-                              text: "${widget.book["genres"].join(", ")}"),
-                          SinopsisBookText(
-                              title: "${getLang("sinopsis")}",
-                              text: "${widget.book["description"]}"),
+                          widget.book["aviable"]
+                              ? const SizedBox.shrink()
+                              : IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.timer_outlined,
+                                    color: colors[data["theme"]]
+                                        ["headerTextColor"],
+                                  ),
+                                ),
                         ],
                       ),
                     ),

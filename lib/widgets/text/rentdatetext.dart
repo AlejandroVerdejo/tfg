@@ -40,7 +40,7 @@ class _RentDateTextState extends State<RentDateText> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text("${getLang("state")}"),
+              child: Text(getLang("state")),
             );
           } else {
             // Ejecucion

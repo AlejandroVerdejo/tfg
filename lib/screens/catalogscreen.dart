@@ -76,7 +76,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   )),
               foregroundColor: colors[data["theme"]]["barTextColor"],
               title: BarText(
-                text: "${getLang("catalog")}",
+                text: getLang("catalog"),
               ),
               backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
             ),
@@ -97,12 +97,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                         children: [
                           Expanded(
                             child: NormalText(
-                              text: "${getLang("filters")}",
+                              text: getLang("filters"),
                             ),
                           ),
                           !isAndroid
                               ? HelpTooltip(
-                                  message: "${getLang("hScrollTooltip")}",
+                                  message: getLang("hScrollTooltip"),
                                   theme: data["theme"],
                                 )
                               : const SizedBox.shrink()
@@ -116,7 +116,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             children: [
                               const BetterDivider(),
                               //* Filtros para | Categorias |
-                              NormalText(text: "${getLang("categories")}"),
+                              NormalText(text: getLang("categories")),
                               const BetterDivider(),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -155,7 +155,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               ),
                               const BetterDivider(),
                               //* Filtros para | Generos |
-                              NormalText(text: "${getLang("genres")}"),
+                              NormalText(text: getLang("genres")),
                               const BetterDivider(),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -189,7 +189,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               ),
                               const BetterDivider(),
                               //* Filtros para | Editoriales |
-                              NormalText(text: "${getLang("editorials")}"),
+                              NormalText(text: getLang("editorials")),
                               const BetterDivider(),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -224,7 +224,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                               ),
                               const BetterDivider(),
                               //* Filtros para | Idiomas |
-                              NormalText(text: "${getLang("languages")}"),
+                              NormalText(text: getLang("languages")),
                               const BetterDivider(),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -268,7 +268,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                       selectedLanguages.clear();
                                       setState(() {});
                                     },
-                                    child: Text("${getLang("cleanFilters")}")),
+                                    child: Text(getLang("cleanFilters"))),
                               ),
                               // const BetterDivider(),
                             ],

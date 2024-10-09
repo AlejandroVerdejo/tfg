@@ -28,7 +28,7 @@ class BookListElement extends StatelessWidget {
       },
       child: Expanded(
         child: Opacity(
-          opacity: book["aviable"] == 0 ? 0.5 : 1,
+          opacity: book["aviable"] ? 1 : 0.3,
           child: ConstrainedBox(
             constraints:
                 BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
@@ -66,28 +66,33 @@ class BookListElement extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               ListDataText(
-                                  title: "${getLang("title")}",
+                                  title: getLang("title"),
                                   text: "${book["title"]}"),
                               ListDataText(
-                                  title: "${getLang("author")}",
+                                  title: getLang("author"),
                                   text: "${book["author"]}"),
                               ListDataText(
-                                  title: "${getLang("editorial")}",
+                                  title: getLang("editorial"),
                                   text: "${book["editorial"]}"),
                               ListDataText(
-                                  title: "${getLang("language")}",
+                                  title: getLang("language"),
                                   text: "${book["language"]}"),
                               ListDataText(
-                                  title: "${getLang("state")}",
-                                  text: book["aviable"] == 1
-                                      ? "${getLang("aviable")}"
-                                      : "${getLang("not_aviable")}"),
+                                  title: getLang("state"),
+                                  text: book["aviable"]
+                                      ? getLang("aviable")
+                                      : getLang("not_aviable")),
                               ListDataText(
-                                  title: "${getLang("category")}",
+                                  title: getLang("category"),
                                   text: "${book["category"]}"),
                               ListDataText(
-                                  title: "${getLang("genres")}",
+                                  title: getLang("genres"),
                                   text: "${book["genres"].join(", ")}"),
+                              book["aviable"] || book["return_date"] == null
+                                  ? const SizedBox.shrink()
+                                  : ListDataText(
+                                      title: getLang("espectedAviable"),
+                                      text: "${book["return_date"]}")
                             ],
                           ),
                         )

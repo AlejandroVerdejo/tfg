@@ -40,12 +40,12 @@ class _SinopsisBookTextState extends State<SinopsisBookText> {
         } else if (snapshot.hasError) {
           // Error
           return Center(
-            child: Text("${getLang("state")}"),
+            child: Text(getLang("state")),
           );
         } else {
           // Ejecucion
           return Padding(
-            padding: const EdgeInsets.only(top: 2, bottom: 2),
+            padding: const EdgeInsets.only(top: 10, bottom: 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

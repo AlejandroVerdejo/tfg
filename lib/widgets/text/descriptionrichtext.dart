@@ -37,7 +37,7 @@ class _DescriptionRichTextState extends State<DescriptionRichText> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text("${getLang("error")}"),
+              child: Text(getLang("error")),
             );
           } else {
             // Ejecucion

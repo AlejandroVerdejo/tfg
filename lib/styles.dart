@@ -6,9 +6,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 bool isAndroid = !kIsWeb && Platform.isAndroid ? true : false;
 
-EdgeInsets bodyPadding = isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
-EdgeInsets profileHeaderPadding = isAndroid ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20) : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
-EdgeInsets imageBookListPadding = isAndroid ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15) : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 30);
+EdgeInsets bodyPadding = isAndroid
+    ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20)
+    : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+EdgeInsets bookBodyPadding = isAndroid
+    ? const EdgeInsets.only(top: 5, left: 20, bottom: 30, right: 20)
+    : const EdgeInsets.only(top: 10, left: 60, bottom: 60, right: 60);
+EdgeInsets profileHeaderPadding = isAndroid
+    ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20)
+    : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+EdgeInsets imageBookListPadding = isAndroid
+    ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15)
+    : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 30);
 double elementImageSize = isAndroid ? 100 : 200;
 double rentsElementWidth = isAndroid ? 125 : 250;
 double rentsElementHeight = isAndroid ? 150 : 300;
@@ -109,7 +118,7 @@ getStyle(String style, String theme) {
       ),
     ),
     "filtersButtonStyle": OutlinedButton.styleFrom(
-      fixedSize: isAndroid ? const Size(200, 30) : const Size(300, 50) ,
+      fixedSize: isAndroid ? const Size(200, 30) : const Size(300, 50),
       foregroundColor: colors[theme]["mainTextColor"],
       backgroundColor: colors[theme]["chipBackgroundColor"],
       textStyle: GoogleFonts.nunito(
@@ -133,12 +142,12 @@ getStyle(String style, String theme) {
       fontWeight: FontWeight.w500,
       fontSize: isAndroid ? 12 : 16,
       color: Colors.red,
-    ),   
+    ),
     "rentTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: isAndroid ? 12 : 16,
       color: colors[theme]["mainTextColor"],
-    ),        
+    ),
   };
 
   return styles[style];
