@@ -58,21 +58,6 @@ class _BookState extends State<Book> {
                 ),
                 backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
               ),
-              // bottomNavigationBar: BottomNavigationBar(
-              //   backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
-              //   selectedLabelStyle: getStyle("normalTextStyle", data["theme"]),
-              //   unselectedLabelStyle: getStyle("normalTextStyle", data["theme"]),
-              //   items: const [
-              //     BottomNavigationBarItem(
-              //       icon: Icon(Icons.bookmark_border),
-              //       label: "Guardar",
-              //     ),
-              //     BottomNavigationBarItem(
-              //       icon: Icon(Icons.bookmark_border),
-              //       label: "Guardar",
-              //     ),
-              //   ],
-              // ),
               backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
               body: Stack(
                 children: [
@@ -104,6 +89,9 @@ class _BookState extends State<Book> {
                                 padding: EdgeInsets.only(top: 15, bottom: 15),
                                 child: BetterDivider(),
                               ),
+                              // ListDataText(
+                              //     title: getLang("id"),
+                              //     text: "${widget.book["id"]}"),
                               ListDataText(
                                   title: getLang("title"),
                                   text: "${widget.book["title"]}"),

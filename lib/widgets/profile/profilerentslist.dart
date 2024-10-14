@@ -51,7 +51,8 @@ class ProfileRentsList extends StatelessWidget {
                     // crossAxisAlignment: WrapCrossAlignment.center,
                     spacing: 10,
                     children: activeRents.map<Widget>((rent) {
-                      var book = books[rent["book"]];
+                      var book =
+                          books[rent["book"]["isbn"]][rent["book"]["id"]];
                       return ProfileRentsListElement(
                         book: book,
                         rent: rent,

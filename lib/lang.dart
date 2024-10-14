@@ -38,7 +38,8 @@ const lang = {
     "espectedAviable": "Disponibilidad esperada",
     "wishlist": "Lista de deseados",
     "waitlist": "Recordatorios",
-    "deleteFromList": "Eliminar elemento de la lista"
+    "deleteFromList": "Eliminar elemento de la lista",
+    "id": "Id"
   }
 };
 

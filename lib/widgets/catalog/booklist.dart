@@ -21,9 +21,46 @@ class BookList extends StatelessWidget {
   final List<String>? wishList;
   final List<String>? waitList;
 
+  // Metodo para eliminar los libros duplicados para mostrarlos en el catalogo
+  Map<String, dynamic> eliminarDuplicados(Map<String, dynamic> map) {
+    Map<String, dynamic> result = {};
+
+    map.forEach((claveExterna, subMapa) {
+      bool valorCombinado = false;
+      Map<String, dynamic> libroCombinado = {};
+
+      subMapa.forEach((claveInterna, objeto) {
+        valorCombinado = valorCombinado || objeto["aviable"];
+
+        if (libroCombinado.isEmpty) {
+          libroCombinado = objeto;
+        }
+      });
+      libroCombinado["aviable"] = valorCombinado;
+      result[claveExterna] = libroCombinado;
+    });
+
+    return result;
+  }
+
+  Map<String, dynamic> mostrarDuplicados(Map<String, dynamic> map) {
+    Map<String, dynamic> result = {};
+
+    map.forEach((claveExterna, subMapa) {
+      subMapa.forEach((claveInterna, objeto) {
+        result[objeto["id"]] = objeto;
+      });
+    });
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var orderedBooks = Map.fromEntries(books.entries.toList()
+    Map<String, dynamic> dBooks = eliminarDuplicados(books);
+    // Map<String, dynamic> dBooks = mostrarDuplicados(books);
+
+    var orderedBooks = Map.fromEntries(dBooks.entries.toList()
       ..sort((b1, b2) {
         // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
         // int aviableComp = b2.value["aviable"].compareTo(b1.value["aviable"]);

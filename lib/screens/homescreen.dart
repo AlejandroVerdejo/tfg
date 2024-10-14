@@ -100,12 +100,7 @@ class PopularBooks extends StatelessWidget {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Wrap(
-        spacing: 10,
-        children: popularBooks.map((popularBook) {
-          return Text("${books[popularBook]["title"]}");
-        }),
-      ),
+      child: Text("text"),
     );
   }
 }
