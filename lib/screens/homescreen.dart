@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/home/popularlist.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -73,8 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: bodyPadding,
                 child: ListView(
                   children: [
-                    NormalText(text: "Libros mas populares"),
-                    PopularBooks()
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    NormalText(text: getLang("popularBooks")),
+                    const PopularList()
                   ],
                 ),
               ),
@@ -83,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 }
+<<<<<<< Updated upstream
 
 class PopularBooks extends StatelessWidget {
   const PopularBooks({
@@ -104,3 +108,5 @@ class PopularBooks extends StatelessWidget {
     );
   }
 }
+=======
+>>>>>>> Stashed changes

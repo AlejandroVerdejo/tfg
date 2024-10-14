@@ -4,6 +4,8 @@ import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/tempdata.dart';
+import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding

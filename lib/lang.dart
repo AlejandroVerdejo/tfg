@@ -39,7 +39,11 @@ const lang = {
     "wishlist": "Lista de deseados",
     "waitlist": "Recordatorios",
     "deleteFromList": "Eliminar elemento de la lista",
+<<<<<<< Updated upstream
     "id": "Id"
+=======
+    "popularBooks": "Libros mas populares"
+>>>>>>> Stashed changes
   }
 };
 
