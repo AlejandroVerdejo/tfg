@@ -86,27 +86,3 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 }
-<<<<<<< Updated upstream
-
-class PopularBooks extends StatelessWidget {
-  const PopularBooks({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var sortedPopularity = Map.fromEntries(popularity.entries.toList()
-      ..sort(
-        (a, b) => b.value.compareTo(a.value),
-      ));
-
-    var popularBooks = sortedPopularity.keys.toList().sublist(0, 3);
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Text("text"),
-    );
-  }
-}
-=======
->>>>>>> Stashed changes
