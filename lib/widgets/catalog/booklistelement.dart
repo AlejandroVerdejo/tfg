@@ -47,7 +47,7 @@ class BookListElement extends StatelessWidget {
                                   width: elementImageSize,
                                 )
                               : Image.asset(
-                                  "assets/images/books/${book["image_asset"]}",
+                                  "assets/images/books/${book["image"]}",
                                   width: elementImageSize,
                                 ),
                         ),

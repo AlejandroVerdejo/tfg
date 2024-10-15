@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/catalog/booklist.dart';
 import 'package:tfg_library/widgets/helptooltip.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+// }
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({
@@ -20,14 +24,24 @@ class CatalogScreen extends StatefulWidget {
 
 class _CatalogScreenState extends State<CatalogScreen> {
   // Metodo para obtener la preferencia del tema
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
     String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
-    // Devuelve un mapa con las preferencias
-    return {"theme": theme};
+    // Obtiene los | Libros |
+    Map<String, dynamic> books = await firestoreManager.getMergedBooks();
+    // Obtiene los Tags | Categorias | Generos | Editoriales | Idiomas |
+    Map<String, List<String>> tags = await firestoreManager.getTags();
+    // Devuelve un mapa con los datos
+    return {
+      "theme": theme,
+      "books": books,
+      "tags": tags,
+    };
   }
+
+  FirestoreManager firestoreManager = FirestoreManager();
 
   bool expanded = true;
 
@@ -45,12 +59,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    categories.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    genres.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    editorials.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    languages.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
     return FutureBuilder(
-      future: _loadPreferences(),
+      future: _loadData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
@@ -59,13 +69,16 @@ class _CatalogScreenState extends State<CatalogScreen> {
           );
         } else if (snapshot.hasError) {
           // Error
-          return const Center(
-            child: Text("Error"),
+          return Center(
+            child: Text(snapshot.error.toString()),
           );
         } else {
           // Ejecucion
           final data = snapshot.data!;
-          categories.sort();
+          List<String> categories = data["tags"]["categories"];
+          List<String> genres = data["tags"]["genres"];
+          List<String> editorials = data["tags"]["editorials"];
+          List<String> languages = data["tags"]["languages"];
           return Scaffold(
             appBar: AppBar(
               bottom: PreferredSize(
@@ -284,6 +297,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     const BetterDivider(),
                     Expanded(
                       child: BookList(
+                        books: data["books"],
                         categoriesFilter: selectedCategories,
                         genresFilter: selectedGenres,
                         editorialsFilter: selectedEditorials,

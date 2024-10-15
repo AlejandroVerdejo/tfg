@@ -16,12 +16,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   // Metodo para obtener la preferencia del tema
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
     String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
-    // Devuelve un mapa con las preferencias
+    // Devuelve un mapa con los datos
     return {"theme": theme};
   }
 
@@ -33,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final passwordController = TextEditingController();
 
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga

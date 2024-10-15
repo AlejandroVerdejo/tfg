@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/booklist.dart';
@@ -18,19 +19,22 @@ class WishListScreen extends StatefulWidget {
 }
 
 class _WishListScreenState extends State<WishListScreen> {
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
     String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
-    // Devuelve un mapa con las preferencias
-    return {"theme": theme};
+    Map<String, dynamic> books = await firestoreManager.getMergedBooks();
+    // Devuelve un mapa con los datos
+    return {"theme": theme, "books": books};
   }
+
+  FirestoreManager firestoreManager = FirestoreManager();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
@@ -63,6 +67,7 @@ class _WishListScreenState extends State<WishListScreen> {
               body: Padding(
                 padding: bodyPadding,
                 child: BookList(
+                  books: data["books"],
                   wishList: widget.wishlist,
                 ),
               ),

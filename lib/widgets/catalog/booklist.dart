@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/catalog/booklistelement.dart';
 
 class BookList extends StatelessWidget {
   const BookList({
     super.key,
+    required this.books,
     this.categoriesFilter,
     this.genresFilter,
     this.editorialsFilter,
@@ -14,6 +14,7 @@ class BookList extends StatelessWidget {
     this.waitList,
   });
 
+  final Map<String, dynamic> books;
   final List<String>? categoriesFilter;
   final List<String>? genresFilter;
   final List<String>? editorialsFilter;
@@ -57,10 +58,10 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> dBooks = eliminarDuplicados(books);
+    // Map<String, dynamic> dBooks = eliminarDuplicados(books);
     // Map<String, dynamic> dBooks = mostrarDuplicados(books);
 
-    var orderedBooks = Map.fromEntries(dBooks.entries.toList()
+    var orderedBooks = Map.fromEntries(books.entries.toList()
       ..sort((b1, b2) {
         // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
         // int aviableComp = b2.value["aviable"].compareTo(b1.value["aviable"]);
@@ -126,27 +127,8 @@ class BookList extends StatelessWidget {
       // ignore: body_might_complete_normally_nullable
       itemBuilder: (context, index) {
         var bookentry = booklistentries[index];
-        if (wishList != null && wishList!.isNotEmpty) {
-          return Stack(
-            children: [
-              BookListElement(book: bookentry.value),
-              Positioned(
-                top: 10,
-                right: 10,
-                child: Tooltip(
-                  message: getLang("deleteFromList"),
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      )),
-                ),
-              ),
-            ],
-          );
-        }
-        if (waitList != null && waitList!.isNotEmpty) {
+        if (wishList != null && wishList!.isNotEmpty ||
+            waitList != null && waitList!.isNotEmpty) {
           return Stack(
             children: [
               BookListElement(book: bookentry.value),

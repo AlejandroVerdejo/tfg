@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/registerscreen.dart';
@@ -17,24 +18,31 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   // Metodo para obtener la preferencia del tema
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
     String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
-    // Devuelve un mapa con las preferencias
+    // Devuelve un mapa con los datos
     return {"theme": theme};
   }
+
+  void _saveUser(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("saved_user", email);
+  }
+
+  FirestoreManager firestoreManager = FirestoreManager();
 
   @override
   Widget build(BuildContext context) {
     users;
 
-    final userController = TextEditingController();
+    final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
@@ -74,8 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               "loginFieldSelectionTheme", data["theme"]),
                           child: TextField(
                             style: getStyle("normalTextStyle", data["theme"]),
-                            maxLength: 16,
-                            controller: userController,
+                            maxLength: 32,
+                            controller: emailController,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: getStyle(
@@ -84,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderSide: getStyle(
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
-                                labelText: getLang("user"),
+                                labelText: getLang("email"),
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:
@@ -148,22 +156,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       OutlinedButton(
                         style: getStyle("loginButtonStyle", data["theme"]),
-                        onPressed: () {
-                          if (users[userController.text]["password"] ==
-                              passwordController.text) {
-                            Map<String, dynamic> user = {
-                              "username": users[userController.text]
-                                  ["username"],
-                              "password": users[userController.text]
-                                  ["password"],
-                              "level": users[userController.text]["level"]
-                            };
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomeScreen(user: user)));
+                        onPressed: () async {
+                          if (await firestoreManager
+                              .checkUser(emailController.text)) {
+                            if (await firestoreManager.checkPassword(
+                                emailController.text,
+                                passwordController.text)) {
+                              Map<String, dynamic> user = await firestoreManager
+                                  .getUser(emailController.text);
+                              _saveUser(emailController.text);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomeScreen(user: user)));
+                            }
                           }
+                          // if (users[emailController.text]["password"] ==
+                          //     passwordController.text) {
+                          //   Map<String, dynamic> user = {
+                          //     "username": users[emailController.text]
+                          //         ["username"],
+                          //     "password": users[emailController.text]
+                          //         ["password"],
+                          //     "level": users[emailController.text]["level"]
+                          //   };
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) =>
+                          //               HomeScreen(user: user)));
+                          // }
                         },
                         child: Text(
                           getLang("login"),

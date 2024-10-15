@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/conf.dart';
@@ -34,6 +36,13 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    // log("Log: ${FirebaseFirestore.instance}");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +50,10 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+    initialize();
+
+    // FirebaseFirestore db = FirebaseFirestore.instance;
+
     settings;
     users;
 

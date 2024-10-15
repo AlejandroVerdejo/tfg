@@ -40,7 +40,8 @@ const lang = {
     "waitlist": "Recordatorios",
     "deleteFromList": "Eliminar elemento de la lista",
     "id": "Id",
-    "popularBooks": "Libros mas populares"
+    "popularBooks": "Libros mas populares",
+    "email": "Correo electronico"
   }
 };
 

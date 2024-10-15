@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tfg_library/home/popularlist.dart';
+import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/widgets/home/popularlist.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
@@ -19,14 +24,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // Metodo para obtener la preferencia del tema
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
     String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
-    // Devuelve un mapa con las preferencias
-    return {"theme": theme};
+    List<String> popularBooks = await firestoreManager.getPopularity();
+    // Devuelve un mapa con los datos
+    return {
+      "theme": theme,
+      // "popularBooks": popularBooks,
+    };
   }
+
+  FirestoreManager firestoreManager = FirestoreManager();
 
   void _updateTheme() {
     setState(() {});
@@ -37,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var user = widget.user;
 
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
@@ -52,6 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            // _getBooks();
+            // Future<Map<String, dynamic>> map = firestoreManager.getBooks();
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
@@ -77,7 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 30,
                     ),
                     NormalText(text: getLang("popularBooks")),
-                    const PopularList()
+                    // PopularList(popularBooks: data["popularBooks"]),
+                    // NormalText(text: data["books"].toString())
                   ],
                 ),
               ),

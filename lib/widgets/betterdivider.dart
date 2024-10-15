@@ -12,7 +12,7 @@ class BetterDivider extends StatefulWidget {
 }
 
 class _BetterDividerState extends State<BetterDivider> {
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String theme = prefs.getString("theme") ?? "light";
     return {"theme": theme};
@@ -21,7 +21,7 @@ class _BetterDividerState extends State<BetterDivider> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga

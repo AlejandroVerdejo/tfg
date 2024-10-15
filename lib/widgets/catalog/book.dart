@@ -20,7 +20,7 @@ class Book extends StatefulWidget {
 }
 
 class _BookState extends State<Book> {
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String theme = prefs.getString("theme") ?? "light";
     return {"theme": theme};
@@ -29,7 +29,7 @@ class _BookState extends State<Book> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
@@ -81,7 +81,7 @@ class _BookState extends State<Book> {
                                         width: bookImageSize,
                                       )
                                     : Image.asset(
-                                        "assets/images/books/${widget.book["image_asset"]}",
+                                        "assets/images/books/${widget.book["image"]}",
                                         width: bookImageSize,
                                       ),
                               ),
