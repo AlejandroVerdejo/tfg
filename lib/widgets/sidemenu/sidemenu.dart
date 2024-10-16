@@ -30,7 +30,7 @@ class _SideMenuState extends State<SideMenu> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     // Devuelve un mapa con los datos
     return {"theme": theme};
   }
@@ -122,7 +122,7 @@ class _SideMenuState extends State<SideMenu> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => WishListScreen(
-                                  wishlist: widget.user["wishlist"],
+                                  email: widget.user["email"],
                                 )));
                   },
                 ),
@@ -140,7 +140,7 @@ class _SideMenuState extends State<SideMenu> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => WaitListScreen(
-                                  waitlist: widget.user["waitlist"],
+                                  email: widget.user["email"],
                                 )));
                   },
                 ),
@@ -171,7 +171,7 @@ class _SideMenuState extends State<SideMenu> {
                   onTap: () async {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                    String theme = prefs.getString("theme") ?? "light";
+                    String theme = prefs.getString("theme") ?? "dark";
                     theme == "light"
                         ? await prefs.setString("theme", "dark")
                         : await prefs.setString("theme", "light");

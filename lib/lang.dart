@@ -33,7 +33,8 @@ const lang = {
     "categories": "Categorias",
     "languages": "Idiomas",
     "cleanFilters": "Eliminar filtros",
-    "hScrollTooltip": "Shift + rueda del ratón para desplazarte horizontalmente",
+    "hScrollTooltip":
+        "Shift + rueda del ratón para desplazarte horizontalmente",
     "rentDifDays": "días restantes",
     "espectedAviable": "Disponibilidad esperada",
     "wishlist": "Lista de deseados",
@@ -41,7 +42,11 @@ const lang = {
     "deleteFromList": "Eliminar elemento de la lista",
     "id": "Id",
     "popularBooks": "Libros mas populares",
-    "email": "Correo electronico"
+    "email": "Correo electronico",
+    "deleteBookListDialog-title": "Se eliminara el libro de la lista",
+    "deleteBookListDialog-content": "¿Estas seguro?",
+    "deleteBookListDialog-true": "Eliminar",
+    "deleteBookListDialog-false": "Cancelar",
   }
 };
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
@@ -16,7 +15,6 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.user});
 
   final Map<String, dynamic> user;
-  // final String? theme;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -28,12 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     List<String> popularBooks = await firestoreManager.getPopularity();
     // Devuelve un mapa con los datos
     return {
       "theme": theme,
-      // "popularBooks": popularBooks,
+      "popularBooks": popularBooks,
     };
   }
 
@@ -63,25 +61,26 @@ class _HomeScreenState extends State<HomeScreen> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
-            // _getBooks();
+            var theme = data["theme"];
+            var popularBooks = data["popularBooks"];
             // Future<Map<String, dynamic>> map = firestoreManager.getBooks();
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1.5),
                     child: Container(
-                      color: colors[data["theme"]]["headerBorderColor"],
+                      color: colors[theme]["headerBorderColor"],
                       height: 1.5,
                     )),
-                foregroundColor: colors[data["theme"]]["barTextColor"],
+                foregroundColor: colors[theme]["barTextColor"],
                 title: const BarText(text: ""),
-                backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+                backgroundColor: colors[theme]["headerBackgroundColor"],
               ),
               drawer: SideMenu(
                 user: user,
                 onRefresh: _updateTheme,
               ),
-              backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
+              backgroundColor: colors[theme]["mainBackgroundColor"],
               body: Padding(
                 padding: bodyPadding,
                 child: ListView(
@@ -90,8 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 30,
                     ),
                     NormalText(text: getLang("popularBooks")),
-                    // PopularList(popularBooks: data["popularBooks"]),
-                    // NormalText(text: data["books"].toString())
+                    PopularList(popularBooks: popularBooks),
                   ],
                 ),
               ),

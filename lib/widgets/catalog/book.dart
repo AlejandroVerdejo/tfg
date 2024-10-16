@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
@@ -22,8 +25,38 @@ class Book extends StatefulWidget {
 class _BookState extends State<Book> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "light";
-    return {"theme": theme};
+    String theme = prefs.getString("theme") ?? "dark";
+    String savedUser = prefs.getString("savedUser")!;
+    bool inWishList = await firestoreManager.checkUserWishList(
+        savedUser, widget.book["isbn"]);
+    bool inWaitList = await firestoreManager.checkUserWaitList(
+        savedUser, widget.book["isbn"]);
+    return {
+      "theme": theme,
+      "savedUser": savedUser,
+      "inWishList": inWishList,
+      "inWaitList": inWaitList,
+    };
+  }
+
+  FirestoreManager firestoreManager = FirestoreManager();
+
+  Future<void> _toggleWishList(bool inWishList, String email) async {
+    if (inWishList) {
+      await firestoreManager.deleteUserWishList(email, widget.book["isbn"]);
+    } else {
+      await firestoreManager.addUserWishList(email, widget.book["isbn"]);
+    }
+    setState(() {});
+  }
+
+  Future<void> _toggleWaitList(bool inWaitList, String email) async {
+    if (inWaitList) {
+      await firestoreManager.deleteUserWaitList(email, widget.book["isbn"]);
+    } else {
+      await firestoreManager.addUserWaitList(email, widget.book["isbn"]);
+    }
+    setState(() {});
   }
 
   @override
@@ -44,21 +77,25 @@ class _BookState extends State<Book> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = data["theme"];
+            var user = data["savedUser"];
+            var inWishList = data["inWishList"];
+            var inWaitList = data["inWaitList"];
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1.5),
                     child: Container(
-                      color: colors[data["theme"]]["headerBorderColor"],
+                      color: colors[theme]["headerBorderColor"],
                       height: 1.5,
                     )),
-                foregroundColor: colors[data["theme"]]["barTextColor"],
+                foregroundColor: colors[theme]["barTextColor"],
                 title: BarText(
                   text: widget.book["title"],
                 ),
-                backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+                backgroundColor: colors[theme]["headerBackgroundColor"],
               ),
-              backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
+              backgroundColor: colors[theme]["mainBackgroundColor"],
               body: Stack(
                 children: [
                   ListView(
@@ -75,15 +112,10 @@ class _BookState extends State<Book> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Center(
-                                child: isAndroid
-                                    ? Image.network(
-                                        "${widget.book["image_url"]}",
-                                        width: bookImageSize,
-                                      )
-                                    : Image.asset(
-                                        "assets/images/books/${widget.book["image"]}",
-                                        width: bookImageSize,
-                                      ),
+                                child: Image.network(
+                                  "${widget.book["image"]}",
+                                  width: bookImageSize,
+                                ),
                               ),
                               const Padding(
                                 padding: EdgeInsets.only(top: 15, bottom: 15),
@@ -147,7 +179,7 @@ class _BookState extends State<Book> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      color: colors[data["theme"]]["headerBackgroundColor"],
+                      color: colors[theme]["headerBackgroundColor"],
                       padding: EdgeInsets.zero,
                       width: double.infinity,
                       child: Row(
@@ -155,20 +187,27 @@ class _BookState extends State<Book> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _toggleWishList(inWishList, user);
+                            },
                             icon: Icon(
-                              Icons.bookmark_border,
-                              color: colors[data["theme"]]["headerTextColor"],
+                              inWishList
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              color: colors[theme]["headerTextColor"],
                             ),
                           ),
                           widget.book["aviable"]
                               ? const SizedBox.shrink()
                               : IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _toggleWaitList(inWaitList, user);
+                                  },
                                   icon: Icon(
-                                    Icons.timer_outlined,
-                                    color: colors[data["theme"]]
-                                        ["headerTextColor"],
+                                    inWaitList
+                                        ? Icons.timer
+                                        : Icons.timer_outlined,
+                                    color: colors[theme]["headerTextColor"],
                                   ),
                                 ),
                         ],

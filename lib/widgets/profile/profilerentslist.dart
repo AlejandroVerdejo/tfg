@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/tempdata.dart';
 import 'package:tfg_library/widgets/helptooltip.dart';
 import 'package:tfg_library/widgets/profile/profilerentslistelement.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
@@ -48,13 +47,10 @@ class ProfileRentsList extends StatelessWidget {
               ? SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Wrap(
-                    // crossAxisAlignment: WrapCrossAlignment.center,
                     spacing: 10,
                     children: activeRents.map<Widget>((rent) {
-                      var book =
-                          books[rent["book"]["isbn"]][rent["book"]["id"]];
                       return ProfileRentsListElement(
-                        book: book,
+                        isbn: rent["book"]["isbn"],
                         rent: rent,
                       );
                     }).toList(),

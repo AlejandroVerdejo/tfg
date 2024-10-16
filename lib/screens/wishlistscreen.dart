@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
@@ -9,10 +11,10 @@ import 'package:tfg_library/widgets/text/bartext.dart';
 class WishListScreen extends StatefulWidget {
   const WishListScreen({
     super.key,
-    required this.wishlist,
+    required this.email,
   });
 
-  final List<String> wishlist;
+  final String email;
 
   @override
   State<WishListScreen> createState() => _WishListScreenState();
@@ -23,13 +25,24 @@ class _WishListScreenState extends State<WishListScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
+    List<dynamic> wishlist =
+        await firestoreManager.getUserWishList(widget.email);
     // Devuelve un mapa con los datos
-    return {"theme": theme, "books": books};
+    return {
+      "theme": theme,
+      "books": books,
+      "wishlist": wishlist,
+    };
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+
+  void _update() {
+    log("Log: update");
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,31 +57,36 @@ class _WishListScreenState extends State<WishListScreen> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text(getLang("error")),
+              // child: Text(getLang("error")),
+              child: Text(snapshot.error.toString()),
             );
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = data["theme"];
+            var wishlist = data["wishlist"];
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1.5),
                     child: Container(
-                      color: colors[data["theme"]]["headerBorderColor"],
+                      color: colors[theme]["headerBorderColor"],
                       height: 1.5,
                     )),
-                foregroundColor: colors[data["theme"]]["barTextColor"],
+                foregroundColor: colors[theme]["barTextColor"],
                 title: BarText(
                   text: getLang("wishlist"),
                 ),
-                backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+                backgroundColor: colors[theme]["headerBackgroundColor"],
               ),
-              backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
+              backgroundColor: colors[theme]["mainBackgroundColor"],
               body: Padding(
                 padding: bodyPadding,
                 child: BookList(
                   books: data["books"],
-                  wishList: widget.wishlist,
+                  type: "wishlist",
+                  wishList: wishlist,
+                  onRefresh: _update,
                 ),
               ),
             );

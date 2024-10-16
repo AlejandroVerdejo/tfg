@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/conf.dart';
+import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:tfg_library/tempdata.dart';
@@ -12,6 +13,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Asegura que los bindings de Flutter estén inicializados
+  FirestoreManager firestoreManager = FirestoreManager();
   SharedPreferences prefs = await SharedPreferences
       .getInstance(); // Esperar a que se carguen las preferencias
   if (!prefs.containsKey("theme")) {
@@ -19,17 +21,36 @@ void main() async {
     await prefs.setString(
         "theme", "dark"); // Establecer el valor predeterminado
   }
-  if (!prefs.containsKey("saved_user")) {
+  if (!prefs.containsKey("savedUser")) {
     // Si no existe la clave
     await prefs.setString(
-        "saved_user", ""); // Establecer el valor predeterminado
+        "savedUser", ""); // Establecer el valor predeterminado
   }
-  // runApp(MainApp(var)); // Pasar el valor al widget principal
-  runApp(const MainApp());
+  String theme = prefs.getString("theme") ?? "dark";
+  log(theme);
+  String savedUser = prefs.getString("savedUser") ?? "";
+  log(savedUser);
+  Map<String, dynamic> user = {};
+  if (savedUser.isNotEmpty) {
+    user = await firestoreManager.getUser(savedUser);
+  }
+  log(user.toString());
+  runApp(MainApp(
+    theme: theme,
+    savedUser: user,
+  ));
+  // runApp(const MainApp());
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  const MainApp({
+    super.key,
+    required this.theme,
+    required this.savedUser,
+  });
+
+  final String theme;
+  final Map<String, dynamic> savedUser;
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -52,8 +73,6 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     initialize();
 
-    // FirebaseFirestore db = FirebaseFirestore.instance;
-
     settings;
     users;
 
@@ -63,8 +82,8 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: settings["saved_user"] == true
-              ? HomeScreen(user: user = users[settings["saved_user_user"]])
+          child: widget.savedUser.isNotEmpty
+              ? HomeScreen(user: widget.savedUser)
               : const LoginScreen(),
         ),
       ),

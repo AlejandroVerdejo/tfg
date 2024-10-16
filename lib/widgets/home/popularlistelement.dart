@@ -21,7 +21,7 @@ class PopularListElement extends StatefulWidget {
 class _PopularListElementState extends State<PopularListElement> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "light";
+    String theme = prefs.getString("theme") ?? "dark";
     Map<String, dynamic> book =
         await firestoreManager.getMergedBook(widget.bookkey);
     return {
@@ -57,8 +57,8 @@ class _PopularListElementState extends State<PopularListElement> {
                 children: [
                   SizedBox(
                     height: rentsElementHeight,
-                    child: Image.asset(
-                      "assets/images/books/${data["book"]["image"]}",
+                    child: Image.network(
+                      "${data["book"]["image"]}",
                       width: elementImageSize,
                     ),
                   ),

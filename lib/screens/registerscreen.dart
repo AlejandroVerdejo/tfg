@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     // Devuelve un mapa con los datos
     return {"theme": theme};
   }

@@ -22,14 +22,14 @@ class _LoginScreenState extends State<LoginScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     // Devuelve un mapa con los datos
     return {"theme": theme};
   }
 
   void _saveUser(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("saved_user", email);
+    await prefs.setString("savedUser", email);
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
@@ -166,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   .getUser(emailController.text);
                               _saveUser(emailController.text);
                               Navigator.push(
+                                  // ignore: use_build_context_synchronously
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>

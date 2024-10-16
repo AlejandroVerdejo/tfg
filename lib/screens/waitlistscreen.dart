@@ -9,10 +9,10 @@ import 'package:tfg_library/widgets/text/bartext.dart';
 class WaitListScreen extends StatefulWidget {
   const WaitListScreen({
     super.key,
-    required this.waitlist,
+    required this.email,
   });
 
-  final List<String> waitlist;
+  final String email;
 
   @override
   State<WaitListScreen> createState() => _WaitListScreenState();
@@ -23,13 +23,23 @@ class _WaitListScreenState extends State<WaitListScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
+    List<dynamic> waitlist =
+        await firestoreManager.getUserWaitList(widget.email);
     // Devuelve un mapa con los datos
-    return {"theme": theme, "books": books};
+    return {
+      "theme": theme,
+      "books": books,
+      "waitlist": waitlist,
+    };
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+
+  void _update() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,26 +59,30 @@ class _WaitListScreenState extends State<WaitListScreen> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = data["theme"];
+            var waitlist = data["waitlist"];
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1.5),
                     child: Container(
-                      color: colors[data["theme"]]["headerBorderColor"],
+                      color: colors[theme]["headerBorderColor"],
                       height: 1.5,
                     )),
-                foregroundColor: colors[data["theme"]]["barTextColor"],
+                foregroundColor: colors[theme]["barTextColor"],
                 title: BarText(
                   text: getLang("waitlist"),
                 ),
-                backgroundColor: colors[data["theme"]]["headerBackgroundColor"],
+                backgroundColor: colors[theme]["headerBackgroundColor"],
               ),
-              backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
+              backgroundColor: colors[theme]["mainBackgroundColor"],
               body: Padding(
                 padding: bodyPadding,
                 child: BookList(
                   books: data["books"],
-                  waitList: widget.waitlist,
+                  type: "waitlist",
+                  waitList: waitlist,
+                  onRefresh: _update,
                 ),
               ),
             );

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
@@ -7,29 +9,43 @@ import 'package:tfg_library/widgets/catalog/book.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/listdatatext.dart';
 
-class BookListElement extends StatelessWidget {
+class BookListElement extends StatefulWidget {
   const BookListElement({
     super.key,
     required this.book,
+    this.onClose,
   });
 
   final Map<String, dynamic> book;
+  final VoidCallback? onClose;
 
+  @override
+  State<BookListElement> createState() => _BookListElementState();
+}
+
+class _BookListElementState extends State<BookListElement> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // log("tap");
+        log("tap");
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Book(
-                      book: book,
-                    )));
+                      book: widget.book,
+                    ))).then((result) {
+          log("Log: message");
+          if (widget.onClose != null) {
+            widget.onClose!();
+          }
+        });
+        // if (result != null) {
+        // }
       },
       child: Expanded(
         child: Opacity(
-          opacity: book["aviable"] ? 1 : 0.3,
+          opacity: widget.book["aviable"] ? 1 : 0.3,
           child: ConstrainedBox(
             constraints:
                 BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
@@ -40,17 +56,11 @@ class BookListElement extends StatelessWidget {
                     Row(
                       children: [
                         Padding(
-                          padding: imageBookListPadding,
-                          child: isAndroid
-                              ? Image.network(
-                                  "${book["image_url"]}",
-                                  width: elementImageSize,
-                                )
-                              : Image.asset(
-                                  "assets/images/books/${book["image"]}",
-                                  width: elementImageSize,
-                                ),
-                        ),
+                            padding: imageBookListPadding,
+                            child: Image.network(
+                              "${widget.book["image"]}",
+                              width: elementImageSize,
+                            )),
                         const Padding(
                           padding: EdgeInsets.only(right: 30),
                           child: BetterVerticalDivider(),
@@ -61,32 +71,33 @@ class BookListElement extends StatelessWidget {
                             children: [
                               ListDataText(
                                   title: getLang("title"),
-                                  text: "${book["title"]}"),
+                                  text: "${widget.book["title"]}"),
                               ListDataText(
                                   title: getLang("author"),
-                                  text: "${book["author"]}"),
+                                  text: "${widget.book["author"]}"),
                               ListDataText(
                                   title: getLang("editorial"),
-                                  text: "${book["editorial"]}"),
+                                  text: "${widget.book["editorial"]}"),
                               ListDataText(
                                   title: getLang("language"),
-                                  text: "${book["language"]}"),
+                                  text: "${widget.book["language"]}"),
                               ListDataText(
                                   title: getLang("state"),
-                                  text: book["aviable"]
+                                  text: widget.book["aviable"]
                                       ? getLang("aviable")
                                       : getLang("not_aviable")),
                               ListDataText(
                                   title: getLang("category"),
-                                  text: "${book["category"]}"),
+                                  text: "${widget.book["category"]}"),
                               ListDataText(
                                   title: getLang("genres"),
-                                  text: "${book["genres"].join(", ")}"),
-                              book["aviable"] || book["return_date"] == null
+                                  text: "${widget.book["genres"].join(", ")}"),
+                              widget.book["aviable"] ||
+                                      widget.book["return_date"] == null
                                   ? const SizedBox.shrink()
                                   : ListDataText(
                                       title: getLang("espectedAviable"),
-                                      text: "${book["return_date"]}")
+                                      text: "${widget.book["return_date"]}")
                             ],
                           ),
                         )
@@ -95,7 +106,7 @@ class BookListElement extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    DescriptionRichText(text: book["description"]),
+                    DescriptionRichText(text: widget.book["description"]),
                   ],
                 ),
                 const BetterDivider()

@@ -28,7 +28,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "light"; // Valor predeterminado
+    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
     // Obtiene los | Libros |
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     // Obtiene los Tags | Categorias | Generos | Editoriales | Idiomas |
