@@ -28,7 +28,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     // Obtiene los | Libros |
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     // Obtiene los Tags | Categorias | Generos | Editoriales | Idiomas |
@@ -96,216 +96,214 @@ class _CatalogScreenState extends State<CatalogScreen> {
             backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
             body: Padding(
               padding: bodyPadding,
-              child: Expanded(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ExpansionTile(
-                      initiallyExpanded: expanded,
-                      iconColor: colors[data["theme"]]["linkTextColor"],
-                      // onExpansionChanged: ,
-                      title: Row(
-                        children: [
-                          Expanded(
-                            child: NormalText(
-                              text: getLang("filters"),
-                            ),
-                          ),
-                          !isAndroid
-                              ? HelpTooltip(
-                                  message: getLang("hScrollTooltip"),
-                                  theme: data["theme"],
-                                )
-                              : const SizedBox.shrink()
-                        ],
-                      ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ExpansionTile(
+                    initiallyExpanded: expanded,
+                    iconColor: colors[data["theme"]]["linkTextColor"],
+                    // onExpansionChanged: ,
+                    title: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const BetterDivider(),
-                              //* Filtros para | Categorias |
-                              NormalText(text: getLang("categories")),
-                              const BetterDivider(),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Wrap(
-                                      spacing: 8.0,
-                                      runSpacing: 8.0,
-                                      children: categories.map((tag) {
-                                        return FilterChip(
-                                          labelStyle: getStyle(
-                                              "genreFilterChipStyle",
-                                              data["theme"]),
-                                          selectedColor: colors[data["theme"]]
-                                              ["linkTextColor"],
-                                          backgroundColor: colors[data["theme"]]
-                                              ["chipBackgroundColor"],
-                                          label: Text(tag),
-                                          selected:
-                                              selectedCategories.contains(tag),
-                                          onSelected: (bool selected) {
-                                            setState(() {
-                                              expanded = true;
-                                              if (selected) {
-                                                selectedCategories.add(tag);
-                                              } else {
-                                                selectedCategories.remove(tag);
-                                              }
-                                            });
-                                          },
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const BetterDivider(),
-                              //* Filtros para | Generos |
-                              NormalText(text: getLang("genres")),
-                              const BetterDivider(),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: genres.map((tag) {
-                                    return FilterChip(
-                                      labelStyle: getStyle(
-                                          "genreFilterChipStyle",
-                                          data["theme"]),
-                                      selectedColor: colors[data["theme"]]
-                                          ["linkTextColor"],
-                                      backgroundColor: colors[data["theme"]]
-                                          ["chipBackgroundColor"],
-                                      label: Text(tag),
-                                      selected: selectedGenres.contains(tag),
-                                      onSelected: (bool selected) {
-                                        setState(() {
-                                          expanded = true;
-                                          if (selected) {
-                                            selectedGenres.add(tag);
-                                          } else {
-                                            selectedGenres.remove(tag);
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                              const BetterDivider(),
-                              //* Filtros para | Editoriales |
-                              NormalText(text: getLang("editorials")),
-                              const BetterDivider(),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: editorials.map((tag) {
-                                    return FilterChip(
-                                      labelStyle: getStyle(
-                                          "genreFilterChipStyle",
-                                          data["theme"]),
-                                      selectedColor: colors[data["theme"]]
-                                          ["linkTextColor"],
-                                      backgroundColor: colors[data["theme"]]
-                                          ["chipBackgroundColor"],
-                                      label: Text(tag),
-                                      selected:
-                                          selectedEditorials.contains(tag),
-                                      onSelected: (bool selected) {
-                                        setState(() {
-                                          expanded = true;
-                                          if (selected) {
-                                            selectedEditorials.add(tag);
-                                          } else {
-                                            selectedEditorials.remove(tag);
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                              const BetterDivider(),
-                              //* Filtros para | Idiomas |
-                              NormalText(text: getLang("languages")),
-                              const BetterDivider(),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: languages.map((tag) {
-                                    return FilterChip(
-                                      labelStyle: getStyle(
-                                          "genreFilterChipStyle",
-                                          data["theme"]),
-                                      selectedColor: colors[data["theme"]]
-                                          ["linkTextColor"],
-                                      backgroundColor: colors[data["theme"]]
-                                          ["chipBackgroundColor"],
-                                      label: Text(tag),
-                                      selected: selectedLanguages.contains(tag),
-                                      onSelected: (bool selected) {
-                                        setState(() {
-                                          expanded = true;
-                                          if (selected) {
-                                            selectedLanguages.add(tag);
-                                          } else {
-                                            selectedLanguages.remove(tag);
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                              const BetterDivider(),
-                              Center(
-                                child: OutlinedButton(
-                                    style: getStyle(
-                                        "filtersButtonStyle", data["theme"]),
-                                    onPressed: () {
-                                      selectedCategories.clear();
-                                      selectedGenres.clear();
-                                      selectedEditorials.clear();
-                                      selectedLanguages.clear();
-                                      setState(() {});
-                                    },
-                                    child: Text(getLang("cleanFilters"))),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                        Expanded(
+                          child: NormalText(
+                            text: getLang("filters"),
                           ),
                         ),
+                        !isAndroid
+                            ? HelpTooltip(
+                                message: getLang("hScrollTooltip"),
+                                theme: data["theme"],
+                              )
+                            : const SizedBox.shrink()
                       ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BetterDivider(),
-                    Expanded(
-                      child: BookList(
-                        books: data["books"],
-                        categoriesFilter: selectedCategories,
-                        genresFilter: selectedGenres,
-                        editorialsFilter: selectedEditorials,
-                        languagesFilter: selectedLanguages,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const BetterDivider(),
+                            //* Filtros para | Categorias |
+                            NormalText(text: getLang("categories")),
+                            const BetterDivider(),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Wrap(
+                                    spacing: 8.0,
+                                    runSpacing: 8.0,
+                                    children: categories.map((tag) {
+                                      return FilterChip(
+                                        labelStyle: getStyle(
+                                            "genreFilterChipStyle",
+                                            data["theme"]),
+                                        selectedColor: colors[data["theme"]]
+                                            ["linkTextColor"],
+                                        backgroundColor: colors[data["theme"]]
+                                            ["chipBackgroundColor"],
+                                        label: Text(tag),
+                                        selected:
+                                            selectedCategories.contains(tag),
+                                        onSelected: (bool selected) {
+                                          setState(() {
+                                            expanded = true;
+                                            if (selected) {
+                                              selectedCategories.add(tag);
+                                            } else {
+                                              selectedCategories.remove(tag);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const BetterDivider(),
+                            //* Filtros para | Generos |
+                            NormalText(text: getLang("genres")),
+                            const BetterDivider(),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                children: genres.map((tag) {
+                                  return FilterChip(
+                                    labelStyle: getStyle(
+                                        "genreFilterChipStyle",
+                                        data["theme"]),
+                                    selectedColor: colors[data["theme"]]
+                                        ["linkTextColor"],
+                                    backgroundColor: colors[data["theme"]]
+                                        ["chipBackgroundColor"],
+                                    label: Text(tag),
+                                    selected: selectedGenres.contains(tag),
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        expanded = true;
+                                        if (selected) {
+                                          selectedGenres.add(tag);
+                                        } else {
+                                          selectedGenres.remove(tag);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            const BetterDivider(),
+                            //* Filtros para | Editoriales |
+                            NormalText(text: getLang("editorials")),
+                            const BetterDivider(),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                children: editorials.map((tag) {
+                                  return FilterChip(
+                                    labelStyle: getStyle(
+                                        "genreFilterChipStyle",
+                                        data["theme"]),
+                                    selectedColor: colors[data["theme"]]
+                                        ["linkTextColor"],
+                                    backgroundColor: colors[data["theme"]]
+                                        ["chipBackgroundColor"],
+                                    label: Text(tag),
+                                    selected:
+                                        selectedEditorials.contains(tag),
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        expanded = true;
+                                        if (selected) {
+                                          selectedEditorials.add(tag);
+                                        } else {
+                                          selectedEditorials.remove(tag);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            const BetterDivider(),
+                            //* Filtros para | Idiomas |
+                            NormalText(text: getLang("languages")),
+                            const BetterDivider(),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                children: languages.map((tag) {
+                                  return FilterChip(
+                                    labelStyle: getStyle(
+                                        "genreFilterChipStyle",
+                                        data["theme"]),
+                                    selectedColor: colors[data["theme"]]
+                                        ["linkTextColor"],
+                                    backgroundColor: colors[data["theme"]]
+                                        ["chipBackgroundColor"],
+                                    label: Text(tag),
+                                    selected: selectedLanguages.contains(tag),
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        expanded = true;
+                                        if (selected) {
+                                          selectedLanguages.add(tag);
+                                        } else {
+                                          selectedLanguages.remove(tag);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            const BetterDivider(),
+                            Center(
+                              child: OutlinedButton(
+                                  style: getStyle(
+                                      "filtersButtonStyle", data["theme"]),
+                                  onPressed: () {
+                                    selectedCategories.clear();
+                                    selectedGenres.clear();
+                                    selectedEditorials.clear();
+                                    selectedLanguages.clear();
+                                    setState(() {});
+                                  },
+                                  child: Text(getLang("cleanFilters"))),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const BetterDivider(),
+                  Expanded(
+                    child: BookList(
+                      books: data["books"],
+                      categoriesFilter: selectedCategories,
+                      genresFilter: selectedGenres,
+                      editorialsFilter: selectedEditorials,
+                      languagesFilter: selectedLanguages,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

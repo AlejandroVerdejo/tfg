@@ -27,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     List<dynamic> rents =
         await firestoreManager.getUserRents(widget.user["email"]);

@@ -47,6 +47,10 @@ const lang = {
     "deleteBookListDialog-content": "¿Estas seguro?",
     "deleteBookListDialog-true": "Eliminar",
     "deleteBookListDialog-false": "Cancelar",
+    "wishListToggle-add": "Libro añadido a la lista de deseados",
+    "wishListToggle-del": "Libro eliminado de la lista de deseados",
+    "waitListToggle-add": "Libro añadido a recordatorios",
+    "waitListToggle-del": "Libro eliminado de recordatorios"
   }
 };
 

@@ -4,6 +4,7 @@ import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/booklist.dart';
+import 'package:tfg_library/widgets/catalog/userbooklist.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 
 class WaitListScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _WaitListScreenState extends State<WaitListScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     List<dynamic> waitlist =
         await firestoreManager.getUserWaitList(widget.email);
@@ -60,6 +61,7 @@ class _WaitListScreenState extends State<WaitListScreen> {
             // Ejecucion
             final data = snapshot.data!;
             var theme = data["theme"];
+            var books = data["books"];
             var waitlist = data["waitlist"];
             return Scaffold(
               appBar: AppBar(
@@ -78,8 +80,13 @@ class _WaitListScreenState extends State<WaitListScreen> {
               backgroundColor: colors[theme]["mainBackgroundColor"],
               body: Padding(
                 padding: bodyPadding,
+                // child: UserBookList(
+                //   type: "waitlist",
+                //   list: waitlist,
+                //   onRefresh: _update,
+                // ),
                 child: BookList(
-                  books: data["books"],
+                  books: books,
                   type: "waitlist",
                   waitList: waitlist,
                   onRefresh: _update,

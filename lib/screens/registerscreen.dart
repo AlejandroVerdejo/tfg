@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     // Devuelve un mapa con los datos
     return {"theme": theme};
   }
@@ -30,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     users;
 
     final userController = TextEditingController();
+    final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
     return FutureBuilder(
@@ -84,6 +85,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         "loginFieldBorderSide", data["theme"])),
                                 border: const OutlineInputBorder(),
                                 labelText: getLang("user"),
+                                labelStyle:
+                                    getStyle("normalTextStyle", data["theme"]),
+                                floatingLabelStyle:
+                                    getStyle("normalTextStyle", data["theme"]),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      SizedBox(
+                        width: 350,
+                        child: TextSelectionTheme(
+                          data: getStyle(
+                              "loginFieldSelectionTheme", data["theme"]),
+                          child: TextField(
+                            style: getStyle("normalTextStyle", data["theme"]),
+                            maxLength: 16,
+                            controller: emailController,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: getStyle(
+                                        "loginFieldBorderSide", data["theme"])),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: getStyle(
+                                        "loginFieldBorderSide", data["theme"])),
+                                border: const OutlineInputBorder(),
+                                labelText: getLang("email"),
                                 labelStyle:
                                     getStyle("normalTextStyle", data["theme"]),
                                 floatingLabelStyle:

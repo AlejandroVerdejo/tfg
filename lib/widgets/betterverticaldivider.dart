@@ -14,7 +14,7 @@ class BetterVerticalDivider extends StatefulWidget {
 class _BetterVerticalDividerState extends State<BetterVerticalDivider> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "dark";
+    String theme = prefs.getString("theme")!;
     return {"theme": theme};
   }
 

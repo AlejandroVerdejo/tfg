@@ -14,7 +14,7 @@ class BetterDivider extends StatefulWidget {
 class _BetterDividerState extends State<BetterDivider> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "dark";
+    String theme = prefs.getString("theme")!;
     return {"theme": theme};
   }
 

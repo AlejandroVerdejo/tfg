@@ -30,9 +30,12 @@ void main() async {
   log(theme);
   String savedUser = prefs.getString("savedUser") ?? "";
   log(savedUser);
+  log(savedUser.isNotEmpty.toString());
   Map<String, dynamic> user = {};
   if (savedUser.isNotEmpty) {
+    log("getuser1");
     user = await firestoreManager.getUser(savedUser);
+    log("getuser2");
   }
   log(user.toString());
   runApp(MainApp(
@@ -61,7 +64,6 @@ class _MainAppState extends State<MainApp> {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // log("Log: ${FirebaseFirestore.instance}");
   }
 
   @override

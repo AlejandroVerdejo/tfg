@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/booklist.dart';
+import 'package:tfg_library/widgets/catalog/userbooklist.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
 
 class WishListScreen extends StatefulWidget {
@@ -25,7 +24,7 @@ class _WishListScreenState extends State<WishListScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     List<dynamic> wishlist =
         await firestoreManager.getUserWishList(widget.email);
@@ -40,7 +39,6 @@ class _WishListScreenState extends State<WishListScreen> {
   FirestoreManager firestoreManager = FirestoreManager();
 
   void _update() {
-    log("Log: update");
     setState(() {});
   }
 
@@ -64,6 +62,7 @@ class _WishListScreenState extends State<WishListScreen> {
             // Ejecucion
             final data = snapshot.data!;
             var theme = data["theme"];
+            var books = data["books"];
             var wishlist = data["wishlist"];
             return Scaffold(
               appBar: AppBar(
@@ -82,8 +81,13 @@ class _WishListScreenState extends State<WishListScreen> {
               backgroundColor: colors[theme]["mainBackgroundColor"],
               body: Padding(
                 padding: bodyPadding,
+                // child: UserBookList(
+                //   type: "wishlist",
+                //   list: wishlist,
+                //   onRefresh: _update,
+                // ),
                 child: BookList(
-                  books: data["books"],
+                  books: books,
                   type: "wishlist",
                   wishList: wishlist,
                   onRefresh: _update,

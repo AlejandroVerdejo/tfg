@@ -21,7 +21,7 @@ class PopularListElement extends StatefulWidget {
 class _PopularListElementState extends State<PopularListElement> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "dark";
+    String theme = prefs.getString("theme")!;
     Map<String, dynamic> book =
         await firestoreManager.getMergedBook(widget.bookkey);
     return {

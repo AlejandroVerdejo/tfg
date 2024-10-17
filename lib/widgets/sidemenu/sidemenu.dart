@@ -30,7 +30,7 @@ class _SideMenuState extends State<SideMenu> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     // Devuelve un mapa con los datos
     return {"theme": theme};
   }
@@ -59,22 +59,24 @@ class _SideMenuState extends State<SideMenu> {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: colors[data["theme"]]["headerBackgroundColor"],
-                    ),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                            radius: 40,
-                            child: Text(
-                              widget.user["username"][0].toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 40),
-                            )),
-                        const SizedBox(height: 10),
-                        BarText(text: widget.user["username"]),
-                      ],
-                    )),
+                  decoration: BoxDecoration(
+                    color: colors[data["theme"]]["headerBackgroundColor"],
+                  ),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        child: Text(
+                          widget.user["username"][0].toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 40),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      BarText(text: widget.user["username"]),
+                    ],
+                  ),
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.person,
@@ -86,10 +88,11 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProfileScreen(user: widget.user)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(user: widget.user),
+                      ),
+                    );
                   },
                 ),
                 ListTile(
@@ -119,11 +122,13 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WishListScreen(
-                                  email: widget.user["email"],
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WishListScreen(
+                          email: widget.user["email"],
+                        ),
+                      ),
+                    );
                   },
                 ),
                 ListTile(
@@ -137,11 +142,17 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WaitListScreen(
-                                  email: widget.user["email"],
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WaitListScreen(
+                          email: widget.user["email"],
+                        ),
+                      ),
+                    ).then(
+                      (result) {
+                        widget.onRefresh();
+                      },
+                    );
                   },
                 ),
                 ListTile(
@@ -171,11 +182,10 @@ class _SideMenuState extends State<SideMenu> {
                   onTap: () async {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                    String theme = prefs.getString("theme") ?? "dark";
+                    String theme = prefs.getString("theme")!;
                     theme == "light"
                         ? await prefs.setString("theme", "dark")
                         : await prefs.setString("theme", "light");
-                    setState(() {});
                     widget.onRefresh();
                   },
                 ),
@@ -190,9 +200,11 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
                   },
                 ),
               ],

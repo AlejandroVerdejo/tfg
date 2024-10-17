@@ -58,7 +58,6 @@ class _DeleteBookListDialogState extends State<DeleteBookListDialog> {
                         text: getLang("deleteBookListDialog-false"))),
                 TextButton(
                     onPressed: () {
-                      log("Eliminar");
                       widget.onAccept();
                       Navigator.of(context).pop();
                     },

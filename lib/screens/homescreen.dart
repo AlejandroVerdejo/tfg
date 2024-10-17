@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/screens/waitlistscreen.dart';
 import 'package:tfg_library/widgets/home/popularlist.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
@@ -26,12 +26,15 @@ class _HomeScreenState extends State<HomeScreen> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    String theme = prefs.getString("theme")!; // Valor predeterminado
     List<String> popularBooks = await firestoreManager.getPopularity();
+    bool waitListAviability = await firestoreManager
+        .checkUserWaitListAviability(widget.user["email"]);
     // Devuelve un mapa con los datos
     return {
       "theme": theme,
       "popularBooks": popularBooks,
+      "waitListAviability": waitListAviability,
     };
   }
 
@@ -46,55 +49,103 @@ class _HomeScreenState extends State<HomeScreen> {
     var user = widget.user;
 
     return FutureBuilder(
-        future: _loadData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            // Error
-            return Center(
-              child: Text(getLang("error")),
-            );
-          } else {
-            // Ejecucion
-            final data = snapshot.data!;
-            var theme = data["theme"];
-            var popularBooks = data["popularBooks"];
-            // Future<Map<String, dynamic>> map = firestoreManager.getBooks();
-            return Scaffold(
-              appBar: AppBar(
-                bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(1.5),
-                    child: Container(
-                      color: colors[theme]["headerBorderColor"],
-                      height: 1.5,
-                    )),
-                foregroundColor: colors[theme]["barTextColor"],
-                title: const BarText(text: ""),
-                backgroundColor: colors[theme]["headerBackgroundColor"],
+      future: _loadData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Carga
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          // Error
+          return Center(
+            child: Text(getLang("error")),
+          );
+        } else {
+          // Ejecucion
+          final data = snapshot.data!;
+          var theme = data["theme"];
+          var popularBooks = data["popularBooks"];
+          var waitListAviability = data["waitListAviability"];
+          var level = user["level"];
+          return Scaffold(
+            appBar: AppBar(
+              bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(1.5),
+                  child: Container(
+                    color: colors[theme]["headerBorderColor"],
+                    height: 1.5,
+                  )),
+              foregroundColor: colors[theme]["barTextColor"],
+              title: const BarText(text: ""),
+              backgroundColor: colors[theme]["headerBackgroundColor"],
+            ),
+            drawer: SideMenu(
+              user: user,
+              onRefresh: _updateTheme,
+            ),
+            backgroundColor: colors[theme]["mainBackgroundColor"],
+            body: Padding(
+              padding: bodyPadding,
+              child: ListView(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  NormalText(
+                    text: getLang("popularBooks"),
+                    alignment: TextAlign.center,
+                  ),
+                  PopularList(popularBooks: popularBooks),
+                  waitListAviability
+                      ? Container(
+                          padding: const EdgeInsets.only(top: 15, bottom: 15),
+                          decoration: BoxDecoration(
+                            color: colors[theme]
+                                ["mainBackgroundColorTransparent"],
+                            border: Border.all(
+                                color: colors[theme]["mainTextColor"],
+                                width: 1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              NormalText(
+                                text:
+                                    "Hay libros de tus recordatorios disponibles",
+                                alignment: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WaitListScreen(
+                                        email: widget.user["email"],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: NormalText(
+                                  text: "Pulsa aqui para ver tus recordatorios",
+                                  alignment: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  NormalText(text: user["level"].toString())
+                ],
               ),
-              drawer: SideMenu(
-                user: user,
-                onRefresh: _updateTheme,
-              ),
-              backgroundColor: colors[theme]["mainBackgroundColor"],
-              body: Padding(
-                padding: bodyPadding,
-                child: ListView(
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    NormalText(text: getLang("popularBooks")),
-                    PopularList(popularBooks: popularBooks),
-                  ],
-                ),
-              ),
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
   }
 }

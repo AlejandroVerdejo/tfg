@@ -23,7 +23,7 @@ class _RentTextState extends State<RentText> {
     // Carga las preferencias
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Obtiene y devuelve el valor de la preferencia "theme"
-    return prefs.getString("theme") ?? "dark"; // Valor predeterminado
+    return prefs.getString("theme")!; // Valor predeterminado
   }
 
   @override

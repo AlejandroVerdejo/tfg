@@ -8,7 +8,8 @@ bool isAndroid = !kIsWeb && Platform.isAndroid ? true : false;
 
 EdgeInsets bodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20)
-    : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+    // : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
+    : const EdgeInsets.only(top: 10, left: 20, bottom: 10, right: 20);
 EdgeInsets bookBodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 30, right: 20)
     : const EdgeInsets.only(top: 10, left: 60, bottom: 60, right: 60);
@@ -44,6 +45,7 @@ const Map<String, dynamic> colors = {
   },
   "dark": {
     "mainBackgroundColor": Color.fromRGBO(73, 69, 79, 1),
+    "mainBackgroundColorTransparent": Color.fromRGBO(221, 219, 221, 0.02),
     // "headerBackgroundColor": Color.fromRGBO(103,58,183, 1),
     // "headerBackgroundColor": Color.fromRGBO(136, 137, 204, 1),
     "headerBackgroundColor": Color.fromRGBO(187, 101, 136, 1),

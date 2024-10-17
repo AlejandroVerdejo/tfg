@@ -25,7 +25,7 @@ class Book extends StatefulWidget {
 class _BookState extends State<Book> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "dark";
+    String theme = prefs.getString("theme")!;
     String savedUser = prefs.getString("savedUser")!;
     bool inWishList = await firestoreManager.checkUserWishList(
         savedUser, widget.book["isbn"]);
@@ -57,6 +57,14 @@ class _BookState extends State<Book> {
       await firestoreManager.addUserWaitList(email, widget.book["isbn"]);
     }
     setState(() {});
+  }
+
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -188,6 +196,11 @@ class _BookState extends State<Book> {
                         children: [
                           IconButton(
                             onPressed: () {
+                              inWishList
+                                  ? showSnackBar(
+                                      context, getLang("wishListToggle-del"))
+                                  : showSnackBar(
+                                      context, getLang("wishListToggle-add"));
                               _toggleWishList(inWishList, user);
                             },
                             icon: Icon(
@@ -201,6 +214,11 @@ class _BookState extends State<Book> {
                               ? const SizedBox.shrink()
                               : IconButton(
                                   onPressed: () {
+                                    inWaitList
+                                        ? showSnackBar(context,
+                                            getLang("waitListToggle-del"))
+                                        : showSnackBar(context,
+                                            getLang("waitListToggle-add"));
                                     _toggleWaitList(inWaitList, user);
                                   },
                                   icon: Icon(

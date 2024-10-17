@@ -114,6 +114,25 @@ class FirestoreManager {
     return book;
   }
 
+  // * Devolvera la lista de libros que se encuentren en la lista con sus datos unidos
+  Future<Map<String, dynamic>> getMergedBooksList(List<dynamic> list) async {
+    StorageManager storageManager = StorageManager();
+
+    Map<String, dynamic> booklist = {};
+
+    // Recorre la lista con los identificadores de los libros
+    for (String bookid in list) {
+      // Carga los datos del libro
+      Map<String, dynamic> book = await getMergedBook(bookid);
+      // Introduce la imagen
+      book["image"] = await storageManager.getImage(book["isbn"]);
+      // Introduce el libro en la lista
+      booklist[book["isbn"]] = book;
+    }
+
+    return booklist;
+  }
+
   // * Devolvera la lista de libros sin unir los datos de los duplicados
   Future<Map<String, dynamic>> getUnMergedBooks() async {
     StorageManager storageManager = StorageManager();
@@ -190,15 +209,21 @@ class FirestoreManager {
   // * Devolvera un mapa con los datos del usuario
   Future<Map<String, dynamic>> getUser(String email) async {
     // Carga el Documento del usuario
+    log("log-user1");
+    log("email: $email");
     DocumentSnapshot doc = await db.collection("Users").doc(email).get();
+    log("id: ${doc.id}");
+    log("log-user2");
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     // Carga los datos del usuario
+    log("log-user3");
     Map<String, dynamic> user = {
       "username": data["username"],
       "password": data["password"],
       "email": data["email"],
       "level": data["level"],
     };
+    log("log-user4");
     return user;
   }
 
@@ -383,6 +408,22 @@ class FirestoreManager {
     List<dynamic> waitlist = await getUserWaitList(email);
     // Comprueba si el libro se encuentra en la lista
     return waitlist.contains(isbn);
+  }
+
+  // * Devolvera true/false si alguno de los libros de la "waitlist" se encuentra disponible
+  Future<bool> checkUserWaitListAviability(String email) async {
+    // Carga la lista de espera del usuario
+    List<dynamic> waitList = await getUserWaitList(email);
+    // Recorre la lista
+    for (String bookid in waitList) {
+      // Carga el libro de la lista
+      Map<String, dynamic> book = await getMergedBook(bookid);
+      // Comprueba si esta disponible
+      if (book["aviable"]) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // ?
