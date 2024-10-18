@@ -64,9 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: 180,
                         color: colors[data["theme"]]["mainTextColor"],
                       ),
-                      const SizedBox(
-                        height: 50,
-                      ),
+                      const SizedBox(height: 50),
                       SizedBox(
                         width: 350,
                         child: TextSelectionTheme(
@@ -94,9 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       SizedBox(
                         width: 350,
                         child: TextSelectionTheme(
@@ -124,9 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       SizedBox(
                         width: 350,
                         child: TextSelectionTheme(
@@ -155,9 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       TextButton(
                           style: getStyle(
                             "loginTextButtonStyle",
@@ -173,9 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Text(
                             getLang("login_createHere"),
                           )),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       OutlinedButton(
                         style: getStyle("loginButtonStyle", data["theme"]),
                         onPressed: () {},

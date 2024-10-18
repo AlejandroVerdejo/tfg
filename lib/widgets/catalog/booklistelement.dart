@@ -86,7 +86,7 @@ class _BookListElementState extends State<BookListElement> {
                                 title: getLang("state"),
                                 text: widget.book["aviable"]
                                     ? getLang("aviable")
-                                    : getLang("not_aviable")),
+                                    : getLang("notAviable")),
                             ListDataText(
                                 title: getLang("category"),
                                 text: "${widget.book["category"]}"),
@@ -104,9 +104,7 @@ class _BookListElementState extends State<BookListElement> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   DescriptionRichText(text: widget.book["description"]),
                 ],
               ),

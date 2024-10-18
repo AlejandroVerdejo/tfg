@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/renttext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PopularListElement extends StatefulWidget {
-  const PopularListElement({
+class RentBookBookData extends StatefulWidget {
+  const RentBookBookData({
     super.key,
     required this.bookkey,
   });
@@ -14,15 +14,15 @@ class PopularListElement extends StatefulWidget {
   final String bookkey;
 
   @override
-  State<PopularListElement> createState() => _PopularListElementState();
+  State<RentBookBookData> createState() => _RentBookBookDataState();
 }
 
-class _PopularListElementState extends State<PopularListElement> {
+class _RentBookBookDataState extends State<RentBookBookData> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String theme = prefs.getString("theme")!;
     Map<String, dynamic> book =
-        await firestoreManager.getMergedBook(widget.bookkey);
+        await firestoreManager.getUnMergedBook(widget.bookkey);
     return {
       "theme": theme,
       "book": book,
@@ -49,6 +49,7 @@ class _PopularListElementState extends State<PopularListElement> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var book = data["book"];
             return Container(
               width: rentsElementWidth,
               padding: const EdgeInsets.all(4.0),
@@ -57,13 +58,19 @@ class _PopularListElementState extends State<PopularListElement> {
                   SizedBox(
                     height: rentsElementHeight,
                     child: Image.network(
-                      "${data["book"]["image"]}",
+                      "${book["image"]}",
                       width: elementImageSize,
                     ),
                   ),
-                  const BetterDivider(),
+                  const SizedBox(height: 20),
                   RentText(
-                    text: data["book"]["title"],
+                    text: book["title"],
+                    alignment: TextAlign.center,
+                  ),
+                  RentText(
+                    text: book["aviable"]
+                        ? getLang("aviable")
+                        : getLang("notAviable"),
                     alignment: TextAlign.center,
                   ),
                 ],

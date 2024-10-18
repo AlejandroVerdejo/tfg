@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/renttext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PopularListElement extends StatefulWidget {
-  const PopularListElement({
+class RentBookUserData extends StatefulWidget {
+  const RentBookUserData({
     super.key,
-    required this.bookkey,
+    required this.email,
   });
 
-  final String bookkey;
+  final String email;
 
   @override
-  State<PopularListElement> createState() => _PopularListElementState();
+  State<RentBookUserData> createState() => _RentBookUserDataState();
 }
 
-class _PopularListElementState extends State<PopularListElement> {
+class _RentBookUserDataState extends State<RentBookUserData> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String theme = prefs.getString("theme")!;
-    Map<String, dynamic> book =
-        await firestoreManager.getMergedBook(widget.bookkey);
+    Map<String, dynamic> user = await firestoreManager.getUser(widget.email);
+    int activeRents = await firestoreManager.getUserActiveRents(widget.email);
     return {
       "theme": theme,
-      "book": book,
+      "user": user,
+      "activeRents": activeRents,
     };
   }
 
@@ -49,21 +50,19 @@ class _PopularListElementState extends State<PopularListElement> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var user = data["user"];
+            var activeRents = data["activeRents"];
             return Container(
               width: rentsElementWidth,
               padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: rentsElementHeight,
-                    child: Image.network(
-                      "${data["book"]["image"]}",
-                      width: elementImageSize,
-                    ),
-                  ),
-                  const BetterDivider(),
                   RentText(
-                    text: data["book"]["title"],
+                    text: user["username"],
+                    alignment: TextAlign.center,
+                  ),
+                  RentText(
+                    text: "${getLang("userActiveRents")}: ${activeRents.toString()}",
                     alignment: TextAlign.center,
                   ),
                 ],

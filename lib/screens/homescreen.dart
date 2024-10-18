@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/management/rentbook.dart';
 import 'package:tfg_library/screens/waitlistscreen.dart';
 import 'package:tfg_library/widgets/home/popularlist.dart';
 import 'package:tfg_library/lang.dart';
@@ -89,9 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: bodyPadding,
               child: ListView(
                 children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   NormalText(
                     text: getLang("popularBooks"),
                     alignment: TextAlign.center,
@@ -116,9 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     "Hay libros de tus recordatorios disponibles",
                                 alignment: TextAlign.center,
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                              const SizedBox(height: 20),
                               TextButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -139,7 +136,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  NormalText(text: user["level"].toString())
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RentBook(),
+                        ),
+                      );
+                    },
+                    child: NormalText(
+                      text: "Nuevo prestamo",
+                      alignment: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             ),

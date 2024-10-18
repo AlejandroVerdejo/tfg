@@ -9,7 +9,7 @@ bool isAndroid = !kIsWeb && Platform.isAndroid ? true : false;
 EdgeInsets bodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20)
     // : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
-    : const EdgeInsets.only(top: 10, left: 20, bottom: 10, right: 20);
+    : const EdgeInsets.only(top: 10, left: 30, bottom: 10, right: 30);
 EdgeInsets bookBodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 30, right: 20)
     : const EdgeInsets.only(top: 10, left: 60, bottom: 60, right: 60);

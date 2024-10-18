@@ -62,7 +62,7 @@ class _BookState extends State<Book> {
   void showSnackBar(BuildContext context, String text) {
     final snackBar = SnackBar(
       content: Text(text),
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -108,9 +108,7 @@ class _BookState extends State<Book> {
                 children: [
                   ListView(
                     children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       ConstrainedBox(
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width),
@@ -160,7 +158,7 @@ class _BookState extends State<Book> {
                                   title: getLang("state"),
                                   text: widget.book["aviable"]
                                       ? getLang("aviable")
-                                      : getLang("not_aviable")),
+                                      : getLang("notAviable")),
                               ListDataText(
                                   title: getLang("category"),
                                   text: "${widget.book["category"]}"),

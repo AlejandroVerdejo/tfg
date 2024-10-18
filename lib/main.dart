@@ -2,11 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tfg_library/conf.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
-import 'package:tfg_library/tempdata.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -74,9 +72,6 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     initialize();
-
-    settings;
-    users;
 
     // ignore: unused_local_variable
     Map<String, dynamic> user;

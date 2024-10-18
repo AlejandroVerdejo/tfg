@@ -5,7 +5,6 @@ import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/registerscreen.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/tempdata.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -36,8 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    users;
-
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
@@ -72,9 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 180,
                         color: colors[data["theme"]]["mainTextColor"],
                       ),
-                      const SizedBox(
-                        height: 50,
-                      ),
+                      const SizedBox(height: 50),
                       SizedBox(
                         width: 350,
                         child: TextSelectionTheme(
@@ -102,9 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       SizedBox(
                         width: 350,
                         child: TextSelectionTheme(
@@ -133,9 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       TextButton(
                         style: getStyle(
                           "loginTextButtonStyle",
@@ -153,9 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           getLang("login_createHere"),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       OutlinedButton(
                         style: getStyle("loginButtonStyle", data["theme"]),
                         onPressed: () async {
@@ -176,21 +165,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
                           }
-                          // if (users[emailController.text]["password"] ==
-                          //     passwordController.text) {
-                          //   Map<String, dynamic> user = {
-                          //     "username": users[emailController.text]
-                          //         ["username"],
-                          //     "password": users[emailController.text]
-                          //         ["password"],
-                          //     "level": users[emailController.text]["level"]
-                          //   };
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) =>
-                          //               HomeScreen(user: user)));
-                          // }
                         },
                         child: Text(
                           getLang("login"),

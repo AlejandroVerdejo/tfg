@@ -182,6 +182,35 @@ class FirestoreManager {
     return book;
   }
 
+  // * Devolvera true/false segun si el libro existe o no
+  Future<bool> checkBook(String bookId) async {
+    // Divide el identificador
+    var splitted = bookId.split("-");
+    if (splitted.length > 1) {
+      String isbn = splitted[0];
+      String id = splitted[1];
+      // Carga el Documento del libro
+      DocumentSnapshot doc = await db.collection("Books").doc(isbn).get();
+      // Comprueba si existe
+      if (doc.exists) {
+        // Carga los libros
+        var books = doc.data() as Map<String, dynamic>;
+        // Comprueba si existe el libro
+        if (books.containsKey(id)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // * Devolvera true/false segun si el libro esta disponible o no
+  Future<bool> checkBookAviability(String bookId) async {
+    // Carga el libro
+    Map<String, dynamic> book = await getUnMergedBook(bookId);
+    return book["aviable"];
+  }
+
   // ?
 
   //? |                     |
@@ -320,6 +349,17 @@ class FirestoreManager {
     return rents;
   }
 
+  // * Devolvera la cantidad de prestamos activos del usuario
+  Future<int> getUserActiveRents(String email) async {
+    // Carga la lista de libros alquilados
+    List<dynamic> rents = await getUserRents(email);
+    List activeRents = [];
+    if (rents.isNotEmpty) {
+      activeRents = (rents).where((rent) => rent["active"] == true).toList();
+    }
+    return activeRents.length;
+  }
+
   // * Devolvera la lista "wishlist" del usuario enviado
   Future<List<dynamic>> getUserWishList(String email) async {
     // Carga el Documento del usuario
@@ -424,6 +464,43 @@ class FirestoreManager {
       }
     }
     return false;
+  }
+
+  Future<void> newUserRent(
+    String userEmail,
+    String bookId,
+    String returnDate,
+  ) async {
+    // Divide el identificador del libro
+    var splitted = bookId.split("-");
+    String isbn = splitted[0];
+    String id = splitted[1];
+    // Crea la referencia al usuario
+    final userRef = db.collection("Users").doc(userEmail);
+    // Carga la lista de prestamos del usuario
+    List<dynamic> rents = await getUserRents(userEmail);
+    // Crea los datos del prestamo
+    Map rent = {
+      "active": true,
+      "book": {
+        "isbn": isbn,
+        "id": id,
+      },
+      "date": returnDate,
+    };
+    rents.add(rent);
+    // Actualiza la lista de prestamos del usuario
+    userRef.update({"rents": rents});
+    // Crea la referencia del libro
+    final bookRef = db.collection("Books").doc(isbn);
+    // Carga el libro
+    Map<String, dynamic> book = await getUnMergedBook(bookId);
+    // Cambia el valor "aviable" del libro a false
+    book["aviable"] = false;
+    // Introduce la fecha de devolucion del libro
+    book["return_date"] = returnDate;
+    // Actualiza los datos del libro
+    bookRef.update({id: book});
   }
 
   // ?

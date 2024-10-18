@@ -2,7 +2,7 @@ const lang = {
   "es": {
     "catalog": "Catalogo",
     "profile": "Perfil",
-    "profile_activeRents": "Prestamos activos",
+    "userActiveRents": "Prestamos activos",
     "genres": "Géneros",
     "error": "Error",
     "login": "Iniciar Sesión",
@@ -12,7 +12,7 @@ const lang = {
     "login_createHere": "¿No tienes cuenta? Creala aquí.",
     "login_loginHere": "¿Ya tienes una cuenta? Inicia sesión aquí.",
     "aviable": "Disponible",
-    "not_aviable": "No disponible",
+    "notAviable": "No disponible",
     "state": "Estado",
     "sinopsis": "Sinopsis",
     "title": "Titulo",
@@ -50,7 +50,16 @@ const lang = {
     "wishListToggle-add": "Libro añadido a la lista de deseados",
     "wishListToggle-del": "Libro eliminado de la lista de deseados",
     "waitListToggle-add": "Libro añadido a recordatorios",
-    "waitListToggle-del": "Libro eliminado de recordatorios"
+    "waitListToggle-del": "Libro eliminado de recordatorios",
+    "rentBook": "Nuevo prestamo",
+    "bookId": "Identificador del libro",
+    "userId": "Identificador del usuario",
+    "returnDate": "Fecha de devolución",
+    "rentBookLoadBook": "Cargar libro",
+    "rentBookLoadBook-error": "No se ha encontrado el libro",
+    "rentBookLoadUser": "Cargar usuario",
+    "rentBookLoadUser-error": "No se ha encontrado el usuario",
+    "rentBookAction": "Realizar prestamo"
   }
 };
 

@@ -21,9 +21,7 @@ class ProfileHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
               child: CircleAvatar(
@@ -35,9 +33,7 @@ class ProfileHeader extends StatelessWidget {
             ),
             HeaderText(text: user["username"]),
             DescriptionRichText(text: user["email"]),
-            const SizedBox(
-              height: 20,
-            )
+            const SizedBox(height: 20)
           ],
         ),
       ),

@@ -22,15 +22,13 @@ class ProfileRentsList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           Row(
             children: [
               Expanded(
                 child: NormalText(
                     text:
-                        "${getLang("profile_activeRents")}: ${activeRents.length}"),
+                        "${getLang("userActiveRents")}: ${activeRents.length}"),
               ),
               activeRents.isNotEmpty && !isAndroid
                   ? HelpTooltip(
@@ -40,9 +38,7 @@ class ProfileRentsList extends StatelessWidget {
                   : const SizedBox.shrink(),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           activeRents.isNotEmpty
               ? SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
