@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/management/addbook.dart';
 import 'package:tfg_library/management/rentbook.dart';
 import 'package:tfg_library/screens/waitlistscreen.dart';
 import 'package:tfg_library/widgets/home/popularlist.dart';
@@ -136,20 +137,40 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RentBook(),
-                        ),
-                      );
-                    },
-                    child: NormalText(
-                      text: "Nuevo prestamo",
-                      alignment: TextAlign.center,
-                    ),
-                  ),
+                  // Crear nuevo prestamo
+                  level <= 1
+                      ? TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RentBook(),
+                              ),
+                            );
+                          },
+                          child: NormalText(
+                            text: "Nuevo prestamo",
+                            alignment: TextAlign.center,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  // Añadir nuevo libro
+                  level <= 1
+                      ? TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddBook(),
+                              ),
+                            );
+                          },
+                          child: NormalText(
+                            text: "Nuevo libro",
+                            alignment: TextAlign.center,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),

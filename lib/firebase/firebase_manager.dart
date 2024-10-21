@@ -466,6 +466,7 @@ class FirestoreManager {
     return false;
   }
 
+  // * Creara un nuevo prestamo de libro
   Future<void> newUserRent(
     String userEmail,
     String bookId,
@@ -501,6 +502,18 @@ class FirestoreManager {
     book["return_date"] = returnDate;
     // Actualiza los datos del libro
     bookRef.update({id: book});
+    // Crea la referencia a la lista de popularidad
+    final popRef = db.collection("Books").doc("Popularity");
+    // Carga el Documento de popularidad
+    DocumentSnapshot popDoc = await popRef.get();
+    // Carga los datos de popularidad
+    Map<String, dynamic> popBooks = popDoc.data() as Map<String, dynamic>;
+    // Obtiene la popularidad del libro
+    int popBook = popBooks[isbn];
+    // Aumenta la popularidad del libro
+    popBook += 1;
+    // Actualiza el valor
+    popRef.update({isbn: popBook});
   }
 
   // ?
