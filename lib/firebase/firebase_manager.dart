@@ -183,7 +183,7 @@ class FirestoreManager {
   }
 
   // * Devolvera true/false segun si el libro existe o no
-  Future<bool> checkBook(String bookId) async {
+  Future<bool> checkIndividualBook(String bookId) async {
     // Divide el identificador
     var splitted = bookId.split("-");
     if (splitted.length > 1) {
@@ -200,6 +200,17 @@ class FirestoreManager {
           return true;
         }
       }
+    }
+    return false;
+  }
+
+  // * Devolvera true/false segun si el libro existe o no
+  Future<bool> checkBook(String isbn) async {
+    // Carga el Documento del libro
+    DocumentSnapshot doc = await db.collection("Books").doc(isbn).get();
+    // Comprueba si existe
+    if (doc.exists) {
+      return true;
     }
     return false;
   }
@@ -273,6 +284,17 @@ class FirestoreManager {
     return data.cast<String>().toList();
   }
 
+  // * Añadira una nueva categoria
+  Future<void> addCategory(String category) async {
+    // Crea la referencia al documento Tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Carga los generos
+    List<String> categories = await getCategories();
+    // Añade la nueva editorial a la lista
+    categories.add(category);
+    tagsRef.update({"categories": categories});
+  }
+
   // * Devolvera la lista de generos registrados
   Future<List<String>> getGenres() async {
     // Carga el Documento de los tags
@@ -282,6 +304,17 @@ class FirestoreManager {
     // Ordena por orden alfabetico
     data.sort();
     return data.cast<String>().toList();
+  }
+
+  // * Añadira un nuevo genero
+  Future<void> addGenre(String genre) async {
+    // Crea la referencia al documento Tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Carga los generos
+    List<String> genres = await getGenres();
+    // Añade la nueva editorial a la lista
+    genres.add(genre);
+    tagsRef.update({"genres": genres});
   }
 
   // * Devolvera la lista de editoriales registradas
@@ -295,7 +328,18 @@ class FirestoreManager {
     return data.cast<String>().toList();
   }
 
-  // * Devolvera la lista de lenguajes registrados
+  // * Añadira una nueva editorial
+  Future<void> addEditorial(String editorial) async {
+    // Crea la referencia al documento Tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Carga las editoriales
+    List<String> editorials = await getEditorials();
+    // Añade la nueva editorial a la lista
+    editorials.add(editorial);
+    tagsRef.update({"editorials": editorials});
+  }
+
+  // * Devolvera la lista de idiomas registrados
   Future<List<String>> getLanguages() async {
     // Carga el Documento de los tags
     DocumentSnapshot doc = await db.collection("Books").doc("Tags").get();
@@ -304,6 +348,17 @@ class FirestoreManager {
     // Ordena por orden alfabetico
     data.sort();
     return data.cast<String>().toList();
+  }
+
+  // * Añadira un nuevo idioma
+  Future<void> addLanguage(String language) async {
+    // Crea la referencia al documento Tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Carga las editoriales
+    List<String> languages = await getLanguages();
+    // Añade la nueva editorial a la lista
+    languages.add(language);
+    tagsRef.update({"languages": languages});
   }
 
   // * Devolvera un mapa con todos los tags { "categories" | "genres" | "editorials" | "languages" }

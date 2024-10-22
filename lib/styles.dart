@@ -9,7 +9,7 @@ bool isAndroid = !kIsWeb && Platform.isAndroid ? true : false;
 EdgeInsets bodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20)
     // : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
-    : const EdgeInsets.only(top: 10, left: 30, bottom: 10, right: 30);
+    : const EdgeInsets.only(top: 10, left: 50, bottom: 10, right: 50);
 EdgeInsets bookBodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 30, right: 20)
     : const EdgeInsets.only(top: 10, left: 60, bottom: 60, right: 60);
@@ -72,6 +72,11 @@ getStyle(String style, String theme) {
       fontSize: isAndroid ? 14 : 20,
       color: colors[theme]["mainTextColor"],
     ),
+    "selectedTextStyle": GoogleFonts.nunito(
+      fontWeight: FontWeight.w500,
+      fontSize: isAndroid ? 14 : 20,
+      color: colors[theme]["linkTextColor"],
+    ),
     "normalTitleTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w700,
       fontSize: isAndroid ? 14 : 20,
@@ -112,7 +117,7 @@ getStyle(String style, String theme) {
     ),
     "loginButtonStyle": OutlinedButton.styleFrom(
       side: BorderSide(color: colors[theme]["mainTextColor"]),
-      fixedSize: const Size(300, 50),
+      fixedSize: const Size(double.maxFinite, 50),
       foregroundColor: colors[theme]["mainTextColor"],
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
@@ -150,6 +155,39 @@ getStyle(String style, String theme) {
       fontSize: isAndroid ? 12 : 16,
       color: colors[theme]["mainTextColor"],
     ),
+    "datePickerStyle": ThemeData(
+        primaryColor: colors[theme]["mainBackgroundColor"],
+        colorScheme: ColorScheme(
+            primary: colors[theme]["linkTextColor"],
+            onPrimary: colors[theme]["mainTextColor"],
+            secondary: colors[theme]["mainTextColor"],
+            onSecondary: colors[theme]["mainTextColor"],
+            surface: colors[theme]["mainBackgroundColor"],
+            onSurface: colors[theme]["mainTextColor"],
+            error: Colors.red,
+            onError: Colors.white,
+            brightness: Brightness.light),
+        dialogBackgroundColor: Colors.red),
+  };
+
+  return styles[style];
+}
+
+getTextFieldStyle(String style, String theme, String labelText) {
+  Map<String, dynamic> styles = {
+    "defaultTextFieldStyle": InputDecoration(
+        enabledBorder: OutlineInputBorder(
+            borderSide: getStyle("loginFieldBorderSide", theme)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: getStyle("loginFieldBorderSide", theme)),
+        errorStyle: const TextStyle(color: Colors.red),
+        errorBorder:
+            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+        border: const OutlineInputBorder(),
+        labelText: labelText,
+        labelStyle: getStyle("normalTextStyle", theme),
+        floatingLabelStyle: getStyle("normalTextStyle", theme),
+        floatingLabelBehavior: FloatingLabelBehavior.always),
   };
 
   return styles[style];

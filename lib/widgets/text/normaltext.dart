@@ -8,10 +8,12 @@ class NormalText extends StatefulWidget {
     super.key,
     required this.text,
     this.alignment,
+    this.style,
   });
 
   final String text;
   final TextAlign? alignment;
+  final TextStyle? style;
 
   @override
   State<NormalText> createState() => _NormalTextState();
@@ -47,7 +49,8 @@ class _NormalTextState extends State<NormalText> {
               padding: const EdgeInsets.only(top: 1.5, bottom: 1.5),
               child: Text(
                 widget.text,
-                style: getStyle("normalTextStyle", snapshot.data!),
+                style:
+                    widget.style ?? getStyle("normalTextStyle", snapshot.data!),
                 softWrap: true,
                 maxLines: null,
                 textAlign: widget.alignment ?? TextAlign.start,

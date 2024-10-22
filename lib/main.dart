@@ -11,6 +11,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Asegura que los bindings de Flutter estén inicializados
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirestoreManager firestoreManager = FirestoreManager();
   SharedPreferences prefs = await SharedPreferences
       .getInstance(); // Esperar a que se carguen las preferencias
@@ -60,8 +61,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   Future<void> initialize() async {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+        options: DefaultFirebaseOptions.currentPlatform);
   }
 
   @override
@@ -71,7 +71,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    initialize();
+    // initialize();
 
     // ignore: unused_local_variable
     Map<String, dynamic> user;

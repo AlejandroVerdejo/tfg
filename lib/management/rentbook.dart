@@ -34,7 +34,7 @@ bool dateLoaded = false;
 String date = "";
 
 class _RentBookState extends State<RentBook> {
-  Future<Map<String, dynamic>> _loadPreferences() async {
+  Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String theme = prefs.getString("theme")!;
     return {"theme": theme};
@@ -43,7 +43,7 @@ class _RentBookState extends State<RentBook> {
   @override
   void initState() {
     super.initState();
-    // Asigna un valor diferente en la primera carga
+    // Asigna el valor de la primera carga
     bookController = TextEditingController();
     bookLoaded = false;
     book = "";
@@ -81,7 +81,7 @@ class _RentBookState extends State<RentBook> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadPreferences(),
+        future: _loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
@@ -147,7 +147,7 @@ class _RentBookState extends State<RentBook> {
                       onPressed: () async {
                         if (bookController.text.isNotEmpty) {
                           bookLoaded = await firestoreManager
-                              .checkBook(bookController.text);
+                              .checkIndividualBook(bookController.text);
                           log("user: ${bookLoaded.toString()}");
                           if (bookLoaded) {
                             book = bookController.text;
@@ -227,6 +227,7 @@ class _RentBookState extends State<RentBook> {
                         child: TextField(
                           style: getStyle("normalTextStyle", theme),
                           controller: dateController,
+                          readOnly: true,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -241,7 +242,6 @@ class _RentBookState extends State<RentBook> {
                                   getStyle("normalTextStyle", theme),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always),
-                          readOnly: true,
                           onTap: () async {
                             DateTime? datePicked = await showDatePicker(
                                 context: context,
@@ -279,7 +279,7 @@ class _RentBookState extends State<RentBook> {
                                   DateFormat("dd/MM/yyyy").format(datePicked);
                               date =
                                   DateFormat("dd/MM/yyyy").format(datePicked);
-                              setState(() {});
+                              // setState(() {});
                             }
                           },
                         ),

@@ -1,11 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/management/addbookdata.dart';
+import 'package:tfg_library/management/addtagsdialog.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
+import 'package:tfg_library/widgets/text/normaltext.dart';
 
 class AddBook extends StatefulWidget {
   const AddBook({
@@ -19,12 +24,25 @@ class AddBook extends StatefulWidget {
 FirestoreManager firestoreManager = FirestoreManager();
 
 TextEditingController existentBookController = TextEditingController();
+bool loadBook = false;
 
 class _AddBookState extends State<AddBook> {
   Future<Map<String, dynamic>> _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String theme = prefs.getString("theme")!;
     return {"theme": theme};
+  }
+
+  // final GlobalKey<_AddBookDataState> childMethod = GlobalKey<_AddBookDataState>();
+  final GlobalKey<AddBookDataState> childKey = GlobalKey<AddBookDataState>();
+  final _formKey = GlobalKey<FormBuilderState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Asigna el valor de la primera carga
+    existentBookController = TextEditingController();
+    loadBook = false;
   }
 
   @override
@@ -56,68 +74,82 @@ class _AddBookState extends State<AddBook> {
                     )),
                 foregroundColor: colors[theme]["barTextColor"],
                 title: BarText(
-                  text: getLang("rentBook"),
+                  text: getLang("addBook"),
                 ),
                 backgroundColor: colors[theme]["headerBackgroundColor"],
               ),
               backgroundColor: colors[theme]["mainBackgroundColor"],
-              body: Padding(
-                padding: bodyPadding,
-                child: ListView(
-                  children: [
-                    const SizedBox(height: 30),
-                    SizedBox(
-                      width: 350,
-                      child: TextSelectionTheme(
-                        data: getStyle("loginFieldSelectionTheme", theme),
-                        child: TextField(
-                          style: getStyle("normalTextStyle", theme),
-                          controller: existentBookController,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              border: const OutlineInputBorder(),
-                              labelText: getLang("bookId"),
-                              labelStyle: getStyle("normalTextStyle", theme),
-                              floatingLabelStyle:
-                                  getStyle("normalTextStyle", theme),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always),
+              body: ListView(
+                children: [
+                  Center(
+                    child: Container(
+                      padding: bodyPadding,
+                      width: double.maxFinite,
+                      child: FormBuilder(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            TextSelectionTheme(
+                              data: getStyle("loginFieldSelectionTheme", theme),
+                              child: FormBuilderTextField(
+                                controller: existentBookController,
+                                name: "bookId",
+                                style: getStyle("normalTextStyle", theme),
+                                decoration: getTextFieldStyle(
+                                    "defaultTextFieldStyle",
+                                    theme,
+                                    getLang("bookId")),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            OutlinedButton(
+                              style: getStyle("loginButtonStyle", theme),
+                              onPressed: () async {
+                                if (existentBookController.text.isNotEmpty) {
+                                  if (await firestoreManager
+                                      .checkBook(existentBookController.text)) {
+                                    log("checkbook-true");
+                                    loadBook = true;
+                                  }
+                                  setState(() {});
+                                  // childKey.currentState?.refresh();
+                                }
+                              },
+                              child: Text(
+                                getLang("loadBook"),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            OutlinedButton(
+                              style: getStyle("loginButtonStyle", theme),
+                              onPressed: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AddTagsDialog(theme: theme);
+                                    });
+                                childKey.currentState?.refresh();
+                              },
+                              child: Text(
+                                getLang("addTags"),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            loadBook
+                                ? AddBookData(
+                                    // key: childKey,
+                                    bookkey: existentBookController.text,
+                                  )
+                                : AddBookData(
+                                    key: childKey,
+                                  )
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
-                        if (existentBookController.text.isNotEmpty) {
-                          if (await firestoreManager.checkBook(existentBookController.text)) {
-                            log("checkbook-true");
-                          }
-                          // bookLoaded = await firestoreManager
-                          //     .checkBook(existentBookController.text);
-                          // log("user: ${bookLoaded.toString()}");
-                          // if (bookLoaded) {
-                          //   book = bookController.text;
-                          //   bookAviable = await firestoreManager
-                          //       .checkBookAviability(book);
-                          // } else {
-                          //   showSnackBar(
-                          //       context, getLang("rentBookLoadUser-error"));
-                          // }
-                          setState(() {});
-                        }
-                      },
-                      child: Text(
-                        "Cargar libro existente",
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           }

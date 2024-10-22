@@ -4,6 +4,7 @@ const lang = {
     "profile": "Perfil",
     "userActiveRents": "Prestamos activos",
     "genres": "Géneros",
+    "genre": "Género",
     "error": "Error",
     "login": "Iniciar Sesión",
     "register": "Registrarse",
@@ -42,7 +43,7 @@ const lang = {
     "deleteFromList": "Eliminar elemento de la lista",
     "id": "Id",
     "popularBooks": "Libros mas populares",
-    "email": "Correo electronico",
+    "email": "Correo electrónico",
     "deleteBookListDialog-title": "Se eliminara el libro de la lista",
     "deleteBookListDialog-content": "¿Estas seguro?",
     "deleteBookListDialog-true": "Eliminar",
@@ -59,7 +60,20 @@ const lang = {
     "rentBookLoadBook-error": "No se ha encontrado el libro",
     "rentBookLoadUser": "Cargar usuario",
     "rentBookLoadUser-error": "No se ha encontrado el usuario",
-    "rentBookAction": "Realizar prestamo"
+    "rentBookAction": "Realizar prestamo",
+    "addBook": "Añadir libro",
+    "addTags": "Añadir etiquetas",
+    "addTag-genre": "Añadir género",
+    "addTag-editorial": "Añadir editorial",
+    "addTag-category": "Añadir categoria",
+    "addTag-language": "Añadir idioma",
+    "loadBook": "Cargar libro existente",
+    "selectDialogButton": "Aceptar",
+    "formError-email":
+        "Este campo debe contener una dirección de correo electrónico",
+    "formError-required": "Este campo es obligatorio",
+    "formError-minLength": "La contraseña debe tener por lo menos 8 carácteres",
+    "formError-numeric": "Es campo solo puede contener valores numericos",
   }
 };
 
