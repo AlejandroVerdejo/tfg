@@ -1,14 +1,18 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/management/addbook.dart';
 import 'package:tfg_library/management/selectdialogfield.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,6 +51,10 @@ TextEditingController categoryController = TextEditingController();
 String category = "";
 TextEditingController genresController = TextEditingController();
 List<dynamic> genres = [];
+TextEditingController descriptionController = TextEditingController();
+String description = "";
+
+Uint8List? image;
 
 class AddBookDataState extends State<AddBookData> {
   Future<Map<String, dynamic>> _loadData() async {
@@ -66,6 +74,7 @@ class AddBookDataState extends State<AddBookData> {
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+  StorageManager storageManager = StorageManager();
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
@@ -95,6 +104,10 @@ class AddBookDataState extends State<AddBookData> {
     category = "";
     genresController = TextEditingController();
     genres = [];
+    descriptionController = TextEditingController();
+    description = "";
+
+    image = null;
   }
 
   void loadBookData(Map book) {
@@ -121,10 +134,22 @@ class AddBookDataState extends State<AddBookData> {
     category = book["category"];
     genresController.text = book["genres"].join(", ");
     genres = book["genres"];
+    descriptionController.text = book["description"];
+    description = book["description"];
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      image = await pickedFile.readAsBytes();
+      setState(() {});
+    }
   }
 
   void refresh() {
-    log("refresh");
     setState(() {});
   }
 
@@ -150,12 +175,11 @@ class AddBookDataState extends State<AddBookData> {
             var tags = data["tags"];
             var book = data["book"];
             if (bookLoaded) {
-              log("bookloaded");
               loadBookData(book);
             }
             return Container(
               width: double.maxFinite,
-              padding: const EdgeInsets.only(left: 100, right: 100),
+              padding: const EdgeInsets.only(left: 60, right: 60),
               child: FormBuilder(
                 key: _formKey,
                 child: Column(
@@ -484,15 +508,100 @@ class AddBookDataState extends State<AddBookData> {
                       ),
                     ),
                     const SizedBox(height: 30),
+                    // ? Sinopsis
+                    TextSelectionTheme(
+                      data: getStyle("loginFieldSelectionTheme", theme),
+                      child: FormBuilderTextField(
+                        maxLines: null,
+                        controller: descriptionController,
+                        readOnly: bookLoaded,
+                        name: "description",
+                        style: getStyle("normalTextStyle", theme),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("sinopsis")),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: getLang("formError-required")),
+                        ]),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    // ? Seleccionar imagen
+                    image == null
+                        ? GestureDetector(
+                            child: Container(
+                              color: colors[theme]["secondaryBackgroundColor"],
+                              constraints: BoxConstraints(
+                                minWidth: 250, // Ancho mínimo
+                                maxWidth: 300, // Ancho máximo
+                                minHeight: 350, // Altura mínima
+                                // maxHeight: 400, // Altura máxima
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.image),
+                                  DescriptionRichText(
+                                      text: "Selecciona una imagen"),
+                                ],
+                              ),
+                            ),
+                            onTap: !loadBook
+                                ? () async {
+                                    _pickImage();
+                                  }
+                                : null,
+                          )
+                        : GestureDetector(
+                            child: Container(
+                              constraints: BoxConstraints(
+                                minWidth: 250, // Ancho mínimo
+                                maxWidth: 300, // Ancho máximo
+                                minHeight: 350, // Altura mínima
+                                // maxHeight: 400, // Altura máxima
+                              ),
+                              child: Image.memory(
+                                image!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            onTap: !loadBook
+                                ? () async {
+                                    _pickImage();
+                                  }
+                                : null,
+                          ),
+                    const SizedBox(height: 30),
                     OutlinedButton(
                       style: getStyle("loginButtonStyle", theme),
                       onPressed: () async {
-                        log("add?");
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
-                          log("form-ok");
-                        } else {
-                          log("form-oknt");
-                        }
+                          Map<String, dynamic> book = {
+                            "title": titleController.text,
+                            "author": authorController.text,
+                            "isbn": isbnController.text,
+                            "aviable":
+                                stateController.text == getLang("aviable")
+                                    ? true
+                                    : false,
+                            "category": categoryController.text,
+                            "date": dateController.text,
+                            "age": ageController.text,
+                            "editorial": editorialController.text,
+                            "genres": genres,
+                            "language": languageController.text,
+                            // "id": "",
+                            "pages": int.parse(pagesController.text),
+                            "return_date": "",
+                            "description": descriptionController.text
+                                .replaceAll("\n", "<n><n>"),
+                          };
+                          await firestoreManager.addBook(book);
+                          if (!loadBook) {
+                            await storageManager.addImage(
+                                image!, isbnController.text);
+                          }
+                        } else {}
                       },
                       child: Text(
                         getLang("addBook"),

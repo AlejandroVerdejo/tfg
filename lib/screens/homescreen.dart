@@ -14,9 +14,14 @@ import 'package:tfg_library/widgets/text/bartext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.user});
+  const HomeScreen({
+    super.key,
+    required this.user,
+    required this.onLogOut,
+  });
 
   final Map<String, dynamic> user;
+  final VoidCallback onLogOut;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -85,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
             drawer: SideMenu(
               user: user,
               onRefresh: _updateTheme,
+              onLogOut: widget.onLogOut,
             ),
             backgroundColor: colors[theme]["mainBackgroundColor"],
             body: Padding(
@@ -137,14 +143,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         )
                       : const SizedBox.shrink(),
+                  const SizedBox(height: 30),
                   // Crear nuevo prestamo
                   level <= 1
-                      ? TextButton(
+                      ? OutlinedButton(
+                          style: getStyle("loginButtonStyle", theme),
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => RentBook(),
+                                builder: (context) => const RentBook(),
                               ),
                             );
                           },
@@ -154,9 +162,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         )
                       : const SizedBox.shrink(),
+                  level <= 1
+                      ? const SizedBox(height: 30)
+                      : const SizedBox.shrink(),
+
                   // Añadir nuevo libro
                   level <= 1
-                      ? TextButton(
+                      ? OutlinedButton(
+                          style: getStyle("loginButtonStyle", theme),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -170,6 +183,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             alignment: TextAlign.center,
                           ),
                         )
+                      : const SizedBox.shrink(),
+                  level <= 1
+                      ? const SizedBox(height: 30)
                       : const SizedBox.shrink(),
                 ],
               ),

@@ -51,15 +51,17 @@ class _BookListElementState extends State<BookListElement> {
           constraints:
               BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Padding(
                           padding: imageBookListPadding,
-                          child: Image.network(
-                            "${widget.book["image"]}",
+                          child: Image.memory(
+                            widget.book["image"],
                             width: elementImageSize,
                           )),
                       const Padding(
@@ -105,7 +107,11 @@ class _BookListElementState extends State<BookListElement> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  DescriptionRichText(text: widget.book["description"]),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child:
+                        DescriptionRichText(text: widget.book["description"]),
+                  ),
                 ],
               ),
               const BetterDivider()

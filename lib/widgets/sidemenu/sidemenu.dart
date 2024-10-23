@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
@@ -15,10 +17,12 @@ class SideMenu extends StatefulWidget {
     super.key,
     required this.user,
     required this.onRefresh,
+    required this.onLogOut,
   });
 
   final Map<String, dynamic> user;
   final VoidCallback onRefresh;
+  final VoidCallback onLogOut;
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -199,12 +203,7 @@ class _SideMenuState extends State<SideMenu> {
                     style: getStyle("sideMenuTextStyle", data["theme"]!),
                   ),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    );
+                    widget.onLogOut();
                   },
                 ),
               ],

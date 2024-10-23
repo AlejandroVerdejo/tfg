@@ -41,11 +41,13 @@ class _DescriptionRichTextState extends State<DescriptionRichText> {
             );
           } else {
             // Ejecucion
+            String text = widget.text.replaceAll("<n>", "\n");
             return RichText(
+              textAlign: TextAlign.left,
                 maxLines: 3,
                 overflow: TextOverflow.fade,
                 text: TextSpan(
-                    text: widget.text,
+                    text: text,
                     style:
                         getStyle("descriptionRichTextStyle", snapshot.data!)));
           }

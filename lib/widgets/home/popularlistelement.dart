@@ -56,8 +56,8 @@ class _PopularListElementState extends State<PopularListElement> {
                 children: [
                   SizedBox(
                     height: rentsElementHeight,
-                    child: Image.network(
-                      "${data["book"]["image"]}",
+                    child: Image.memory(
+                      data["book"]["image"],
                       width: elementImageSize,
                     ),
                   ),

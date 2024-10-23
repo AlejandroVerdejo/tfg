@@ -44,6 +44,7 @@ class _SinopsisBookTextState extends State<SinopsisBookText> {
           );
         } else {
           // Ejecucion
+          String text = widget.text.replaceAll("<n>", "\n");
           return Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 2),
             child: Column(
@@ -59,7 +60,7 @@ class _SinopsisBookTextState extends State<SinopsisBookText> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: widget.text,
+                    text: text,
                     style: getStyle("normalTextStyle", snapshot.data!),
                   ),
                 ),

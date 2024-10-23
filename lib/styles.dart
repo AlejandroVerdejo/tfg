@@ -28,6 +28,7 @@ double verticalDividerHeight = isAndroid ? 160 : 320;
 const Map<String, dynamic> colors = {
   "light": {
     "mainBackgroundColor": Color.fromRGBO(221, 219, 221, 1),
+    "secondaryBackgroundColor": Color.fromRGBO(193, 191, 193, 1),
     // "headerBackgroundColor": Color.fromRGBO(103,58,183, 1),
     // "headerBackgroundColor": Color.fromRGBO(136, 137, 204, 1),
     "headerBackgroundColor": Color.fromRGBO(187, 101, 136, 1),
@@ -45,6 +46,7 @@ const Map<String, dynamic> colors = {
   },
   "dark": {
     "mainBackgroundColor": Color.fromRGBO(73, 69, 79, 1),
+    "secondaryBackgroundColor": Color.fromRGBO(93, 89, 99, 1),
     "mainBackgroundColorTransparent": Color.fromRGBO(221, 219, 221, 0.02),
     // "headerBackgroundColor": Color.fromRGBO(103,58,183, 1),
     // "headerBackgroundColor": Color.fromRGBO(136, 137, 204, 1),
@@ -96,6 +98,7 @@ getStyle(String style, String theme) {
       fontWeight: FontWeight.w500,
       fontSize: isAndroid ? 12 : 16,
       color: colors[theme]["mainTextColor"],
+      
     ),
     "loginTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
@@ -117,6 +120,7 @@ getStyle(String style, String theme) {
     ),
     "loginButtonStyle": OutlinedButton.styleFrom(
       side: BorderSide(color: colors[theme]["mainTextColor"]),
+      backgroundColor: colors[theme]["secondaryBackgroundColor"],
       fixedSize: const Size(double.maxFinite, 50),
       foregroundColor: colors[theme]["mainTextColor"],
       textStyle: GoogleFonts.nunito(

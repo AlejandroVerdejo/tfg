@@ -1,4 +1,5 @@
 analyzer:
   errors:
+    sort_child_properties_last: ignore
     use_build_context_synchronously: ignore
 include: package:flutter_lints/flutter.yaml

@@ -57,8 +57,8 @@ class _RentBookBookDataState extends State<RentBookBookData> {
                 children: [
                   SizedBox(
                     height: rentsElementHeight,
-                    child: Image.network(
-                      "${book["image"]}",
+                    child: Image.memory(
+                      book["image"],
                       width: elementImageSize,
                     ),
                   ),

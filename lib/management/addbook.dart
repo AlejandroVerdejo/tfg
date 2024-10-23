@@ -109,7 +109,6 @@ class _AddBookState extends State<AddBook> {
                                 if (existentBookController.text.isNotEmpty) {
                                   if (await firestoreManager
                                       .checkBook(existentBookController.text)) {
-                                    log("checkbook-true");
                                     loadBook = true;
                                   }
                                   setState(() {});

@@ -118,8 +118,8 @@ class _BookState extends State<Book> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Center(
-                                child: Image.network(
-                                  "${widget.book["image"]}",
+                                child: Image.memory(
+                                  widget.book["image"],
                                   width: bookImageSize,
                                 ),
                               ),

@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/management/addbook.dart';
 import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tfg_library/styles.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -26,17 +28,11 @@ void main() async {
         "savedUser", ""); // Establecer el valor predeterminado
   }
   String theme = prefs.getString("theme") ?? "dark";
-  log(theme);
   String savedUser = prefs.getString("savedUser") ?? "";
-  log(savedUser);
-  log(savedUser.isNotEmpty.toString());
   Map<String, dynamic> user = {};
   if (savedUser.isNotEmpty) {
-    log("getuser1");
     user = await firestoreManager.getUser(savedUser);
-    log("getuser2");
   }
-  log(user.toString());
   runApp(MainApp(
     theme: theme,
     savedUser: user,
@@ -64,24 +60,42 @@ class _MainAppState extends State<MainApp> {
         options: DefaultFirebaseOptions.currentPlatform);
   }
 
+  Map<String, dynamic> user = {};
+
   @override
   void initState() {
     super.initState();
+    user = widget.savedUser.isNotEmpty ? widget.savedUser : {};
+  }
+
+  void _onLogIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String savedUser = prefs.getString("savedUser")!;
+    user = await firestoreManager.getUser(savedUser);
+    setState(() {});
+  }
+
+  void _onLogOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("savedUser", "");
+    user = {};
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     // initialize();
 
-    // ignore: unused_local_variable
-    Map<String, dynamic> user;
-
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: colors[widget.theme]["mainBackgroundColor"],
         body: Center(
-          child: widget.savedUser.isNotEmpty
-              ? HomeScreen(user: widget.savedUser)
-              : const LoginScreen(),
+          child: user.isNotEmpty
+              ? HomeScreen(
+                  user: user,
+                  onLogOut: _onLogOut,
+                )
+              : LoginScreen(onLogIn: _onLogIn),
         ),
       ),
     );

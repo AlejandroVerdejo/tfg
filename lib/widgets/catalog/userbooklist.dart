@@ -53,7 +53,6 @@ class _UserBookListState extends State<UserBookList> {
             // Ejecucion
             final data = snapshot.data!;
             var books = data["books"];
-            log("message1");
             var orderedBooks = Map.fromEntries(books.entries.toList()
               ..sort((b1, b2) {
                 // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
@@ -65,7 +64,6 @@ class _UserBookListState extends State<UserBookList> {
                 }
                 return aviableComp;
               }));
-            log("message2");
             Map<dynamic, dynamic> bookslist;
             bookslist = orderedBooks;
             // Filtrar por libros que se encuentren en la | Wish List | enviada
@@ -82,7 +80,6 @@ class _UserBookListState extends State<UserBookList> {
               );
               bookslist = filteredBooks;
             }
-            log("message3");
 
             List<MapEntry<dynamic, dynamic>> booklistentries =
                 bookslist.entries.toList();

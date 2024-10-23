@@ -12,7 +12,10 @@ import 'package:tfg_library/styles.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
     super.key,
+    required this.onLogIn,
   });
+
+  final VoidCallback onLogIn;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -32,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _saveUser(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("savedUser", email);
+    widget.onLogIn();
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
@@ -167,7 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               if (_formKey.currentState?.saveAndValidate() ??
                                   false) {
-                                log("form-ok");
                                 var values = _formKey.currentState?.value;
                                 if (login) {
                                   if (await firestoreManager
@@ -175,19 +178,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                     if (await firestoreManager.checkPassword(
                                         values?["email"],
                                         values?["password"])) {
-                                      Map<String, dynamic> user =
-                                          await firestoreManager
-                                              .getUser(values?["email"]);
                                       _saveUser(values?["email"]);
-                                      Navigator.push(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomeScreen(user: user),
-                                        ),
-                                      );
                                     }
+                                  }
+                                } else {
+                                  if (await firestoreManager
+                                      .checkUser(values?["email"])) {
+                                  } else {
+                                    Map<String, dynamic> user = {
+                                      "email": values?["email"],
+                                      "username": values?["username"],
+                                      "password": values?["password"],
+                                      "level": 2
+                                    };
+                                    await firestoreManager.addUser(user);
+                                    _saveUser(values?["email"]);
                                   }
                                 }
                               }

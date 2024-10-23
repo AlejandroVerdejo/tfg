@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,6 +11,28 @@ class FirestoreManager {
   //? |                   |
   //? | GESTION DE LIBROS |
   //? |                   |
+
+  // * Añadira un nuevo libro
+  Future<void> addBook(Map<String, dynamic> book) async {
+    String bookId = "";
+    if (await checkBook(book["isbn"])) {
+      DocumentSnapshot doc =
+          await db.collection("Books").doc(book["isbn"]).get();
+      // Carga la lista de libros alquilados
+      Map<String, dynamic> bookData = doc.data() as Map<String, dynamic>;
+      String lastKey = bookData.keys.toList().last;
+      int newKeyInt = int.parse(lastKey);
+      String bookId = (newKeyInt + 1).toString().padLeft(5, "0");
+      book["id"] = "${book["isbn"]}-$bookId";
+      await db.collection("Books").doc(book["isbn"]).update({bookId: book});
+    } else {
+      bookId = "00001";
+      book["id"] = "${book["isbn"]}-$bookId";
+      await db.collection("Books").doc(book["isbn"]).set({bookId: book});
+      final popRef = db.collection("Books").doc("Popularity");
+      popRef.update({book["isbn"]: 0});
+    }
+  }
 
   // * Devolvera la lista de libros
   Future<Map<String, dynamic>> getBooks() async {
@@ -228,6 +251,19 @@ class FirestoreManager {
   //? | GESTION DE USUARIOS |
   //? |                     |
 
+  // * Crear un nuevo usuario
+  Future<void> addUser(Map<String, dynamic> user) async {
+    log("adduser-1");
+    user["rents"] = [];
+    user["waitlist"] = [];
+    user["wishlist"] = [];
+    user["active"] = true;
+    log("adduser-2");
+    DocumentReference newUserRef = db.collection("Users").doc(user["email"]);
+    await newUserRef.set(user);
+    log("adduser-3");
+  }
+
   // * Devolvera true/false segun si el usuario existe o no
   Future<bool> checkUser(String email) async {
     // Carga el Documento del usuario
@@ -249,21 +285,15 @@ class FirestoreManager {
   // * Devolvera un mapa con los datos del usuario
   Future<Map<String, dynamic>> getUser(String email) async {
     // Carga el Documento del usuario
-    log("log-user1");
-    log("email: $email");
     DocumentSnapshot doc = await db.collection("Users").doc(email).get();
-    log("id: ${doc.id}");
-    log("log-user2");
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     // Carga los datos del usuario
-    log("log-user3");
     Map<String, dynamic> user = {
       "username": data["username"],
       "password": data["password"],
       "email": data["email"],
       "level": data["level"],
     };
-    log("log-user4");
     return user;
   }
 
@@ -576,14 +606,27 @@ class FirestoreManager {
 
 class StorageManager {
   // Referencia al directorio con las imagenes de los libros
-  final bookimagesRef = storage.ref().child("book-images");
+  final bookImagesRef = storage.ref().child("book-images");
 
-  // * Devolvera la URL de la imagen del libro
-  Future<String> getImage(String isbn) async {
+  // * Devolvera la imagen en bytes
+  Future<Uint8List?> getImage(String name) async {
     // Crea la referencia a la imagen
-    var imageRef = bookimagesRef.child("$isbn.png");
-    // Carga la URL de la imagen
-    String imageUrl = await imageRef.getDownloadURL();
-    return imageUrl;
+    var imageRef = bookImagesRef.child(name);
+    // Carga la imagen
+    Uint8List? imageBytes = await imageRef.getData();
+    return imageBytes;
+  }
+
+  // * Añadira una imagen a la base de datos
+  Future<void> addImage(Uint8List image, String name) async {
+    // Crea la referencia para la imagen
+    // final imageRef = bookImagesRef.child(name);
+    final imageRef = storage.ref("book-images/$name");
+    // Sube el archivo a la base de datos
+    UploadTask uploadTask = imageRef.putData(image);
+
+    // Se crea una snapshot para esperar a que la subida se complete
+    // ignore: unused_local_variable
+    TaskSnapshot snapshot = await uploadTask;
   }
 }

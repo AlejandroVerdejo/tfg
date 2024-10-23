@@ -148,7 +148,6 @@ class _RentBookState extends State<RentBook> {
                         if (bookController.text.isNotEmpty) {
                           bookLoaded = await firestoreManager
                               .checkIndividualBook(bookController.text);
-                          log("user: ${bookLoaded.toString()}");
                           if (bookLoaded) {
                             book = bookController.text;
                             bookAviable = await firestoreManager
@@ -200,7 +199,6 @@ class _RentBookState extends State<RentBook> {
                         if (userController.text.isNotEmpty) {
                           userLoaded = await firestoreManager
                               .checkUser(userController.text);
-                          log("user: ${userLoaded.toString()}");
                           if (userLoaded) {
                             user = userController.text;
                           } else {
@@ -293,7 +291,6 @@ class _RentBookState extends State<RentBook> {
                       onPressed:
                           bookLoaded && bookAviable && userLoaded && dateLoaded
                               ? () async {
-                                  log("prestamo");
                                   await firestoreManager.newUserRent(
                                       user, book, date);
                                   setState(() {
