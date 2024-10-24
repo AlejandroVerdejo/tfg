@@ -24,7 +24,10 @@ class AddTagsDialog extends StatelessWidget {
 
     return AlertDialog(
       backgroundColor: colors[theme]["mainBackgroundColor"],
-      title: NormalText(text: getLang("addTags")),
+      title: NormalText(
+        theme: theme,
+        text: getLang("addTags"),
+      ),
       content: Column(
         children: [
           SizedBox(
@@ -53,7 +56,7 @@ class AddTagsDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const BetterDivider(),
+          BetterDivider(theme: theme),
           const SizedBox(height: 20),
           SizedBox(
             width: 300,
@@ -81,7 +84,7 @@ class AddTagsDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const BetterDivider(),
+          BetterDivider(theme: theme),
           const SizedBox(height: 20),
           SizedBox(
             width: 300,
@@ -109,7 +112,7 @@ class AddTagsDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const BetterDivider(),
+          BetterDivider(theme: theme),
           const SizedBox(height: 20),
           SizedBox(
             width: 300,
@@ -137,7 +140,7 @@ class AddTagsDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const BetterDivider(),
+          BetterDivider(theme: theme),
           const SizedBox(height: 20),
         ],
       ),

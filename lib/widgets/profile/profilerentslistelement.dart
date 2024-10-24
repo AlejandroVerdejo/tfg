@@ -6,54 +6,16 @@ import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/rentdatetext.dart';
 import 'package:tfg_library/widgets/text/renttext.dart';
 
-// class ProfileRentsListElement extends StatelessWidget {
-//   const ProfileRentsListElement({
-//     super.key,
-//     required this.book,
-//     required this.rent,
-//   });
-
-//   final Map book;
-//   final Map rent;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: rentsElementWidth,
-//       padding: const EdgeInsets.all(4.0),
-//       child: Column(
-//         children: [
-//           SizedBox(
-//             height: rentsElementHeight,
-//             child: Image.network(
-//               "${book["image"]}",
-//               width: elementImageSize,
-//             ),
-//           ),
-//           const BetterDivider(),
-//           RentText(
-//             text: book["title"],
-//             alignment: TextAlign.center,
-//           ),
-//           RentDateText(
-//             text: rent["date"],
-//             alignment: TextAlign.center,
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileRentsListElement extends StatefulWidget {
   const ProfileRentsListElement({
     super.key,
+    required this.theme,
     required this.isbn,
     required this.rent,
   });
 
+  final String theme;
   final String isbn;
   final Map rent;
 
@@ -64,11 +26,11 @@ class ProfileRentsListElement extends StatefulWidget {
 
 class _ProfileRentsListElementState extends State<ProfileRentsListElement> {
   Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme") ?? "ligth";
     Map<String, dynamic> book =
         await firestoreManager.getMergedBook(widget.isbn);
-    return {"theme": theme, "book": book};
+    return {
+      "book": book,
+    };
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
@@ -91,6 +53,7 @@ class _ProfileRentsListElementState extends State<ProfileRentsListElement> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = widget.theme;
             var book = data["book"];
             return Container(
               width: rentsElementWidth,
@@ -104,12 +67,14 @@ class _ProfileRentsListElementState extends State<ProfileRentsListElement> {
                       width: elementImageSize,
                     ),
                   ),
-                  const BetterDivider(),
+                  BetterDivider(theme: theme),
                   RentText(
+                    theme: theme,
                     text: book["title"],
                     alignment: TextAlign.center,
                   ),
                   RentDateText(
+                    theme: theme,
                     text: widget.rent["date"],
                     alignment: TextAlign.center,
                   )

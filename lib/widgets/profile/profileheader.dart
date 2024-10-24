@@ -6,9 +6,11 @@ import 'package:tfg_library/widgets/text/headertext.dart';
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     super.key,
+    required this.theme,
     required this.user,
   });
 
+  final String theme;
   final Map<String, dynamic> user;
 
   @override
@@ -32,7 +34,10 @@ class ProfileHeader extends StatelessWidget {
                   )),
             ),
             HeaderText(text: user["username"]),
-            DescriptionRichText(text: user["email"]),
+            DescriptionRichText(
+              theme: theme,
+              text: user["email"],
+            ),
             const SizedBox(height: 20)
           ],
         ),

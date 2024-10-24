@@ -3,14 +3,15 @@ import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/renttext.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RentBookUserData extends StatefulWidget {
   const RentBookUserData({
     super.key,
+    required this.theme,
     required this.email,
   });
 
+  final String theme;
   final String email;
 
   @override
@@ -19,12 +20,9 @@ class RentBookUserData extends StatefulWidget {
 
 class _RentBookUserDataState extends State<RentBookUserData> {
   Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
     Map<String, dynamic> user = await firestoreManager.getUser(widget.email);
     int activeRents = await firestoreManager.getUserActiveRents(widget.email);
     return {
-      "theme": theme,
       "user": user,
       "activeRents": activeRents,
     };
@@ -50,6 +48,7 @@ class _RentBookUserDataState extends State<RentBookUserData> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = widget.theme;
             var user = data["user"];
             var activeRents = data["activeRents"];
             return Container(
@@ -58,11 +57,14 @@ class _RentBookUserDataState extends State<RentBookUserData> {
               child: Column(
                 children: [
                   RentText(
+                    theme: theme,
                     text: user["username"],
                     alignment: TextAlign.center,
                   ),
                   RentText(
-                    text: "${getLang("userActiveRents")}: ${activeRents.toString()}",
+                    theme: theme,
+                    text:
+                        "${getLang("userActiveRents")}: ${activeRents.toString()}",
                     alignment: TextAlign.center,
                   ),
                 ],

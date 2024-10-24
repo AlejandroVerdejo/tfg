@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +7,7 @@ import 'package:tfg_library/screens/homescreen.dart';
 import 'package:tfg_library/screens/loginscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tfg_library/styles.dart';
-import 'firebase_options.dart';
+import 'firebase/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding
@@ -61,11 +60,13 @@ class _MainAppState extends State<MainApp> {
   }
 
   Map<String, dynamic> user = {};
+  String theme = "";
 
   @override
   void initState() {
     super.initState();
     user = widget.savedUser.isNotEmpty ? widget.savedUser : {};
+    theme = widget.theme;
   }
 
   void _onLogIn() async {
@@ -82,20 +83,31 @@ class _MainAppState extends State<MainApp> {
     setState(() {});
   }
 
+  void _themeUpdate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    theme = prefs.getString("theme")! == "dark" ? "light" : "dark";
+    await prefs.setString("theme", theme);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // initialize();
-
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: colors[widget.theme]["mainBackgroundColor"],
+        backgroundColor: colors[theme]["mainBackgroundColor"],
         body: Center(
           child: user.isNotEmpty
               ? HomeScreen(
                   user: user,
+                  theme: theme,
                   onLogOut: _onLogOut,
+                  onThemeUpdate: _themeUpdate,
                 )
-              : LoginScreen(onLogIn: _onLogIn),
+              : LoginScreen(
+                  theme: theme,
+                  onLogIn: _onLogIn,
+                ),
         ),
       ),
     );

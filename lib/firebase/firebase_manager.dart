@@ -39,9 +39,9 @@ class FirestoreManager {
     Map<String, dynamic> books = {};
 
     // Carga la Coleccion "Books"
-    await db.collection("Books").get().then((event) {
+    await db.collection("Books").get().then((onValue) {
       // Recorre los Documentos
-      for (var doc in event.docs) {
+      for (var doc in onValue.docs) {
         // Excluye los documentos "Tags" y "Popularity"
         if (doc.id != "Tags" && doc.id != "Popularity") {
           // Introduce los Documentos de los libros
@@ -49,6 +49,7 @@ class FirestoreManager {
         }
       }
     });
+
     return books;
   }
 
@@ -253,15 +254,12 @@ class FirestoreManager {
 
   // * Crear un nuevo usuario
   Future<void> addUser(Map<String, dynamic> user) async {
-    log("adduser-1");
     user["rents"] = [];
     user["waitlist"] = [];
     user["wishlist"] = [];
     user["active"] = true;
-    log("adduser-2");
     DocumentReference newUserRef = db.collection("Users").doc(user["email"]);
     await newUserRef.set(user);
-    log("adduser-3");
   }
 
   // * Devolvera true/false segun si el usuario existe o no
@@ -294,7 +292,38 @@ class FirestoreManager {
       "email": data["email"],
       "level": data["level"],
     };
+
     return user;
+  }
+
+  Future<Map<String, dynamic>> getUsers() async {
+    Map<String, dynamic> users = {};
+
+    // Carga la Coleccion "Users"
+    await db.collection("Users").get().then((onValue) {
+      // Recorre los Documentos
+      for (var doc in onValue.docs) {
+        // Introduce los Documentos de los usuarios
+        users[doc.id] = doc.data();
+      }
+    });
+
+    return users;
+  }
+
+  Future<Map<String, dynamic>> getWorkers() async {
+    Map<String, dynamic> workers = {};
+
+    // Carga los usuarios
+    Map<String, dynamic> users = await getUsers();
+    for (var user in users.entries) {
+      if (user.value["level"] == 1) {
+        log("trabajador");
+        workers[user.key] = user.value;
+      }
+    }
+
+    return workers;
   }
 
   // ?

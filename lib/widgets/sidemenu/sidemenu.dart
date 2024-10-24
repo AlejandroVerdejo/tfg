@@ -1,13 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/screens/catalogscreen.dart';
-import 'package:tfg_library/screens/loginscreen.dart';
-import 'package:tfg_library/screens/profilescreen.dart';
-import 'package:tfg_library/screens/waitlistscreen.dart';
-import 'package:tfg_library/screens/wishlistscreen.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/bartext.dart';
@@ -15,202 +7,166 @@ import 'package:tfg_library/widgets/text/bartext.dart';
 class SideMenu extends StatefulWidget {
   const SideMenu({
     super.key,
+    required this.theme,
     required this.user,
     required this.onRefresh,
     required this.onLogOut,
+    required this.onScreenChange,
   });
 
+  final String theme;
   final Map<String, dynamic> user;
   final VoidCallback onRefresh;
   final VoidCallback onLogOut;
+  final Function(String) onScreenChange;
 
   @override
   State<SideMenu> createState() => _SideMenuState();
 }
 
 class _SideMenuState extends State<SideMenu> {
-  // Metodo para obtener la preferencia del tema
-  Future<Map<String, dynamic>> _loadData() async {
-    // Carga las preferencias
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Obtiene  el valor de la preferencia
-    String theme = prefs.getString("theme")!; // Valor predeterminado
-    // Devuelve un mapa con los datos
-    return {"theme": theme};
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _loadData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // Carga
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          // Error
-          return Center(
-            child: Text(getLang("error")),
-          );
-        } else {
-          // Ejecucion
-          final data = snapshot.data!;
-          return Drawer(
-            backgroundColor: colors[data["theme"]]["mainBackgroundColor"],
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: colors[data["theme"]]["headerBackgroundColor"],
-                  ),
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        child: Text(
-                          widget.user["username"][0].toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 40),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      BarText(text: widget.user["username"]),
-                    ],
+    var theme = widget.theme;
+    var user = widget.user;
+    return Drawer(
+      backgroundColor: colors[theme]["mainBackgroundColor"],
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: colors[theme]["headerBackgroundColor"],
+            ),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  child: Text(
+                    user["username"][0].toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 40),
                   ),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.person,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    getLang("profile"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(user: widget.user),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.book,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    getLang("catalog"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CatalogScreen()));
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.bookmarks,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    getLang("wishlist"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WishListScreen(
-                          email: widget.user["email"],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.timer,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    getLang("waitlist"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WaitListScreen(
-                          email: widget.user["email"],
-                        ),
-                      ),
-                    ).then(
-                      (result) {
-                        widget.onRefresh();
-                      },
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    getLang("settings"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () {},
-                ),
-                // SizedBox(height: double.maxFinite,),
-                const BetterDivider(),
-                ListTile(
-                  leading: Icon(
-                    data["theme"] == "light" ? Icons.sunny : Icons.nightlight,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    data["theme"] == "light"
-                        ? getLang("lightTheme")
-                        : getLang("darkTheme"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    String theme = prefs.getString("theme")!;
-                    theme == "light"
-                        ? await prefs.setString("theme", "dark")
-                        : await prefs.setString("theme", "light");
-                    widget.onRefresh();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: colors[data["theme"]]["mainTextColor"],
-                  ),
-                  title: Text(
-                    getLang("logout"),
-                    style: getStyle("sideMenuTextStyle", data["theme"]!),
-                  ),
-                  onTap: () {
-                    widget.onLogOut();
-                  },
-                ),
+                const SizedBox(height: 10),
+                BarText(text: user["username"]),
               ],
             ),
-          );
-        }
-      },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("profile"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("profile");
+              Navigator.of(context).pop();
+            },
+          ),
+          user["level"] == 0
+              ? ListTile(
+                  leading: Icon(
+                    Icons.people,
+                    color: colors[theme]["mainTextColor"],
+                  ),
+                  title: Text(
+                    getLang("users"),
+                    style: getStyle("sideMenuTextStyle", theme),
+                  ),
+                  onTap: () {
+                    widget.onScreenChange("users");
+                    Navigator.of(context).pop();
+                  },
+                )
+              : const SizedBox.shrink(),
+          ListTile(
+            leading: Icon(
+              Icons.book,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("catalog"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("catalog");
+              Navigator.of(context).pop();
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.bookmarks,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("wishlist"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("wishlist");
+              Navigator.of(context).pop();
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.timer,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("waitlist"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("waitlist");
+              Navigator.of(context).pop();
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.settings,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("settings"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("settings");
+            },
+          ),
+          BetterDivider(theme: theme),
+          ListTile(
+            leading: Icon(
+              theme == "light" ? Icons.sunny : Icons.nightlight,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              theme == "light" ? getLang("lightTheme") : getLang("darkTheme"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () async {
+              widget.onRefresh();
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.logout,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("logout"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onLogOut();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

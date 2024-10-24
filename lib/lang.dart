@@ -74,6 +74,9 @@ const lang = {
     "formError-required": "Este campo es obligatorio",
     "formError-minLength": "La contraseña debe tener por lo menos 8 carácteres",
     "formError-numeric": "Es campo solo puede contener valores numericos",
+    "loginError": "Datos de inicio de sesión incorrectos",
+    "registerError": "Datos de registro incorrectos",
+    "users": "Usuarios",
   }
 };
 

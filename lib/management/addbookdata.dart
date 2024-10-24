@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -14,14 +13,15 @@ import 'package:tfg_library/management/selectdialogfield.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
 import 'package:tfg_library/widgets/text/normaltext.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddBookData extends StatefulWidget {
   const AddBookData({
     super.key,
+    required this.theme,
     this.bookkey,
   });
 
+  final String theme;
   final String? bookkey;
 
   @override
@@ -58,8 +58,6 @@ Uint8List? image;
 
 class AddBookDataState extends State<AddBookData> {
   Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
     Map<String, List<String>> tags = await firestoreManager.getTags();
     Map<String, dynamic> book = {};
     if (widget.bookkey != null && widget.bookkey!.isNotEmpty) {
@@ -67,7 +65,6 @@ class AddBookDataState extends State<AddBookData> {
       book = await firestoreManager.getMergedBook(widget.bookkey!);
     }
     return {
-      "theme": theme,
       "tags": tags,
       "book": book,
     };
@@ -171,7 +168,7 @@ class AddBookDataState extends State<AddBookData> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
-            var theme = data["theme"];
+            var theme = widget.theme;
             var tags = data["tags"];
             var book = data["book"];
             if (bookLoaded) {
@@ -497,6 +494,7 @@ class AddBookDataState extends State<AddBookData> {
                                   return TextButton(
                                       onPressed: onPressed,
                                       child: NormalText(
+                                          theme: theme,
                                           text: getLang("selectDialogButton")));
                                 });
                               }
@@ -537,11 +535,12 @@ class AddBookDataState extends State<AddBookData> {
                                 minHeight: 350, // Altura mínima
                                 // maxHeight: 400, // Altura máxima
                               ),
-                              child: const Column(
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.image),
+                                  const Icon(Icons.image),
                                   DescriptionRichText(
+                                      theme: theme,
                                       text: "Selecciona una imagen"),
                                 ],
                               ),

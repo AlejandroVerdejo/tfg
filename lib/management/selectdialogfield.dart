@@ -20,10 +20,12 @@ class SelectDialogField extends StatelessWidget {
       padding: EdgeInsets.all(10),
       child: isSelected
           ? NormalText(
+              theme: theme,
               style: getStyle("selectedTextStyle", theme),
               text: item,
             )
           : NormalText(
+              theme: theme,
               text: item,
             ),
     );

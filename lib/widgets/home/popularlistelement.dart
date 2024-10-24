@@ -3,14 +3,15 @@ import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
 import 'package:tfg_library/widgets/text/renttext.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PopularListElement extends StatefulWidget {
   const PopularListElement({
     super.key,
+    required this.theme,
     required this.bookkey,
   });
 
+  final String theme;
   final String bookkey;
 
   @override
@@ -19,12 +20,9 @@ class PopularListElement extends StatefulWidget {
 
 class _PopularListElementState extends State<PopularListElement> {
   Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
     Map<String, dynamic> book =
         await firestoreManager.getMergedBook(widget.bookkey);
     return {
-      "theme": theme,
       "book": book,
     };
   }
@@ -49,6 +47,7 @@ class _PopularListElementState extends State<PopularListElement> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = widget.theme;
             return Container(
               width: rentsElementWidth,
               padding: const EdgeInsets.all(4.0),
@@ -61,8 +60,9 @@ class _PopularListElementState extends State<PopularListElement> {
                       width: elementImageSize,
                     ),
                   ),
-                  const BetterDivider(),
+                  BetterDivider(theme: theme),
                   RentText(
+                    theme: theme,
                     text: data["book"]["title"],
                     alignment: TextAlign.center,
                   ),

@@ -3,14 +3,15 @@ import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/renttext.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RentBookBookData extends StatefulWidget {
   const RentBookBookData({
     super.key,
+    required this.theme,
     required this.bookkey,
   });
 
+  final String theme;
   final String bookkey;
 
   @override
@@ -19,12 +20,9 @@ class RentBookBookData extends StatefulWidget {
 
 class _RentBookBookDataState extends State<RentBookBookData> {
   Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
     Map<String, dynamic> book =
         await firestoreManager.getUnMergedBook(widget.bookkey);
     return {
-      "theme": theme,
       "book": book,
     };
   }
@@ -49,6 +47,7 @@ class _RentBookBookDataState extends State<RentBookBookData> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = widget.theme;
             var book = data["book"];
             return Container(
               width: rentsElementWidth,
@@ -64,10 +63,12 @@ class _RentBookBookDataState extends State<RentBookBookData> {
                   ),
                   const SizedBox(height: 20),
                   RentText(
+                    theme: theme,
                     text: book["title"],
                     alignment: TextAlign.center,
                   ),
                   RentText(
+                    theme: theme,
                     text: book["aviable"]
                         ? getLang("aviable")
                         : getLang("notAviable"),

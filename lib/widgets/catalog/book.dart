@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,9 +12,11 @@ import 'package:tfg_library/widgets/text/sinopsisbooktext.dart';
 class Book extends StatefulWidget {
   const Book({
     super.key,
+    required this.theme,
     required this.book,
   });
 
+  final String theme;
   final Map<String, dynamic> book;
 
   @override
@@ -25,14 +26,12 @@ class Book extends StatefulWidget {
 class _BookState extends State<Book> {
   Future<Map<String, dynamic>> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
     String savedUser = prefs.getString("savedUser")!;
     bool inWishList = await firestoreManager.checkUserWishList(
         savedUser, widget.book["isbn"]);
     bool inWaitList = await firestoreManager.checkUserWaitList(
         savedUser, widget.book["isbn"]);
     return {
-      "theme": theme,
       "savedUser": savedUser,
       "inWishList": inWishList,
       "inWaitList": inWaitList,
@@ -85,7 +84,7 @@ class _BookState extends State<Book> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
-            var theme = data["theme"];
+            var theme = widget.theme;
             var user = data["savedUser"];
             var inWishList = data["inWishList"];
             var inWaitList = data["inWaitList"];
@@ -123,55 +122,69 @@ class _BookState extends State<Book> {
                                   width: bookImageSize,
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 15, bottom: 15),
-                                child: BetterDivider(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15, bottom: 15),
+                                child: BetterDivider(theme: theme),
                               ),
                               // ListDataText(
                               //     title: getLang("id"),
                               //     text: "${widget.book["id"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("title"),
                                   text: "${widget.book["title"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("author"),
                                   text: "${widget.book["author"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("editorial"),
                                   text: "${widget.book["editorial"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("date"),
                                   text: "${widget.book["date"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("pages"),
                                   text: "${widget.book["pages"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("language"),
                                   text: "${widget.book["language"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("isbn"),
                                   text: "${widget.book["isbn"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("age"),
                                   text: "${widget.book["age"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("state"),
                                   text: widget.book["aviable"]
                                       ? getLang("aviable")
                                       : getLang("notAviable")),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("category"),
                                   text: "${widget.book["category"]}"),
                               ListDataText(
+                                  theme: theme,
                                   title: getLang("genres"),
                                   text: "${widget.book["genres"].join(", ")}"),
                               widget.book["aviable"] ||
                                       widget.book["return_date"] == null
                                   ? const SizedBox.shrink()
                                   : ListDataText(
+                                      theme: theme,
                                       title: getLang("espectedAviable"),
                                       text: "${widget.book["return_date"]}"),
                               SinopsisBookText(
+                                  theme: theme,
                                   title: getLang("sinopsis"),
                                   text: "${widget.book["description"]}"),
                             ],

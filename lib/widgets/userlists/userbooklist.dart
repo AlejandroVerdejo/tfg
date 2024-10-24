@@ -1,20 +1,20 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/widgets/catalog/booklistelement.dart';
-import 'package:tfg_library/widgets/catalog/userbooklistelement.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tfg_library/widgets/userlists/userbooklistelement.dart';
 
 class UserBookList extends StatefulWidget {
   const UserBookList({
     super.key,
+    required this.theme,
     this.type,
     this.list,
     this.onRefresh,
   });
 
+  final String theme;
   final String? type;
   final List<dynamic>? list;
   final VoidCallback? onRefresh;
@@ -25,11 +25,11 @@ class UserBookList extends StatefulWidget {
 
 class _UserBookListState extends State<UserBookList> {
   Future<Map<String, dynamic>> _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
     Map<String, dynamic> books =
         await firestoreManager.getMergedBooksList(widget.list!);
-    return {"theme": theme, "books": books};
+    return {
+      "books": books,
+    };
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
@@ -52,6 +52,7 @@ class _UserBookListState extends State<UserBookList> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
+            var theme = widget.theme;
             var books = data["books"];
             var orderedBooks = Map.fromEntries(books.entries.toList()
               ..sort((b1, b2) {
@@ -90,12 +91,13 @@ class _UserBookListState extends State<UserBookList> {
                 var bookentry = booklistentries[index];
                 if (widget.type == "wishlist" || widget.type == "waitlist") {
                   return UserBookListElement(
+                    theme: theme,
                     type: widget.type!,
                     book: bookentry.value,
                     onDelete: widget.onRefresh!,
                   );
                 }
-                return BookListElement(book: bookentry.value);
+                return BookListElement(theme: theme, book: bookentry.value);
               },
             );
           }

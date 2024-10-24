@@ -1,20 +1,21 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/management/rentbookbookdata.dart';
 import 'package:tfg_library/management/rentbookuserdata.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/betterdivider.dart';
-import 'package:tfg_library/widgets/text/bartext.dart';
 
 class RentBook extends StatefulWidget {
   const RentBook({
     super.key,
+    required this.theme,
   });
+
+  final String theme;
 
   @override
   State<RentBook> createState() => _RentBookState();
@@ -34,12 +35,6 @@ bool dateLoaded = false;
 String date = "";
 
 class _RentBookState extends State<RentBook> {
-  Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String theme = prefs.getString("theme")!;
-    return {"theme": theme};
-  }
-
   @override
   void initState() {
     super.initState();
@@ -78,233 +73,159 @@ class _RentBookState extends State<RentBook> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  final _formKey = GlobalKey<FormBuilderState>();
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _loadData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            // Error
-            return Center(
-              child: Text(getLang("error")),
-            );
-          } else {
-            // Ejecucion
-            final data = snapshot.data!;
-            var theme = data["theme"];
-            return Scaffold(
-              appBar: AppBar(
-                bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(1.5),
-                    child: Container(
-                      color: colors[theme]["headerBorderColor"],
-                      height: 1.5,
-                    )),
-                foregroundColor: colors[theme]["barTextColor"],
-                title: BarText(
-                  text: getLang("rentBook"),
+    var theme = widget.theme;
+    return Padding(
+      padding: bodyPadding,
+      child: ListView(
+        children: [
+          FormBuilder(
+            key: _formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                // ? Libro
+                TextSelectionTheme(
+                  data: getStyle("loginFieldSelectionTheme", theme),
+                  child: FormBuilderTextField(
+                    controller: bookController,
+                    name: "book",
+                    style: getStyle("normalTextStyle", theme),
+                    decoration: getTextFieldStyle(
+                        "defaultTextFieldStyle", theme, getLang("bookId")),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(
+                          errorText: getLang("formError-required")),
+                    ]),
+                  ),
                 ),
-                backgroundColor: colors[theme]["headerBackgroundColor"],
-              ),
-              backgroundColor: colors[theme]["mainBackgroundColor"],
-              body: Padding(
-                padding: bodyPadding,
-                child: ListView(
-                  children: [
-                    const SizedBox(height: 30),
-                    SizedBox(
-                      width: 350,
-                      child: TextSelectionTheme(
-                        data: getStyle("loginFieldSelectionTheme", theme),
-                        child: TextField(
-                          style: getStyle("normalTextStyle", theme),
-                          controller: bookController,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              border: const OutlineInputBorder(),
-                              labelText: getLang("bookId"),
-                              labelStyle: getStyle("normalTextStyle", theme),
-                              floatingLabelStyle:
-                                  getStyle("normalTextStyle", theme),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
-                        if (bookController.text.isNotEmpty) {
-                          bookLoaded = await firestoreManager
-                              .checkIndividualBook(bookController.text);
-                          if (bookLoaded) {
-                            book = bookController.text;
-                            bookAviable = await firestoreManager
-                                .checkBookAviability(book);
-                          } else {
-                            showSnackBar(
-                                context, getLang("rentBookLoadUser-error"));
-                          }
-                          setState(() {});
-                        }
-                      },
-                      child: Text(
-                        getLang("rentBookLoadBook"),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    bookLoaded
-                        ? RentBookBookData(bookkey: book)
-                        : const SizedBox.shrink(),
-                    const SizedBox(height: 15),
-                    SizedBox(
-                      width: 350,
-                      child: TextSelectionTheme(
-                        data: getStyle("loginFieldSelectionTheme", theme),
-                        child: TextField(
-                          style: getStyle("normalTextStyle", theme),
-                          controller: userController,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              border: const OutlineInputBorder(),
-                              labelText: getLang("userId"),
-                              labelStyle: getStyle("normalTextStyle", theme),
-                              floatingLabelStyle:
-                                  getStyle("normalTextStyle", theme),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
-                        if (userController.text.isNotEmpty) {
-                          userLoaded = await firestoreManager
-                              .checkUser(userController.text);
-                          if (userLoaded) {
-                            user = userController.text;
-                          } else {
-                            showSnackBar(
-                                context, getLang("rentBookLoadUser-error"));
-                          }
-                          setState(() {});
-                        }
-                      },
-                      child: Text(
-                        getLang("rentBookLoadUser"),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    userLoaded
-                        ? RentBookUserData(email: user)
-                        : const SizedBox.shrink(),
-                    const SizedBox(height: 15),
-                    // DatePicker?
-                    SizedBox(
-                      width: 350,
-                      child: TextSelectionTheme(
-                        data: getStyle("loginFieldSelectionTheme", theme),
-                        child: TextField(
-                          style: getStyle("normalTextStyle", theme),
-                          controller: dateController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      getStyle("loginFieldBorderSide", theme)),
-                              border: const OutlineInputBorder(),
-                              labelText: getLang("returnDate"),
-                              labelStyle: getStyle("normalTextStyle", theme),
-                              floatingLabelStyle:
-                                  getStyle("normalTextStyle", theme),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always),
-                          onTap: () async {
-                            DateTime? datePicked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime(2100),
-                                builder: (BuildContext context, Widget? child) {
-                                  return Theme(
-                                      // data: ThemeData.f
-                                      data: ThemeData(
-                                          primaryColor: colors[theme]
-                                              ["mainBackgroundColor"],
-                                          colorScheme: ColorScheme(
-                                              primary: colors[theme]
-                                                  ["linkTextColor"],
-                                              onPrimary: colors[theme]
-                                                  ["mainTextColor"],
-                                              secondary: colors[theme]
-                                                  ["mainTextColor"],
-                                              onSecondary: colors[theme]
-                                                  ["mainTextColor"],
-                                              surface: colors[theme]
-                                                  ["mainBackgroundColor"],
-                                              onSurface: colors[theme]
-                                                  ["mainTextColor"],
-                                              error: Colors.red,
-                                              onError: Colors.white,
-                                              brightness: Brightness.light),
-                                          dialogBackgroundColor: Colors.red),
-                                      child: child!);
-                                });
-                            if (datePicked != null) {
-                              dateLoaded = true;
-                              dateController.text =
-                                  DateFormat("dd/MM/yyyy").format(datePicked);
-                              date =
-                                  DateFormat("dd/MM/yyyy").format(datePicked);
-                              // setState(() {});
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    const BetterDivider(),
-                    const SizedBox(height: 15),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed:
-                          bookLoaded && bookAviable && userLoaded && dateLoaded
-                              ? () async {
-                                  await firestoreManager.newUserRent(
-                                      user, book, date);
-                                  setState(() {
-                                    _update();
-                                  });
-                                }
-                              : null,
-                      child: Text(getLang("rentBookAction")),
-                    ),
-                  ],
+                const SizedBox(height: 30),
+                OutlinedButton(
+                  style: getStyle("loginButtonStyle", theme),
+                  onPressed: () async {
+                    if (bookController.text.isNotEmpty) {
+                      bookLoaded = await firestoreManager
+                          .checkIndividualBook(bookController.text);
+                      if (bookLoaded) {
+                        book = bookController.text;
+                        bookAviable =
+                            await firestoreManager.checkBookAviability(book);
+                      } else {
+                        showSnackBar(
+                            context, getLang("rentBookLoadUser-error"));
+                      }
+                      setState(() {});
+                    }
+                  },
+                  child: Text(
+                    getLang("rentBookLoadBook"),
+                  ),
                 ),
-              ),
-            );
-          }
-        });
+                const SizedBox(height: 15),
+                bookLoaded
+                    ? RentBookBookData(
+                        theme: theme,
+                        bookkey: book,
+                      )
+                    : const SizedBox.shrink(),
+                const SizedBox(height: 15),
+                // ? Usuario
+                TextSelectionTheme(
+                  data: getStyle("loginFieldSelectionTheme", theme),
+                  child: FormBuilderTextField(
+                    controller: userController,
+                    name: "user",
+                    style: getStyle("normalTextStyle", theme),
+                    decoration: getTextFieldStyle(
+                        "defaultTextFieldStyle", theme, getLang("userId")),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(
+                          errorText: getLang("formError-required")),
+                    ]),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                OutlinedButton(
+                  style: getStyle("loginButtonStyle", theme),
+                  onPressed: () async {
+                    if (userController.text.isNotEmpty) {
+                      userLoaded =
+                          await firestoreManager.checkUser(userController.text);
+                      if (userLoaded) {
+                        user = userController.text;
+                      } else {
+                        showSnackBar(
+                            context, getLang("rentBookLoadUser-error"));
+                      }
+                      setState(() {});
+                    }
+                  },
+                  child: Text(
+                    getLang("rentBookLoadUser"),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                userLoaded
+                    ? RentBookUserData(theme: theme, email: user)
+                    : const SizedBox.shrink(),
+                const SizedBox(height: 15),
+                // ? Fecha de devolucion
+                TextSelectionTheme(
+                  data: getStyle("loginFieldSelectionTheme", theme),
+                  child: FormBuilderTextField(
+                    controller: dateController,
+                    readOnly: true,
+                    name: "date",
+                    style: getStyle("normalTextStyle", theme),
+                    decoration: getTextFieldStyle(
+                        "defaultTextFieldStyle", theme, getLang("returnDate")),
+                    onTap: () async {
+                      DateTime? datePicked = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          builder: (BuildContext context, Widget? child) {
+                            return Theme(
+                                data: getStyle("datePickerStyle", theme),
+                                child: child!);
+                          });
+                      if (datePicked != null) {
+                        dateLoaded = true;
+                        dateController.text =
+                            DateFormat("dd/MM/yyyy").format(datePicked);
+                        date = DateFormat("dd/MM/yyyy").format(datePicked);
+                      }
+                    },
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(
+                          errorText: getLang("formError-required")),
+                    ]),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                BetterDivider(theme: theme),
+                const SizedBox(height: 15),
+                OutlinedButton(
+                  style: getStyle("loginButtonStyle", theme),
+                  onPressed: () async {
+                    if (_formKey.currentState?.saveAndValidate() ?? false) {
+                      await firestoreManager.newUserRent(user, book, date);
+                      setState(() {
+                        _update();
+                      });
+                    }
+                  },
+                  child: Text(getLang("rentBookAction")),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -10,6 +10,9 @@ EdgeInsets bodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 5, right: 20)
     // : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
     : const EdgeInsets.only(top: 10, left: 50, bottom: 10, right: 50);
+EdgeInsets expansionPadding = isAndroid 
+    ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 5)
+    : const EdgeInsets.only(top: 10, left: 20, bottom: 10, right: 20);
 EdgeInsets bookBodyPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 20, bottom: 30, right: 20)
     : const EdgeInsets.only(top: 10, left: 60, bottom: 60, right: 60);

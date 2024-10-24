@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
@@ -12,10 +11,12 @@ import 'package:tfg_library/widgets/text/listdatatext.dart';
 class BookListElement extends StatefulWidget {
   const BookListElement({
     super.key,
+    required this.theme,
     required this.book,
     this.onClose,
   });
 
+  final String theme;
   final Map<String, dynamic> book;
   final VoidCallback? onClose;
 
@@ -26,12 +27,14 @@ class BookListElement extends StatefulWidget {
 class _BookListElementState extends State<BookListElement> {
   @override
   Widget build(BuildContext context) {
+    var theme = widget.theme;
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Book(
+              theme: theme,
               book: widget.book,
             ),
           ),
@@ -42,8 +45,6 @@ class _BookListElementState extends State<BookListElement> {
             }
           },
         );
-        // if (result != null) {
-        // }
       },
       child: Opacity(
         opacity: widget.book["aviable"] ? 1 : 0.3,
@@ -64,41 +65,49 @@ class _BookListElementState extends State<BookListElement> {
                             widget.book["image"],
                             width: elementImageSize,
                           )),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 30),
-                        child: BetterVerticalDivider(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30),
+                        child: BetterVerticalDivider(theme: theme),
                       ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             ListDataText(
+                                theme: theme,
                                 title: getLang("title"),
                                 text: "${widget.book["title"]}"),
                             ListDataText(
+                                theme: theme,
                                 title: getLang("author"),
                                 text: "${widget.book["author"]}"),
                             ListDataText(
+                                theme: theme,
                                 title: getLang("editorial"),
                                 text: "${widget.book["editorial"]}"),
                             ListDataText(
+                                theme: theme,
                                 title: getLang("language"),
                                 text: "${widget.book["language"]}"),
                             ListDataText(
+                                theme: theme,
                                 title: getLang("state"),
                                 text: widget.book["aviable"]
                                     ? getLang("aviable")
                                     : getLang("notAviable")),
                             ListDataText(
+                                theme: theme,
                                 title: getLang("category"),
                                 text: "${widget.book["category"]}"),
                             ListDataText(
+                                theme: theme,
                                 title: getLang("genres"),
                                 text: "${widget.book["genres"].join(", ")}"),
                             widget.book["aviable"] ||
                                     widget.book["return_date"] == null
                                 ? const SizedBox.shrink()
                                 : ListDataText(
+                                    theme: theme,
                                     title: getLang("espectedAviable"),
                                     text: "${widget.book["return_date"]}")
                           ],
@@ -109,12 +118,12 @@ class _BookListElementState extends State<BookListElement> {
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
-                    child:
-                        DescriptionRichText(text: widget.book["description"]),
+                    child: DescriptionRichText(
+                        theme: theme, text: widget.book["description"]),
                   ),
                 ],
               ),
-              const BetterDivider()
+              BetterDivider(theme: theme)
             ],
           ),
         ),

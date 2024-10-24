@@ -9,11 +9,11 @@ class ProfileRentsList extends StatelessWidget {
   const ProfileRentsList({
     super.key,
     required this.activeRents,
-    required this.data,
+    required this.theme,
   });
 
   final List activeRents;
-  final Map<String, dynamic> data;
+  final String theme;
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +27,14 @@ class ProfileRentsList extends StatelessWidget {
             children: [
               Expanded(
                 child: NormalText(
+                    theme: theme,
                     text:
                         "${getLang("userActiveRents")}: ${activeRents.length}"),
               ),
               activeRents.isNotEmpty && !isAndroid
                   ? HelpTooltip(
                       message: getLang("hScrollTooltip"),
-                      theme: data["theme"],
+                      theme: theme,
                     )
                   : const SizedBox.shrink(),
             ],
@@ -46,6 +47,7 @@ class ProfileRentsList extends StatelessWidget {
                     spacing: 10,
                     children: activeRents.map<Widget>((rent) {
                       return ProfileRentsListElement(
+                        theme: theme,
                         isbn: rent["book"]["isbn"],
                         rent: rent,
                       );
