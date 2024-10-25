@@ -2,18 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/management/addbook.dart';
-import 'package:tfg_library/management/rentbook.dart';
+import 'package:tfg_library/management/add_book.dart';
+import 'package:tfg_library/management/rent_book.dart';
 import 'package:tfg_library/management/users.dart';
 import 'package:tfg_library/widgets/catalog/catalog.dart';
 import 'package:tfg_library/widgets/profile/profile.dart';
-import 'package:tfg_library/widgets/userlists/waitlist.dart';
-import 'package:tfg_library/widgets/userlists/wishlist.dart';
+import 'package:tfg_library/widgets/userlists/wait_list.dart';
+import 'package:tfg_library/widgets/userlists/wish_list.dart';
 import 'package:tfg_library/widgets/home/home.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/sidemenu/sidemenu.dart';
-import 'package:tfg_library/widgets/text/bartext.dart';
+import 'package:tfg_library/widgets/sidemenu/side_menu.dart';
+import 'package:tfg_library/widgets/text/bar_text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case "users":
         activeWigdet = Users(theme: theme);
         appBarText = getLang("users");
+        home = false;
         break;
       case "catalog":
         activeWigdet = Catalog(theme: theme);

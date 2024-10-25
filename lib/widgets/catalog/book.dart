@@ -4,10 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
-import 'package:tfg_library/widgets/text/bartext.dart';
-import 'package:tfg_library/widgets/text/listdatatext.dart';
-import 'package:tfg_library/widgets/text/sinopsisbooktext.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/text/bar_text.dart';
+import 'package:tfg_library/widgets/text/list_data_text.dart';
+import 'package:tfg_library/widgets/text/sinopsis_book_text.dart';
 
 class Book extends StatefulWidget {
   const Book({

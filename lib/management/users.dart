@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/management/add_user_dialog.dart';
+import 'package:tfg_library/management/user_list.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
-import 'package:tfg_library/widgets/userlists/userbooklistelement.dart';
+import 'package:tfg_library/widgets/text/normal_text.dart';
+import 'package:tfg_library/widgets/userlists/user_book_list_element.dart';
 
 class Users extends StatefulWidget {
   const Users({
@@ -20,59 +23,47 @@ class Users extends StatefulWidget {
 }
 
 class _UsersState extends State<Users> {
-  Future<Map<String, dynamic>> _loadPreferences() async {
-    Map<String, dynamic> workers = await firestoreManager.getWorkers();
-    return {
-      "workers": workers,
-    };
+  void _onUserAdded() {
+    setState(() {});
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _loadPreferences(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            // Error
-            return const Center(
-              child: Text("Error"),
-            );
-          } else {
-            // Ejecucion
-            final data = snapshot.data!;
-            var theme = widget.theme;
-            var workers = data["workers"];
-            return Scaffold(
-              body: ListView(
-                children: [
-                  Container(
-                    padding: bodyPadding,
-                    child: Column(
-                      children: [
-                        NormalText(theme: theme, text: "Lista de usuarios"),
-                        Wrap(
-                            spacing: 8.0, // Espacio horizontal entre los chips
-                            runSpacing:
-                                8.0, // Espacio vertical entre las filas de chips
-                            children: workers.map((entry) {
-                              log("1");
-                              return NormalText(
-                                  theme: theme, text: entry.value["email"]);
-                            }).toList())
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
-          }
-        });
+    var theme = widget.theme;
+    return ListView(
+      children: [
+        Container(
+          padding: bodyPadding,
+          child: Column(
+            children: [
+              NormalText(theme: theme, text: getLang("users")),
+              const SizedBox(height: 20),
+              UserList(theme: theme),
+              const SizedBox(height: 20),
+              OutlinedButton(
+                style: getStyle("loginButtonStyle", theme),
+                onPressed: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AddUserDialog(
+                          theme: theme,
+                          onUserAdded: _onUserAdded,
+                        );
+                      });
+                },
+                child: NormalText(
+                  theme: theme,
+                  text: getLang("addUser"),
+                  alignment: TextAlign.center,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/text/renttext.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/text/rent_text.dart';
 
-class RentBookBookData extends StatefulWidget {
-  const RentBookBookData({
+class PopularListElement extends StatefulWidget {
+  const PopularListElement({
     super.key,
     required this.theme,
     required this.bookkey,
@@ -15,13 +15,13 @@ class RentBookBookData extends StatefulWidget {
   final String bookkey;
 
   @override
-  State<RentBookBookData> createState() => _RentBookBookDataState();
+  State<PopularListElement> createState() => _PopularListElementState();
 }
 
-class _RentBookBookDataState extends State<RentBookBookData> {
+class _PopularListElementState extends State<PopularListElement> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, dynamic> book =
-        await firestoreManager.getUnMergedBook(widget.bookkey);
+        await firestoreManager.getMergedBook(widget.bookkey);
     return {
       "book": book,
     };
@@ -48,7 +48,6 @@ class _RentBookBookDataState extends State<RentBookBookData> {
             // Ejecucion
             final data = snapshot.data!;
             var theme = widget.theme;
-            var book = data["book"];
             return Container(
               width: rentsElementWidth,
               padding: const EdgeInsets.all(4.0),
@@ -57,21 +56,14 @@ class _RentBookBookDataState extends State<RentBookBookData> {
                   SizedBox(
                     height: rentsElementHeight,
                     child: Image.memory(
-                      book["image"],
+                      data["book"]["image"],
                       width: elementImageSize,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  BetterDivider(theme: theme),
                   RentText(
                     theme: theme,
-                    text: book["title"],
-                    alignment: TextAlign.center,
-                  ),
-                  RentText(
-                    theme: theme,
-                    text: book["aviable"]
-                        ? getLang("aviable")
-                        : getLang("notAviable"),
+                    text: data["book"]["title"],
                     alignment: TextAlign.center,
                   ),
                 ],

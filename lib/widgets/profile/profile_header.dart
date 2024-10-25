@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
-import 'package:tfg_library/widgets/text/headertext.dart';
+import 'package:tfg_library/widgets/text/description_richtext.dart';
+import 'package:tfg_library/widgets/text/header_text.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({

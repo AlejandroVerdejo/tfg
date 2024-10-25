@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/widgets/catalog/booklistelement.dart';
-import 'package:tfg_library/widgets/userlists/deletebooklistdialog.dart';
+import 'package:tfg_library/widgets/catalog/book_list_element.dart';
+import 'package:tfg_library/widgets/userlists/delete_book_list_dialog.dart';
 
 class UserBookListElement extends StatefulWidget {
   const UserBookListElement({

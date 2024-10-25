@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
-import 'package:tfg_library/widgets/betterverticaldivider.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/better_vertical_divider.dart';
 import 'package:tfg_library/widgets/catalog/book.dart';
-import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
-import 'package:tfg_library/widgets/text/listdatatext.dart';
+import 'package:tfg_library/widgets/text/description_richtext.dart';
+import 'package:tfg_library/widgets/text/list_data_text.dart';
 
 class BookListElement extends StatefulWidget {
   const BookListElement({

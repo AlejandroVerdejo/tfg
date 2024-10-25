@@ -8,11 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/addbook.dart';
-import 'package:tfg_library/management/selectdialogfield.dart';
+import 'package:tfg_library/management/add_book.dart';
+import 'package:tfg_library/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/text/descriptionrichtext.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/text/description_richtext.dart';
+import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class AddBookData extends StatefulWidget {
   const AddBookData({

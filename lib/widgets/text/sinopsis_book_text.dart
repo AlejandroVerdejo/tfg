@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
 
 class SinopsisBookText extends StatelessWidget {
   const SinopsisBookText({

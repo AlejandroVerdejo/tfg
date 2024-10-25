@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/widgets/profile/profileheader.dart';
-import 'package:tfg_library/widgets/profile/profilerentslist.dart';
+import 'package:tfg_library/widgets/profile/profile_header.dart';
+import 'package:tfg_library/widgets/profile/profile_rents_list.dart';
 
 class Profile extends StatefulWidget {
   const Profile({

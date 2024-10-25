@@ -4,10 +4,10 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/rentbookbookdata.dart';
-import 'package:tfg_library/management/rentbookuserdata.dart';
+import 'package:tfg_library/management/rent_book_book_data.dart';
+import 'package:tfg_library/management/rent_book_user_data.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
 
 class RentBook extends StatefulWidget {
   const RentBook({

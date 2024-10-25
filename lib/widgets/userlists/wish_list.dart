@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/catalog/booklist.dart';
+import 'package:tfg_library/widgets/catalog/book_list.dart';
 
 class WishList extends StatefulWidget {
   const WishList({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
-import 'package:tfg_library/widgets/text/bartext.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/text/bar_text.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class SelectDialogField extends StatelessWidget {
   const SelectDialogField({
@@ -17,7 +17,7 @@ class SelectDialogField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: isSelected
           ? NormalText(
               theme: theme,

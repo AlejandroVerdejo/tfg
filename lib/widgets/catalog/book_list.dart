@@ -1,7 +1,8 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:tfg_library/widgets/catalog/booklistelement.dart';
-import 'package:tfg_library/widgets/userlists/userbooklistelement.dart';
+import 'package:tfg_library/widgets/catalog/book_list_element.dart';
+import 'package:tfg_library/widgets/userlists/user_book_list_element.dart';
 
 class BookList extends StatefulWidget {
   const BookList({
@@ -95,10 +96,9 @@ class _BookListState extends State<BookList> {
     }
     List<MapEntry<String, dynamic>> booklistentries =
         bookslist.entries.toList();
-
     return Wrap(
-        spacing: 8.0, // Espacio horizontal entre los chips
-        runSpacing: 8.0, // Espacio vertical entre las filas de chips
+        spacing: 8.0,
+        runSpacing: 8.0,
         children: booklistentries.map((entry) {
           if (widget.type == "wishlist" || widget.type == "waitlist") {
             return UserBookListElement(

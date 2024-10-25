@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_library/widgets/home/popularlistelement.dart';
+import 'package:tfg_library/widgets/home/popular_list_element.dart';
 import 'package:tfg_library/styles.dart';
 
 class PopularList extends StatelessWidget {

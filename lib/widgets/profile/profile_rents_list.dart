@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/helptooltip.dart';
-import 'package:tfg_library/widgets/profile/profilerentslistelement.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/help_tooltip.dart';
+import 'package:tfg_library/widgets/profile/profile_rents_list_element.dart';
+import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class ProfileRentsList extends StatelessWidget {
   const ProfileRentsList({

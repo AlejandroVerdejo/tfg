@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
-import 'package:tfg_library/widgets/catalog/booklist.dart';
-import 'package:tfg_library/widgets/helptooltip.dart';
-import 'package:tfg_library/widgets/text/normaltext.dart';
+import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/catalog/book_list.dart';
+import 'package:tfg_library/widgets/help_tooltip.dart';
+import 'package:tfg_library/widgets/text/normal_text.dart';
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,6 @@ class Catalog extends StatefulWidget {
 }
 
 class _CatalogState extends State<Catalog> {
-  // Metodo para obtener la preferencia del tema
   Future<Map<String, dynamic>> _loadData() async {
     // Obtiene los | Libros |
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();

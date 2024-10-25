@@ -317,8 +317,7 @@ class FirestoreManager {
     // Carga los usuarios
     Map<String, dynamic> users = await getUsers();
     for (var user in users.entries) {
-      if (user.value["level"] == 1) {
-        log("trabajador");
+      if (user.value["level"] <= 1) {
         workers[user.key] = user.value;
       }
     }

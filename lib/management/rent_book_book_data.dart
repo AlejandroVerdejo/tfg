@@ -2,32 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/betterdivider.dart';
-import 'package:tfg_library/widgets/text/rentdatetext.dart';
-import 'package:tfg_library/widgets/text/renttext.dart';
+import 'package:tfg_library/widgets/text/rent_text.dart';
 
-
-class ProfileRentsListElement extends StatefulWidget {
-  const ProfileRentsListElement({
+class RentBookBookData extends StatefulWidget {
+  const RentBookBookData({
     super.key,
     required this.theme,
-    required this.isbn,
-    required this.rent,
+    required this.bookkey,
   });
 
   final String theme;
-  final String isbn;
-  final Map rent;
+  final String bookkey;
 
   @override
-  State<ProfileRentsListElement> createState() =>
-      _ProfileRentsListElementState();
+  State<RentBookBookData> createState() => _RentBookBookDataState();
 }
 
-class _ProfileRentsListElementState extends State<ProfileRentsListElement> {
+class _RentBookBookDataState extends State<RentBookBookData> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, dynamic> book =
-        await firestoreManager.getMergedBook(widget.isbn);
+        await firestoreManager.getUnMergedBook(widget.bookkey);
     return {
       "book": book,
     };
@@ -48,7 +42,7 @@ class _ProfileRentsListElementState extends State<ProfileRentsListElement> {
           } else if (snapshot.hasError) {
             // Error
             return Center(
-              child: Text(getLang("error")),
+              child: Text(snapshot.error.toString()),
             );
           } else {
             // Ejecucion
@@ -67,17 +61,19 @@ class _ProfileRentsListElementState extends State<ProfileRentsListElement> {
                       width: elementImageSize,
                     ),
                   ),
-                  BetterDivider(theme: theme),
+                  const SizedBox(height: 20),
                   RentText(
                     theme: theme,
                     text: book["title"],
                     alignment: TextAlign.center,
                   ),
-                  RentDateText(
+                  RentText(
                     theme: theme,
-                    text: widget.rent["date"],
+                    text: book["aviable"]
+                        ? getLang("aviable")
+                        : getLang("notAviable"),
                     alignment: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
             );

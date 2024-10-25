@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/management/addbook.dart';
-import 'package:tfg_library/screens/homescreen.dart';
-import 'package:tfg_library/screens/loginscreen.dart';
+import 'package:tfg_library/management/add_book.dart';
+import 'package:tfg_library/screens/home_screen.dart';
+import 'package:tfg_library/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tfg_library/styles.dart';
 import 'firebase/firebase_options.dart';
