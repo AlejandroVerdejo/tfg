@@ -8,10 +8,12 @@ class WaitList extends StatefulWidget {
   const WaitList({
     super.key,
     required this.theme,
+    required this.user,
     required this.email,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
   final String email;
 
   @override
@@ -63,6 +65,7 @@ class _WaitListState extends State<WaitList> {
                   padding: bodyPadding,
                   child: BookList(
                     theme: theme,
+                    user: widget.user,
                     books: books,
                     type: "waitlist",
                     waitList: waitlist,

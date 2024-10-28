@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/management/add_book.dart';
+import 'package:tfg_library/management/edit_book.dart';
 import 'package:tfg_library/management/rent_book.dart';
 import 'package:tfg_library/management/users.dart';
 import 'package:tfg_library/widgets/catalog/catalog.dart';
@@ -40,8 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
   bool home = true;
 
   void updateScreen(String screen) {
+    String bookId = "";
+    if (screen.contains("editBook")) {
+      var splitted = screen.split("|");
+      screen = splitted[0];
+      bookId = splitted[1];
+    }
     var theme = widget.theme;
     switch (screen) {
+      // ? | INICIO |
       case "home":
         activeWigdet = Home(
           theme: theme,
@@ -51,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBarText = "";
         home = true;
         break;
+      // ? | PERFIL |
       case "profile":
         activeWigdet = Profile(
           theme: theme,
@@ -59,32 +68,43 @@ class _HomeScreenState extends State<HomeScreen> {
         appBarText = getLang("profile");
         home = false;
         break;
+      // ? | USUARIOS |
       case "users":
         activeWigdet = Users(theme: theme);
         appBarText = getLang("users");
         home = false;
         break;
+      // ? | CATALOGO |
       case "catalog":
-        activeWigdet = Catalog(theme: theme);
+        activeWigdet = Catalog(
+          theme: theme,
+          user: widget.user,
+          onScreenChange: updateScreen,
+        );
         appBarText = getLang("catalog");
         home = false;
         break;
+      // ? | LISTA DE DESEADOS |
       case "wishlist":
         activeWigdet = WishList(
           theme: theme,
+          user: widget.user,
           email: widget.user["email"],
         );
         appBarText = getLang("wishlist");
         home = false;
         break;
+      // ? | LISTA DE RECORDATORIOS |
       case "waitlist":
         activeWigdet = WaitList(
           theme: theme,
+          user: widget.user,
           email: widget.user["email"],
         );
         appBarText = getLang("waitlist");
         home = false;
         break;
+      // ? | AÑADIR LIBROS |
       case "addBook":
         activeWigdet = AddBook(
           theme: theme,
@@ -92,6 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
         appBarText = getLang("addBook");
         home = false;
         break;
+      // ? | EDITAR LIBRO |
+      case "editBook":
+        activeWigdet = EditBook(theme: theme, bookKey: bookId);
+        appBarText = getLang("editBook");
+        break;
+      // ? | PRESTAMO |
       case "rentBook":
         activeWigdet = RentBook(theme: theme);
         appBarText = getLang("rentBook");

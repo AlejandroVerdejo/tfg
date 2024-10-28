@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -131,8 +132,8 @@ class AddBookDataState extends State<AddBookData> {
     category = book["category"];
     genresController.text = book["genres"].join(", ");
     genres = book["genres"];
-    descriptionController.text = book["description"];
-    description = book["description"];
+    description = book["description"].replaceAll("<n><n>", "\n");
+    descriptionController.text = description;
   }
 
   Future<void> _pickImage() async {

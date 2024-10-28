@@ -48,6 +48,9 @@ const lang = {
     "deleteBookListDialog-content": "¿Estas seguro?",
     "deleteBookListDialog-true": "Eliminar",
     "deleteBookListDialog-false": "Cancelar",
+    "deleteBookDialog-title": "Se eliminara el libro",
+    "deleteAllBookDialog-title": "Se eliminaran todos los libros como este",
+    "deleteBookDialog-content": "¿Estas seguro?",
     "wishListToggle-add": "Libro añadido a la lista de deseados",
     "wishListToggle-del": "Libro eliminado de la lista de deseados",
     "waitListToggle-add": "Libro añadido a recordatorios",
@@ -84,6 +87,8 @@ const lang = {
     "worker": "Trabajador",
     "admin": "Administrador",
     "level": "Nivel",
+    "editBook": "Editar libro",
+    "saveBook": "Guardar libro"
   }
 };
 

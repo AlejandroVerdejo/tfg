@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -15,9 +17,13 @@ class Catalog extends StatefulWidget {
   const Catalog({
     super.key,
     required this.theme,
+    required this.user,
+    required this.onScreenChange,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
+  final Function(String) onScreenChange;
 
   @override
   State<Catalog> createState() => _CatalogState();
@@ -26,10 +32,11 @@ class Catalog extends StatefulWidget {
 class _CatalogState extends State<Catalog> {
   Future<Map<String, dynamic>> _loadData() async {
     // Obtiene los | Libros |
-    Map<String, dynamic> books = await firestoreManager.getMergedBooks();
+    Map<String, dynamic> books = widget.user["level"] <= 1
+        ? await firestoreManager.getUnMergedBooks()
+        : await firestoreManager.getMergedBooks();
     // Obtiene los Tags | Categorias | Generos | Editoriales | Idiomas |
     Map<String, List<String>> tags = await firestoreManager.getTags();
-    await firestoreManager.getWorkers();
     // Devuelve un mapa con los datos
     return {
       "books": books,
@@ -46,6 +53,10 @@ class _CatalogState extends State<Catalog> {
     super.initState();
     // Asigna un valor diferente en la primera carga
     expanded = false;
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   List<String> selectedCategories = [];
@@ -288,11 +299,14 @@ class _CatalogState extends State<Catalog> {
                     BetterDivider(theme: theme),
                     BookList(
                       theme: theme,
+                      user: widget.user,
                       books: books,
                       categoriesFilter: selectedCategories,
                       genresFilter: selectedGenres,
                       editorialsFilter: selectedEditorials,
                       languagesFilter: selectedLanguages,
+                      onRefresh: refresh,
+                      onScreenChange: widget.onScreenChange,
                     ),
                   ],
                 ),

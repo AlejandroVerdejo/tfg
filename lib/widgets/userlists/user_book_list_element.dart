@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -9,12 +8,14 @@ class UserBookListElement extends StatefulWidget {
   const UserBookListElement({
     super.key,
     required this.theme,
+    required this.user,
     required this.type,
     required this.book,
     required this.onDelete,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
   final String type;
   final Map<String, dynamic> book;
   final VoidCallback onDelete;
@@ -46,7 +47,9 @@ class _UserBookListElementState extends State<UserBookListElement> {
       children: [
         BookListElement(
           theme: theme,
+          user: widget.user,
           book: widget.book,
+          type: widget.type,
           onClose: _refresh,
         ),
         Positioned(
@@ -61,6 +64,8 @@ class _UserBookListElementState extends State<UserBookListElement> {
                       builder: (BuildContext context) {
                         return DeleteBookListDialog(
                           theme: theme,
+                          title: getLang("deleteBookListDialog-title"),
+                          message: getLang("deleteBookListDialog-content"),
                           onAccept: _delete,
                         );
                       });

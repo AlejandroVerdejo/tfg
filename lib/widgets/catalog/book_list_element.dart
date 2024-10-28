@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
@@ -12,13 +13,19 @@ class BookListElement extends StatefulWidget {
   const BookListElement({
     super.key,
     required this.theme,
+    required this.user,
     required this.book,
+    required this.type,
     this.onClose,
+    this.onScreenChange,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
   final Map<String, dynamic> book;
+  final String type;
   final VoidCallback? onClose;
+  final Function(String)? onScreenChange;
 
   @override
   State<BookListElement> createState() => _BookListElementState();
@@ -28,26 +35,31 @@ class _BookListElementState extends State<BookListElement> {
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
+    var book = widget.book;
+    var user = widget.user;
     return GestureDetector(
       onTap: () {
+        // var result = await
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Book(
               theme: theme,
-              book: widget.book,
+              user: user,
+              book: book,
+              type: widget.type,
+              onUpdate: widget.onClose,
+              onScreenChange: widget.onScreenChange,
             ),
           ),
-        ).then(
-          (result) {
-            if (widget.onClose != null) {
-              widget.onClose!();
-            }
-          },
         );
+        // if (result) {
+        //   log(result.toString());
+        //   widget.onClose!();
+        // }
       },
       child: Opacity(
-        opacity: widget.book["aviable"] ? 1 : 0.3,
+        opacity: book["aviable"] ? 1 : 0.3,
         child: ConstrainedBox(
           constraints:
               BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
@@ -62,7 +74,7 @@ class _BookListElementState extends State<BookListElement> {
                       Padding(
                           padding: imageBookListPadding,
                           child: Image.memory(
-                            widget.book["image"],
+                            book["image"],
                             width: elementImageSize,
                           )),
                       Padding(
@@ -76,40 +88,39 @@ class _BookListElementState extends State<BookListElement> {
                             ListDataText(
                                 theme: theme,
                                 title: getLang("title"),
-                                text: "${widget.book["title"]}"),
+                                text: "${book["title"]}"),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("author"),
-                                text: "${widget.book["author"]}"),
+                                text: "${book["author"]}"),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("editorial"),
-                                text: "${widget.book["editorial"]}"),
+                                text: "${book["editorial"]}"),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("language"),
-                                text: "${widget.book["language"]}"),
+                                text: "${book["language"]}"),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("state"),
-                                text: widget.book["aviable"]
+                                text: book["aviable"]
                                     ? getLang("aviable")
                                     : getLang("notAviable")),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("category"),
-                                text: "${widget.book["category"]}"),
+                                text: "${book["category"]}"),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("genres"),
-                                text: "${widget.book["genres"].join(", ")}"),
-                            widget.book["aviable"] ||
-                                    widget.book["return_date"] == null
+                                text: "${book["genres"].join(", ")}"),
+                            book["aviable"] || book["return_date"] == null
                                 ? const SizedBox.shrink()
                                 : ListDataText(
                                     theme: theme,
                                     title: getLang("espectedAviable"),
-                                    text: "${widget.book["return_date"]}")
+                                    text: "${book["return_date"]}")
                           ],
                         ),
                       )
@@ -119,7 +130,7 @@ class _BookListElementState extends State<BookListElement> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: DescriptionRichText(
-                        theme: theme, text: widget.book["description"]),
+                        theme: theme, text: book["description"]),
                   ),
                 ],
               ),

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tfg_library/management/add_book_data.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
@@ -130,7 +131,7 @@ class FirestoreManager {
       book["aviable"] = valorCombinado;
     } else {
       // Carga el libro
-      book = data["00001"];
+      book = data[data.keys.toList()[0]];
       // Introduce la imagen
       book["image"] = await storageManager.getImage(book["isbn"]);
     }
@@ -244,6 +245,39 @@ class FirestoreManager {
     // Carga el libro
     Map<String, dynamic> book = await getUnMergedBook(bookId);
     return book["aviable"];
+  }
+
+  // * Actualizara la disponibilidad del libro
+  Future<void> updateAviability(String bookId) async {
+    // Divide el ID conjunto del libro para sacar el ISBN y el ID individual
+    var splitted = bookId.split("-");
+    String isbn = splitted[0];
+    String id = splitted[1];
+    final bookRef = db.collection("Books").doc(isbn);
+    DocumentSnapshot doc = await db.collection("Books").doc(isbn).get();
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    Map<String, dynamic> book = data[id];
+    book["aviable"] = book["aviable"] ? false : true;
+    bookRef.update({id: book});
+  }
+
+  // *
+  Future<void> deleteSingleBook(String bookId) async {
+    // Divide el identificador
+    var splitted = bookId.split("-");
+    String isbn = splitted[0];
+    String id = splitted[1];
+    final bookRef = db.collection("Books").doc(isbn);
+    DocumentSnapshot doc = await bookRef.get();
+    Map<String, dynamic> books = doc.data() as Map<String, dynamic>;
+    books.remove(id);
+    await bookRef.set(books);
+  }
+
+  // *
+  Future<void> deleteAllBooks(String bookId) async {
+    final bookRef = db.collection("Books").doc(isbn);
+    await bookRef.delete();
   }
 
   // ?

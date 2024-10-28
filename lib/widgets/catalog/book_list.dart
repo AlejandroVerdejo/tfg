@@ -9,6 +9,7 @@ class BookList extends StatefulWidget {
     super.key,
     required this.theme,
     required this.books,
+    required this.user,
     this.type,
     this.categoriesFilter,
     this.genresFilter,
@@ -17,10 +18,12 @@ class BookList extends StatefulWidget {
     this.wishList,
     this.waitList,
     this.onRefresh,
+    this.onScreenChange,
   });
 
   final String theme;
   final Map<String, dynamic> books;
+  final Map<String, dynamic> user;
   final String? type;
   final List<String>? categoriesFilter;
   final List<String>? genresFilter;
@@ -29,6 +32,7 @@ class BookList extends StatefulWidget {
   final List<dynamic>? wishList;
   final List<dynamic>? waitList;
   final VoidCallback? onRefresh;
+  final Function(String)? onScreenChange;
 
   @override
   State<BookList> createState() => _BookListState();
@@ -103,6 +107,7 @@ class _BookListState extends State<BookList> {
           if (widget.type == "wishlist" || widget.type == "waitlist") {
             return UserBookListElement(
               theme: theme,
+              user: widget.user,
               type: widget.type!,
               book: entry.value,
               onDelete: widget.onRefresh!,
@@ -110,7 +115,11 @@ class _BookListState extends State<BookList> {
           }
           return BookListElement(
             theme: theme,
+            user: widget.user,
+            type: "book",
             book: entry.value,
+            onClose: widget.onRefresh,
+            onScreenChange: widget.onScreenChange,
           );
         }).toList());
   }

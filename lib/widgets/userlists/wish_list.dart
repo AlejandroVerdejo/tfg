@@ -7,10 +7,12 @@ class WishList extends StatefulWidget {
   const WishList({
     super.key,
     required this.theme,
+    required this.user,
     required this.email,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
   final String email;
 
   @override
@@ -63,6 +65,7 @@ class _WishListState extends State<WishList> {
                 padding: bodyPadding,
                 child: BookList(
                   theme: theme,
+                  user: widget.user,
                   books: books,
                   type: "wishlist",
                   wishList: wishlist,

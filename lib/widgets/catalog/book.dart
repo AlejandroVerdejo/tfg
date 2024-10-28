@@ -1,23 +1,33 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/screens/home_screen.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 import 'package:tfg_library/widgets/text/bar_text.dart';
 import 'package:tfg_library/widgets/text/list_data_text.dart';
 import 'package:tfg_library/widgets/text/sinopsis_book_text.dart';
+import 'package:tfg_library/widgets/userlists/delete_book_list_dialog.dart';
 
 class Book extends StatefulWidget {
   const Book({
     super.key,
     required this.theme,
+    required this.user,
     required this.book,
+    required this.type,
+    this.onUpdate,
+    this.onScreenChange,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
   final Map<String, dynamic> book;
+  final String type;
+  final VoidCallback? onUpdate;
+  final Function(String)? onScreenChange;
 
   @override
   State<Book> createState() => _BookState();
@@ -25,20 +35,24 @@ class Book extends StatefulWidget {
 
 class _BookState extends State<Book> {
   Future<Map<String, dynamic>> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String savedUser = prefs.getString("savedUser")!;
     bool inWishList = await firestoreManager.checkUserWishList(
-        savedUser, widget.book["isbn"]);
+        widget.user["email"], widget.book["isbn"]);
     bool inWaitList = await firestoreManager.checkUserWaitList(
-        savedUser, widget.book["isbn"]);
+        widget.user["email"], widget.book["isbn"]);
     return {
-      "savedUser": savedUser,
       "inWishList": inWishList,
       "inWaitList": inWaitList,
     };
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+  bool updated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    updated = false;
+  }
 
   Future<void> _toggleWishList(bool inWishList, String email) async {
     if (inWishList) {
@@ -66,6 +80,24 @@ class _BookState extends State<Book> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  ModalRoute? _route;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _route = ModalRoute.of(context);
+    _route?.addScopedWillPopCallback(() async {
+      Navigator.pop(context, updated);
+      return true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _route?.removeScopedWillPopCallback(() async => true);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -85,9 +117,12 @@ class _BookState extends State<Book> {
             // Ejecucion
             final data = snapshot.data!;
             var theme = widget.theme;
-            var user = data["savedUser"];
+            var user = widget.user;
+            var book = widget.book;
             var inWishList = data["inWishList"];
             var inWaitList = data["inWaitList"];
+            bool showOptions =
+                user["level"] <= 1 && widget.type == "book" ? true : false;
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
@@ -98,7 +133,7 @@ class _BookState extends State<Book> {
                     )),
                 foregroundColor: colors[theme]["barTextColor"],
                 title: BarText(
-                  text: widget.book["title"],
+                  text: book["title"],
                 ),
                 backgroundColor: colors[theme]["headerBackgroundColor"],
               ),
@@ -116,9 +151,126 @@ class _BookState extends State<Book> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              showOptions
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Tooltip(
+                                          message: "Editar libro",
+                                          child: IconButton(
+                                            onPressed: () async {
+                                              // Meotodo para cargar EditBook
+                                              widget.onScreenChange!(
+                                                "editBook|${book["isbn"]}",
+                                              );
+                                              Navigator.of(context).pop();
+                                            },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: colors[theme]
+                                                  ["headerTextColor"],
+                                            ),
+                                          ),
+                                        ),
+                                        Tooltip(
+                                          message: "Cambiar disponibilidad",
+                                          child: IconButton(
+                                            onPressed: () {
+                                              log("disponibilidad");
+                                              firestoreManager
+                                                  .updateAviability(book["id"]);
+                                              widget.onUpdate!();
+                                              Navigator.of(context).pop();
+                                            },
+                                            icon: Icon(
+                                              Icons.book_outlined,
+                                              color: colors[theme]
+                                                  ["headerTextColor"],
+                                            ),
+                                          ),
+                                        ),
+                                        Tooltip(
+                                          message: "Eliminar este libro",
+                                          child: IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return DeleteBookListDialog(
+                                                    theme: theme,
+                                                    title: getLang(
+                                                        "deleteBookDialog-title"),
+                                                    message: getLang(
+                                                        "deleteBookDialog-content"),
+                                                    onAccept: () {
+                                                      firestoreManager
+                                                          .deleteSingleBook(
+                                                              widget
+                                                                  .book["id"]);
+                                                      widget.onUpdate!();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: colors[theme]
+                                                  ["headerTextColor"],
+                                            ),
+                                          ),
+                                        ),
+                                        Tooltip(
+                                          message:
+                                              "Eliminar todos los libros como este",
+                                          child: IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return DeleteBookListDialog(
+                                                    theme: theme,
+                                                    title: getLang(
+                                                        "deleteAllBookDialog-title"),
+                                                    message: getLang(
+                                                        "deleteBookDialog-content"),
+                                                    onAccept: () {
+                                                      firestoreManager
+                                                          .deleteAllBooks(widget
+                                                              .book["isbn"]);
+                                                      widget.onUpdate!();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.delete_forever,
+                                              color: colors[theme]
+                                                  ["headerTextColor"],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink(),
+                              showOptions
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 15, bottom: 15),
+                                      child: BetterDivider(theme: theme),
+                                    )
+                                  : const SizedBox.shrink(),
                               Center(
                                 child: Image.memory(
-                                  widget.book["image"],
+                                  book["image"],
                                   width: bookImageSize,
                                 ),
                               ),
@@ -127,66 +279,68 @@ class _BookState extends State<Book> {
                                     const EdgeInsets.only(top: 15, bottom: 15),
                                 child: BetterDivider(theme: theme),
                               ),
-                              // ListDataText(
-                              //     title: getLang("id"),
-                              //     text: "${widget.book["id"]}"),
+                              showOptions
+                                  ? ListDataText(
+                                      theme: theme,
+                                      title: getLang("id"),
+                                      text: "${book["id"]}")
+                                  : const SizedBox.shrink(),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("title"),
-                                  text: "${widget.book["title"]}"),
+                                  text: "${book["title"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("author"),
-                                  text: "${widget.book["author"]}"),
+                                  text: "${book["author"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("editorial"),
-                                  text: "${widget.book["editorial"]}"),
+                                  text: "${book["editorial"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("date"),
-                                  text: "${widget.book["date"]}"),
+                                  text: "${book["date"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("pages"),
-                                  text: "${widget.book["pages"]}"),
+                                  text: "${book["pages"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("language"),
-                                  text: "${widget.book["language"]}"),
+                                  text: "${book["language"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("isbn"),
-                                  text: "${widget.book["isbn"]}"),
+                                  text: "${book["isbn"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("age"),
-                                  text: "${widget.book["age"]}"),
+                                  text: "${book["age"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("state"),
-                                  text: widget.book["aviable"]
+                                  text: book["aviable"]
                                       ? getLang("aviable")
                                       : getLang("notAviable")),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("category"),
-                                  text: "${widget.book["category"]}"),
+                                  text: "${book["category"]}"),
                               ListDataText(
                                   theme: theme,
                                   title: getLang("genres"),
-                                  text: "${widget.book["genres"].join(", ")}"),
-                              widget.book["aviable"] ||
-                                      widget.book["return_date"] == null
+                                  text: "${book["genres"].join(", ")}"),
+                              book["aviable"] || book["return_date"] == null
                                   ? const SizedBox.shrink()
                                   : ListDataText(
                                       theme: theme,
                                       title: getLang("espectedAviable"),
-                                      text: "${widget.book["return_date"]}"),
+                                      text: "${book["return_date"]}"),
                               SinopsisBookText(
                                   theme: theme,
                                   title: getLang("sinopsis"),
-                                  text: "${widget.book["description"]}"),
+                                  text: "${book["description"]}"),
                             ],
                           ),
                         ),
@@ -207,12 +361,15 @@ class _BookState extends State<Book> {
                         children: [
                           IconButton(
                             onPressed: () {
+                              if (widget.type == "wishlist") {
+                                updated = true;
+                              }
                               inWishList
                                   ? showSnackBar(
                                       context, getLang("wishListToggle-del"))
                                   : showSnackBar(
                                       context, getLang("wishListToggle-add"));
-                              _toggleWishList(inWishList, user);
+                              _toggleWishList(inWishList, user["email"]);
                             },
                             icon: Icon(
                               inWishList
@@ -221,16 +378,19 @@ class _BookState extends State<Book> {
                               color: colors[theme]["headerTextColor"],
                             ),
                           ),
-                          widget.book["aviable"]
+                          book["aviable"]
                               ? const SizedBox.shrink()
                               : IconButton(
                                   onPressed: () {
+                                    if (widget.type == "waitlist") {
+                                      updated = true;
+                                    }
                                     inWaitList
                                         ? showSnackBar(context,
                                             getLang("waitListToggle-del"))
                                         : showSnackBar(context,
                                             getLang("waitListToggle-add"));
-                                    _toggleWaitList(inWaitList, user);
+                                    _toggleWaitList(inWaitList, user["email"]);
                                   },
                                   icon: Icon(
                                     inWaitList

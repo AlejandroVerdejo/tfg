@@ -23,7 +23,6 @@ class PopularList extends StatelessWidget {
             child: Wrap(
               spacing: 10,
               children: popularBooks.map<Widget>((popularBook) {
-                // var book = books[popularBook]["00001"];
                 return PopularListElement(theme: theme, bookkey: popularBook);
               }).toList(),
             ),

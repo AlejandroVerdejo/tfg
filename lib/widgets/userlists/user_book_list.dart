@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -9,13 +8,15 @@ class UserBookList extends StatefulWidget {
   const UserBookList({
     super.key,
     required this.theme,
-    this.type,
+    required this.user,
+    required this.type,
     this.list,
     this.onRefresh,
   });
 
   final String theme;
-  final String? type;
+  final Map<String, dynamic> user;
+  final String type;
   final List<dynamic>? list;
   final VoidCallback? onRefresh;
 
@@ -92,12 +93,18 @@ class _UserBookListState extends State<UserBookList> {
                 if (widget.type == "wishlist" || widget.type == "waitlist") {
                   return UserBookListElement(
                     theme: theme,
-                    type: widget.type!,
+                    user: widget.user,
+                    type: widget.type,
                     book: bookentry.value,
                     onDelete: widget.onRefresh!,
                   );
                 }
-                return BookListElement(theme: theme, book: bookentry.value);
+                return BookListElement(
+                  theme: theme,
+                  user: widget.user,
+                  book: bookentry.value,
+                  type: widget.type,
+                );
               },
             );
           }
