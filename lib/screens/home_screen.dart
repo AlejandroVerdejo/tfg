@@ -5,6 +5,7 @@ import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/management/add_book.dart';
 import 'package:tfg_library/management/edit_book.dart';
 import 'package:tfg_library/management/rent_book.dart';
+import 'package:tfg_library/management/return_book.dart';
 import 'package:tfg_library/management/users.dart';
 import 'package:tfg_library/widgets/catalog/catalog.dart';
 import 'package:tfg_library/widgets/profile/profile.dart';
@@ -114,7 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       // ? | EDITAR LIBRO |
       case "editBook":
-        activeWigdet = EditBook(theme: theme, bookKey: bookId);
+        activeWigdet = EditBook(
+          theme: theme,
+          bookKey: bookId,
+          onEdit: updateScreen,
+        );
         appBarText = getLang("editBook");
         break;
       // ? | PRESTAMO |
@@ -123,6 +128,11 @@ class _HomeScreenState extends State<HomeScreen> {
         appBarText = getLang("rentBook");
         home = false;
         break;
+      // ? | DEVOLUCION |
+      case "returnBook":
+        activeWigdet = ReturnBook(theme: theme);
+        appBarText = getLang("returnBook");
+        home = false;
     }
     setState(() {});
   }

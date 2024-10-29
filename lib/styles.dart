@@ -77,6 +77,11 @@ getStyle(String style, String theme) {
       fontSize: isAndroid ? 14 : 20,
       color: colors[theme]["mainTextColor"],
     ),
+    "titleTextStyle": GoogleFonts.nunito(
+      fontWeight: FontWeight.bold,
+      fontSize: isAndroid ? 14 : 20,
+      color: colors[theme]["mainTextColor"],
+    ),
     "selectedTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: isAndroid ? 14 : 20,

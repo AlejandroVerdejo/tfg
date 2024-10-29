@@ -20,10 +20,12 @@ class EditBook extends StatefulWidget {
     super.key,
     required this.theme,
     required this.bookKey,
+    required this.onEdit,
   });
 
   final String theme;
   final String bookKey;
+  final Function(String) onEdit;
 
   @override
   State<EditBook> createState() => _EditBookState();
@@ -45,8 +47,6 @@ TextEditingController isbnController = TextEditingController();
 String isbn = "";
 TextEditingController ageController = TextEditingController();
 String age = "";
-TextEditingController stateController = TextEditingController();
-String state = "";
 TextEditingController categoryController = TextEditingController();
 String category = "";
 TextEditingController genresController = TextEditingController();
@@ -69,6 +69,12 @@ class _EditBookState extends State<EditBook> {
     return {"tags": tags};
   }
 
+  @override
+  void initState() {
+    super.initState();
+    imageUpdated = false;
+  }
+
   void setData(Map<String, dynamic> book) {
     // Asigna el valor de la primera carga
     titleController.text = book["title"];
@@ -87,9 +93,6 @@ class _EditBookState extends State<EditBook> {
     isbn = book["isbn"];
     ageController.text = book["age"];
     age = book["age"];
-    stateController.text =
-        book["aviable"] ? getLang("aviable") : getLang("notAviable");
-    state = book["aviable"] ? getLang("aviable") : getLang("notAviable");
     categoryController.text = book["category"];
     category = book["category"];
     genresController.text = book["genres"].join(", ");
@@ -97,8 +100,9 @@ class _EditBookState extends State<EditBook> {
     description = book["description"].replaceAll("<n><n>", "\n");
     descriptionController.text = description;
 
-    image = book["image"];
-    imageUpdated = false;
+    if (!imageUpdated) {
+      image = book["image"];
+    }
   }
 
   Future<void> _pickImage() async {
@@ -107,7 +111,6 @@ class _EditBookState extends State<EditBook> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      log("filePicked");
       imageUpdated = true;
       image = await pickedFile.readAsBytes();
       setState(() {});
@@ -323,6 +326,7 @@ class _EditBookState extends State<EditBook> {
                           data: getStyle("loginFieldSelectionTheme", theme),
                           child: FormBuilderTextField(
                             controller: isbnController,
+                            readOnly: true,
                             name: "isbn",
                             style: getStyle("normalTextStyle", theme),
                             decoration: getTextFieldStyle(
@@ -345,44 +349,6 @@ class _EditBookState extends State<EditBook> {
                             style: getStyle("normalTextStyle", theme),
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle", theme, getLang("age")),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
-                            ]),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        // ? Estado
-                        TextSelectionTheme(
-                          data: getStyle("loginFieldSelectionTheme", theme),
-                          child: FormBuilderTextField(
-                            controller: stateController,
-                            readOnly: true,
-                            name: "state",
-                            style: getStyle("normalTextStyle", theme),
-                            decoration: getTextFieldStyle(
-                                "defaultTextFieldStyle",
-                                theme,
-                                getLang("state")),
-                            onTap: () async {
-                              SelectDialog.showModal(context,
-                                  showSearchBox: false,
-                                  backgroundColor: colors[theme]
-                                      ["mainBackgroundColor"],
-                                  selectedValue: state,
-                                  items: ["Disponible", "No disponible"],
-                                  itemBuilder: (context, item, isSelected) {
-                                return SelectDialogField(
-                                  theme: theme,
-                                  item: item,
-                                  isSelected: isSelected,
-                                );
-                              }, onChange: (String selected) {
-                                state = selected;
-                                stateController.text = state;
-                                // setState(() {});
-                              });
-                            },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -493,48 +459,23 @@ class _EditBookState extends State<EditBook> {
                         ),
                         const SizedBox(height: 30),
                         // ? Seleccionar imagen
-                        image == null
-                            ? GestureDetector(
-                                child: Container(
-                                  color: colors[theme]
-                                      ["secondaryBackgroundColor"],
-                                  constraints: BoxConstraints(
-                                    minWidth: 250, // Ancho mínimo
-                                    maxWidth: 300, // Ancho máximo
-                                    minHeight: 350, // Altura mínima
-                                    // maxHeight: 400, // Altura máxima
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(Icons.image),
-                                      DescriptionRichText(
-                                          theme: theme,
-                                          text: "Selecciona una imagen"),
-                                    ],
-                                  ),
-                                ),
-                                onTap: () async {
-                                  _pickImage();
-                                },
-                              )
-                            : GestureDetector(
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                    minWidth: 250, // Ancho mínimo
-                                    maxWidth: 300, // Ancho máximo
-                                    minHeight: 350, // Altura mínima
-                                    // maxHeight: 400, // Altura máxima
-                                  ),
-                                  child: Image.memory(
-                                    image!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                onTap: () async {
-                                  _pickImage();
-                                },
-                              ),
+                        GestureDetector(
+                          child: Container(
+                            constraints: BoxConstraints(
+                              minWidth: 250, // Ancho mínimo
+                              maxWidth: 300, // Ancho máximo
+                              minHeight: 350, // Altura mínima
+                              // maxHeight: 400, // Altura máxima
+                            ),
+                            child: Image.memory(
+                              image!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          onTap: () async {
+                            _pickImage();
+                          },
+                        ),
                         const SizedBox(height: 30),
                         OutlinedButton(
                           style: getStyle("loginButtonStyle", theme),
@@ -545,10 +486,6 @@ class _EditBookState extends State<EditBook> {
                                 "title": titleController.text,
                                 "author": authorController.text,
                                 "isbn": isbnController.text,
-                                "aviable":
-                                    stateController.text == getLang("aviable")
-                                        ? true
-                                        : false,
                                 "category": categoryController.text,
                                 "date": dateController.text,
                                 "age": ageController.text,
@@ -561,13 +498,13 @@ class _EditBookState extends State<EditBook> {
                                 "description": descriptionController.text
                                     .replaceAll("\n", "<n><n>"),
                               };
-                              await firestoreManager.addBook(book);
+                              await firestoreManager.editBook(book, null);
+                              // await firestoreManager.addBook(book);
                               if (imageUpdated) {
-                                // await storageManager.addImage(
-                                // image!, isbnController.text);
-                                log("updated");
+                                await firestoreManager.editBook(book, image);
                               }
-                            } else {}
+                            }
+                            widget.onEdit("catalog");
                           },
                           child: Text(
                             getLang("saveBook"),

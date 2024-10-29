@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -115,7 +117,7 @@ class _RentBookState extends State<RentBook> {
                             await firestoreManager.checkBookAviability(book);
                       } else {
                         showSnackBar(
-                            context, getLang("rentBookLoadUser-error"));
+                            context, getLang("rentBookLoadBook-error"));
                       }
                       setState(() {});
                     }
@@ -213,10 +215,15 @@ class _RentBookState extends State<RentBook> {
                   style: getStyle("loginButtonStyle", theme),
                   onPressed: () async {
                     if (_formKey.currentState?.saveAndValidate() ?? false) {
-                      await firestoreManager.newUserRent(user, book, date);
-                      setState(() {
-                        _update();
-                      });
+                      if (userLoaded && bookLoaded) {
+                        await firestoreManager.newUserRent(user, book, date);
+                        showSnackBar(context, getLang("rentBook-success"));
+                        setState(() {
+                          _update();
+                        });
+                      } else {
+                        showSnackBar(context, getLang("rentBook-error"));
+                      }
                     }
                   },
                   child: Text(getLang("rentBookAction")),

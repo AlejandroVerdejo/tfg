@@ -21,7 +21,7 @@ class RentBookUserData extends StatefulWidget {
 class _RentBookUserDataState extends State<RentBookUserData> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, dynamic> user = await firestoreManager.getUser(widget.email);
-    int activeRents = await firestoreManager.getUserActiveRents(widget.email);
+    int activeRents = await firestoreManager.getUserActiveRentsNumber(widget.email);
     return {
       "user": user,
       "activeRents": activeRents,

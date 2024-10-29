@@ -35,6 +35,14 @@ class _AddBookState extends State<AddBook> {
     loadBook = false;
   }
 
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
@@ -66,8 +74,10 @@ class _AddBookState extends State<AddBook> {
                       if (await firestoreManager
                           .checkBook(existentBookController.text)) {
                         loadBook = true;
+                        setState(() {});
+                      } else {
+                        showSnackBar(context, "rentBookLoadBook-error");
                       }
-                      setState(() {});
                       // childKey.currentState?.refresh();
                     }
                   },

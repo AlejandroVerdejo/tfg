@@ -35,6 +35,31 @@ class FirestoreManager {
     }
   }
 
+  // *
+  Future<void> editBook(Map<String, dynamic> newBook, Uint8List? image) async {
+    String isbn = newBook["isbn"];
+    final bookRef = db.collection("Books").doc(isbn);
+    DocumentSnapshot doc = await bookRef.get();
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    for (var book in data.entries) {
+      data[book.key]["title"] = newBook["title"];
+      data[book.key]["author"] = newBook["author"];
+      data[book.key]["age"] = newBook["age"];
+      data[book.key]["category"] = newBook["category"];
+      data[book.key]["description"] = newBook["description"];
+      data[book.key]["genres"] = newBook["genres"];
+      data[book.key]["editorial"] = newBook["editorial"];
+      data[book.key]["language"] = newBook["language"];
+      data[book.key]["pages"] = newBook["pages"];
+    }
+    await bookRef.set(data);
+
+    StorageManager storageManager = StorageManager();
+    if (image != null) {
+      storageManager.addImage(image, newBook["isbn"]);
+    }
+  }
+
   // * Devolvera la lista de libros
   Future<Map<String, dynamic>> getBooks() async {
     Map<String, dynamic> books = {};
@@ -496,8 +521,30 @@ class FirestoreManager {
     return rents;
   }
 
+  // * Devolvera los prestamos activos del usuario
+  Future<List<dynamic>> getUserActiveRents(String email) async {
+    // Carga la lista de libros alquilados
+    List<dynamic> rents = await getUserRents(email);
+    List activeRents = [];
+    if (rents.isNotEmpty) {
+      // activeRents = (rents).where((rent) => rent["active"] == true).toList();
+      for (var i = 0; i < rents.length; i++) {
+        if (rents[i]["active"]) {
+          rents[i]["bookData"] = await getMergedBook(rents[i]["book"]["isbn"]);
+          rents[i]["listPosition"] = i;
+          activeRents.add(rents[i]);
+        }
+      }
+    }
+    // for (var i = 0; i < activeRents.length; i++) {
+    //   activeRents[i]["bookData"] =
+    //       await getMergedBook(activeRents[i]["book"]["isbn"]);
+    // }
+    return activeRents;
+  }
+
   // * Devolvera la cantidad de prestamos activos del usuario
-  Future<int> getUserActiveRents(String email) async {
+  Future<int> getUserActiveRentsNumber(String email) async {
     // Carga la lista de libros alquilados
     List<dynamic> rents = await getUserRents(email);
     List activeRents = [];
@@ -641,26 +688,42 @@ class FirestoreManager {
     userRef.update({"rents": rents});
     // Crea la referencia del libro
     final bookRef = db.collection("Books").doc(isbn);
-    // Carga el libro
-    Map<String, dynamic> book = await getUnMergedBook(bookId);
-    // Cambia el valor "aviable" del libro a false
-    book["aviable"] = false;
-    // Introduce la fecha de devolucion del libro
-    book["return_date"] = returnDate;
-    // Actualiza los datos del libro
-    bookRef.update({id: book});
-    // Crea la referencia a la lista de popularidad
-    final popRef = db.collection("Books").doc("Popularity");
-    // Carga el Documento de popularidad
-    DocumentSnapshot popDoc = await popRef.get();
-    // Carga los datos de popularidad
-    Map<String, dynamic> popBooks = popDoc.data() as Map<String, dynamic>;
-    // Obtiene la popularidad del libro
-    int popBook = popBooks[isbn];
-    // Aumenta la popularidad del libro
-    popBook += 1;
-    // Actualiza el valor
-    popRef.update({isbn: popBook});
+    // Actualiza la disponibilidad
+    await bookRef.update({"$id.aviable": false});
+    // Actualiza la fecha de devolucion
+    await bookRef.update({"$id.return_date": returnDate});
+    // // Carga el libro
+    // Map<String, dynamic> book = await getUnMergedBook(bookId);
+    // // Cambia el valor "aviable" del libro a false
+    // book["aviable"] = false;
+    // // Introduce la fecha de devolucion del libro
+    // book["return_date"] = returnDate;
+    // // Actualiza los datos del libro
+    // bookRef.update({id: book});
+    // // Crea la referencia a la lista de popularidad
+    // final popRef = db.collection("Books").doc("Popularity");
+    // // Carga el Documento de popularidad
+    // DocumentSnapshot popDoc = await popRef.get();
+    // // Carga los datos de popularidad
+    // Map<String, dynamic> popBooks = popDoc.data() as Map<String, dynamic>;
+    // // Obtiene la popularidad del libro
+    // int popBook = popBooks[isbn];
+    // // Aumenta la popularidad del libro
+    // popBook += 1;
+    // // Actualiza el valor
+    // popRef.update({isbn: popBook});
+  }
+
+  //*
+  Future<void> returnUserRent(
+      String email, String isbn, String id, int pos) async {
+    final userRef = db.collection("Users").doc(email);
+    final bookRef = db.collection("Books").doc(isbn);
+    List<dynamic> rents = await getUserRents(email);
+    rents[pos]["active"] = false;
+    await userRef.update({"rents": rents});
+    await bookRef.update({"$id.aviable": true});
+    await bookRef.update({"$id.return_date": ""});
   }
 
   // ?

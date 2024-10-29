@@ -125,15 +125,16 @@ class AddBookDataState extends State<AddBookData> {
     isbn = book["isbn"];
     ageController.text = book["age"];
     age = book["age"];
-    stateController.text =
-        book["aviable"] ? getLang("aviable") : getLang("notAviable");
-    state = book["aviable"] ? getLang("aviable") : getLang("notAviable");
+    stateController.text = getLang("aviable");
+    state = getLang("aviable");
     categoryController.text = book["category"];
     category = book["category"];
     genresController.text = book["genres"].join(", ");
     genres = book["genres"];
     description = book["description"].replaceAll("<n><n>", "\n");
     descriptionController.text = description;
+
+    image = book["image"];
   }
 
   Future<void> _pickImage() async {
@@ -149,6 +150,14 @@ class AddBookDataState extends State<AddBookData> {
 
   void refresh() {
     setState(() {});
+  }
+
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -396,27 +405,25 @@ class AddBookDataState extends State<AddBookData> {
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
                             "defaultTextFieldStyle", theme, getLang("state")),
-                        onTap: !bookLoaded
-                            ? () async {
-                                SelectDialog.showModal(context,
-                                    showSearchBox: false,
-                                    backgroundColor: colors[theme]
-                                        ["mainBackgroundColor"],
-                                    selectedValue: state,
-                                    items: ["Disponible", "No disponible"],
-                                    itemBuilder: (context, item, isSelected) {
-                                  return SelectDialogField(
-                                    theme: theme,
-                                    item: item,
-                                    isSelected: isSelected,
-                                  );
-                                }, onChange: (String selected) {
-                                  state = selected;
-                                  stateController.text = state;
-                                  // setState(() {});
-                                });
-                              }
-                            : null,
+                        onTap: () async {
+                          SelectDialog.showModal(context,
+                              showSearchBox: false,
+                              backgroundColor: colors[theme]
+                                  ["mainBackgroundColor"],
+                              selectedValue: state,
+                              items: ["Disponible", "No disponible"],
+                              itemBuilder: (context, item, isSelected) {
+                            return SelectDialogField(
+                              theme: theme,
+                              item: item,
+                              isSelected: isSelected,
+                            );
+                          }, onChange: (String selected) {
+                            state = selected;
+                            stateController.text = state;
+                            // setState(() {});
+                          });
+                        },
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -601,6 +608,7 @@ class AddBookDataState extends State<AddBookData> {
                             await storageManager.addImage(
                                 image!, isbnController.text);
                           }
+                          showSnackBar(context, getLang("addBook-success"));
                         } else {}
                       },
                       child: Text(

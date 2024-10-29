@@ -114,7 +114,6 @@ class _BookDataState extends State<BookData> {
                                 message: "Cambiar disponibilidad",
                                 child: IconButton(
                                   onPressed: () {
-                                    log("disponibilidad");
                                     firestoreManager
                                         .updateAviability(book["id"]);
                                     widget.onUpdate!();

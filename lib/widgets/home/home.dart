@@ -46,8 +46,8 @@ class _HomeState extends State<Home> {
           );
         } else if (snapshot.hasError) {
           // Error
-          return const Center(
-            child: Text("Error"),
+          return Center(
+            child: Text(getLang("error")),
           );
         } else {
           // Ejecucion
@@ -71,7 +71,8 @@ class _HomeState extends State<Home> {
                     PopularList(theme: theme, popularBooks: popularBooks),
                     waitListAviability
                         ? Container(
-                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(
+                                left: 80, top: 30, right: 80, bottom: 30),
                             decoration: BoxDecoration(
                               color: colors[theme]
                                   ["mainBackgroundColorTransparent"],
@@ -85,8 +86,7 @@ class _HomeState extends State<Home> {
                               children: [
                                 NormalText(
                                   theme: theme,
-                                  text:
-                                      "Hay libros de tus recordatorios disponibles",
+                                  text: getLang("waitlistReminder"),
                                   alignment: TextAlign.center,
                                 ),
                                 const SizedBox(height: 20),
@@ -96,8 +96,7 @@ class _HomeState extends State<Home> {
                                   },
                                   child: NormalText(
                                     theme: theme,
-                                    text:
-                                        "Pulsa aqui para ver tus recordatorios",
+                                    text: getLang("waitlistShortcut"),
                                     alignment: TextAlign.center,
                                   ),
                                 ),
@@ -115,7 +114,25 @@ class _HomeState extends State<Home> {
                             },
                             child: NormalText(
                               theme: theme,
-                              text: "Nuevo prestamo",
+                              text: getLang("rentBook"),
+                              alignment: TextAlign.center,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    level <= 1
+                        ? const SizedBox(height: 30)
+                        : const SizedBox.shrink(),
+
+                    // Devolucion
+                    level <= 1
+                        ? OutlinedButton(
+                            style: getStyle("loginButtonStyle", theme),
+                            onPressed: () {
+                              widget.onScreenChange("returnBook");
+                            },
+                            child: NormalText(
+                              theme: theme,
+                              text: getLang("returnBook"),
                               alignment: TextAlign.center,
                             ),
                           )
@@ -133,7 +150,7 @@ class _HomeState extends State<Home> {
                             },
                             child: NormalText(
                               theme: theme,
-                              text: "Nuevo libro",
+                              text: getLang("addBook"),
                               alignment: TextAlign.center,
                             ),
                           )
