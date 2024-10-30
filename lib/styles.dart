@@ -68,8 +68,6 @@ const Map<String, dynamic> colors = {
   },
 };
 
-//* isAndroid ? Android : !Android
-
 getStyle(String style, String theme) {
   Map<String, dynamic> styles = {
     "normalTextStyle": GoogleFonts.nunito(
@@ -187,18 +185,32 @@ getStyle(String style, String theme) {
 getTextFieldStyle(String style, String theme, String labelText) {
   Map<String, dynamic> styles = {
     "defaultTextFieldStyle": InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderSide: getStyle("loginFieldBorderSide", theme)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: getStyle("loginFieldBorderSide", theme)),
-        errorStyle: const TextStyle(color: Colors.red),
-        errorBorder:
-            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-        border: const OutlineInputBorder(),
-        labelText: labelText,
-        labelStyle: getStyle("normalTextStyle", theme),
-        floatingLabelStyle: getStyle("normalTextStyle", theme),
-        floatingLabelBehavior: FloatingLabelBehavior.always),
+      enabledBorder: OutlineInputBorder(
+          borderSide: getStyle("loginFieldBorderSide", theme)),
+      focusedBorder: OutlineInputBorder(
+          borderSide: getStyle("loginFieldBorderSide", theme)),
+      errorStyle: const TextStyle(color: Colors.red),
+      errorBorder:
+          const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+      border: const OutlineInputBorder(),
+      labelText: labelText,
+      labelStyle: getStyle("normalTextStyle", theme),
+      floatingLabelStyle: getStyle("normalTextStyle", theme),
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+    ),
+    "filterTextFieldStyle": InputDecoration(
+      border: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: colors[theme]["mainTextColor"],
+        ),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: colors[theme]["mainTextColor"],
+        ),
+      ),
+      hoverColor: colors[theme]["mainTextColor"],
+    ),
   };
 
   return styles[style];

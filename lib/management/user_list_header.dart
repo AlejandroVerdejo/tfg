@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class UserListHeader extends StatelessWidget {
@@ -37,6 +38,11 @@ class UserListHeader extends StatelessWidget {
           theme: theme,
           text: getLang("level"),
           alignment: TextAlign.center,
+        )),
+        Expanded(
+            child: Icon(
+          Icons.delete,
+          color: colors[theme]["mainBackgroundColor"],
         )),
       ],
     );

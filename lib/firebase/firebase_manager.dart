@@ -692,37 +692,24 @@ class FirestoreManager {
     await bookRef.update({"$id.aviable": false});
     // Actualiza la fecha de devolucion
     await bookRef.update({"$id.return_date": returnDate});
-    // // Carga el libro
-    // Map<String, dynamic> book = await getUnMergedBook(bookId);
-    // // Cambia el valor "aviable" del libro a false
-    // book["aviable"] = false;
-    // // Introduce la fecha de devolucion del libro
-    // book["return_date"] = returnDate;
-    // // Actualiza los datos del libro
-    // bookRef.update({id: book});
-    // // Crea la referencia a la lista de popularidad
-    // final popRef = db.collection("Books").doc("Popularity");
-    // // Carga el Documento de popularidad
-    // DocumentSnapshot popDoc = await popRef.get();
-    // // Carga los datos de popularidad
-    // Map<String, dynamic> popBooks = popDoc.data() as Map<String, dynamic>;
-    // // Obtiene la popularidad del libro
-    // int popBook = popBooks[isbn];
-    // // Aumenta la popularidad del libro
-    // popBook += 1;
-    // // Actualiza el valor
-    // popRef.update({isbn: popBook});
   }
 
-  //*
+  // * Finalizara un prestamo actualizando los valores correspondientes tanto en el libro como en el usuario
   Future<void> returnUserRent(
       String email, String isbn, String id, int pos) async {
+    // Crea la referencia para el usuario
     final userRef = db.collection("Users").doc(email);
+    // Crea la referencia para el campo
     final bookRef = db.collection("Books").doc(isbn);
+    // Carga la lista de prestamos del usuario
     List<dynamic> rents = await getUserRents(email);
+    // Actualiza el prestamo correspondiente
     rents[pos]["active"] = false;
+    // Actualiza la lista de prestamos del usuario
     await userRef.update({"rents": rents});
+    // Actualiza la disponibilidad del libro
     await bookRef.update({"$id.aviable": true});
+    // Actualiza la fecha de devolucion del libro
     await bookRef.update({"$id.return_date": ""});
   }
 

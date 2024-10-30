@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -18,7 +19,7 @@ class AddUserDialog extends StatefulWidget {
   });
 
   final String theme;
-  final VoidCallback onUserAdded;
+  final Function(Map) onUserAdded;
 
   @override
   State<AddUserDialog> createState() => _AddUserDialogState();
@@ -37,12 +38,29 @@ class _AddUserDialogState extends State<AddUserDialog> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   TextEditingController levelController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890*-_/';
+  final Random _rnd = Random();
 
   @override
   void initState() {
     super.initState();
     levelController = TextEditingController();
+    passwordController.text = passwordGenerator();
+    print("init");
   }
+
+  // String passwordGenerator() {
+  //   String password = ""
+  //   String.fromCharCodes(Iterable.generate(8, (_) {
+  //     _chars.codeUnitAt(_rnd.nextInt(_chars.length));
+  //   }));
+  //   return password;
+  // }
+
+  String passwordGenerator() => String.fromCharCodes(Iterable.generate(
+      12, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +75,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
           key: _formKey,
           child: Column(
             children: [
+              // ? | CORREO ELECTRONICO |
               TextSelectionTheme(
                 data: getStyle("loginFieldSelectionTheme", theme),
                 child: FormBuilderTextField(
@@ -76,6 +95,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 ),
               ),
               const SizedBox(height: 30),
+              // ? | USUARIO |
               TextSelectionTheme(
                 data: getStyle("loginFieldSelectionTheme", theme),
                 child: FormBuilderTextField(
@@ -90,14 +110,17 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 ),
               ),
               const SizedBox(height: 30),
+              // ? | CONTRASEÑA |
               TextSelectionTheme(
                 data: getStyle("loginFieldSelectionTheme", theme),
                 child: FormBuilderTextField(
+                  readOnly: true,
+                  controller: passwordController,
                   name: "password",
                   style: getStyle("normalTextStyle", theme),
                   decoration: getTextFieldStyle(
                       "defaultTextFieldStyle", theme, getLang("password")),
-                  obscureText: true,
+                  // obscureText: true,
                   validator: FormBuilderValidators.compose(
                     [
                       FormBuilderValidators.required(
@@ -109,6 +132,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 ),
               ),
               const SizedBox(height: 30),
+              // ? | NIVEL |
               TextSelectionTheme(
                 data: getStyle("loginFieldSelectionTheme", theme),
                 child: FormBuilderTextField(
@@ -159,7 +183,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                         "level": 1
                       };
                       await firestoreManager.addUser(user);
-                      widget.onUserAdded();
+                      widget.onUserAdded(user);
                       Navigator.of(context).pop();
                     }
                   }

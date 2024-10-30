@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class UserListElement extends StatelessWidget {
@@ -46,6 +47,16 @@ class UserListElement extends StatelessWidget {
             text: user["level"] == 1 ? getLang("worker") : getLang("admin"),
             alignment: TextAlign.center,
           )),
+          Expanded(
+            child: IconButton(
+                onPressed: () {
+                  log("del - ${user["email"]}");
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: colors[theme]["mainTextColor"],
+                )),
+          )
         ],
       ),
     );

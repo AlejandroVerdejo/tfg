@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/book_list_element.dart';
 import 'package:tfg_library/widgets/userlists/user_book_list_element.dart';
 
@@ -39,6 +41,14 @@ class BookList extends StatefulWidget {
 }
 
 class _BookListState extends State<BookList> {
+  @override
+  void initState() {
+    super.initState();
+    titleFilterController.text = "";
+  }
+
+  TextEditingController titleFilterController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
@@ -98,29 +108,55 @@ class _BookListState extends State<BookList> {
           .where((e) => widget.languagesFilter!.contains(e.value["language"])));
       bookslist = filteredBooks;
     }
+
+    // Filtrar por | Titulo |
+    if (titleFilterController.text.isNotEmpty) {
+      var filteredBooks = Map.fromEntries(bookslist.entries.where((e) => e
+          .value["title"]
+          .toLowerCase()
+          .contains(titleFilterController.text.toLowerCase())));
+      bookslist = filteredBooks;
+    }
+
     List<MapEntry<String, dynamic>> booklistentries =
         bookslist.entries.toList();
-    return Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: booklistentries.map((entry) {
-          if (widget.type == "wishlist" || widget.type == "waitlist") {
-            return UserBookListElement(
-              theme: theme,
-              user: widget.user,
-              type: widget.type!,
-              book: entry.value,
-              onDelete: widget.onRefresh!,
-            );
-          }
-          return BookListElement(
-            theme: theme,
-            user: widget.user,
-            type: "book",
-            book: entry.value,
-            onClose: widget.onRefresh,
-            onScreenChange: widget.onScreenChange,
-          );
-        }).toList());
+    return Column(
+      children: [
+        TextSelectionTheme(
+          data: getStyle("loginFieldSelectionTheme", theme),
+          child: TextField(
+            style: getStyle("normalTextStyle", theme),
+            controller: titleFilterController,
+            decoration: getTextFieldStyle(
+                "filterTextFieldStyle", theme, getLang("editorial")),
+            onSubmitted: (value) {
+              setState(() {});
+            },
+          ),
+        ),
+        Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: booklistentries.map((entry) {
+              if (widget.type == "wishlist" || widget.type == "waitlist") {
+                return UserBookListElement(
+                  theme: theme,
+                  user: widget.user,
+                  type: widget.type!,
+                  book: entry.value,
+                  onDelete: widget.onRefresh!,
+                );
+              }
+              return BookListElement(
+                theme: theme,
+                user: widget.user,
+                type: "book",
+                book: entry.value,
+                onClose: widget.onRefresh,
+                onScreenChange: widget.onScreenChange,
+              );
+            }).toList()),
+      ],
+    );
   }
 }

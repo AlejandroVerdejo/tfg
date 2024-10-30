@@ -1,14 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/management/add_user_dialog.dart';
 import 'package:tfg_library/management/user_list.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
-import 'package:tfg_library/widgets/userlists/user_book_list_element.dart';
 
 class Users extends StatefulWidget {
   const Users({
@@ -23,7 +22,9 @@ class Users extends StatefulWidget {
 }
 
 class _UsersState extends State<Users> {
-  void _onUserAdded() {
+  void _onUserAdded(Map user) async {
+    log(user["email"]);
+    log(user["password"]);
     setState(() {});
   }
 
