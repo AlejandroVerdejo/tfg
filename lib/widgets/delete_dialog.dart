@@ -3,8 +3,8 @@ import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
-class DeleteBookListDialog extends StatefulWidget {
-  const DeleteBookListDialog({
+class DeleteDialog extends StatefulWidget {
+  const DeleteDialog({
     super.key,
     required this.theme,
     required this.title,
@@ -18,10 +18,10 @@ class DeleteBookListDialog extends StatefulWidget {
   final VoidCallback onAccept;
 
   @override
-  State<DeleteBookListDialog> createState() => _DeleteBookListDialogState();
+  State<DeleteDialog> createState() => _DeleteDialogState();
 }
 
-class _DeleteBookListDialogState extends State<DeleteBookListDialog> {
+class _DeleteDialogState extends State<DeleteDialog> {
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;

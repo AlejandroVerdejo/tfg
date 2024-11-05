@@ -39,11 +39,29 @@ class UserListHeader extends StatelessWidget {
           text: getLang("level"),
           alignment: TextAlign.center,
         )),
-        Expanded(
-            child: Icon(
-          Icons.delete,
-          color: colors[theme]["mainBackgroundColor"],
-        )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.list_alt,
+                  color: colors[theme]["mainBackgroundColor"],
+                )),
+            IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.edit,
+                  color: colors[theme]["mainBackgroundColor"],
+                )),
+            IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.delete,
+                  color: colors[theme]["mainBackgroundColor"],
+                )),
+          ],
+        ),
       ],
     );
   }

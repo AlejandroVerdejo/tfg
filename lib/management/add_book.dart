@@ -43,6 +43,12 @@ class _AddBookState extends State<AddBook> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  void refresh() {
+    existentBookController = TextEditingController();
+    loadBook = false;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
@@ -106,10 +112,12 @@ class _AddBookState extends State<AddBook> {
                         theme: theme,
                         // key: childKey,
                         bookkey: existentBookController.text,
+                        onRefresh: refresh,
                       )
                     : AddBookData(
                         theme: theme,
                         key: childKey,
+                        onRefresh: refresh,
                       )
               ],
             ),

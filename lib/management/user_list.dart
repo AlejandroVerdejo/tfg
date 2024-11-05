@@ -25,6 +25,10 @@ class _UserListState extends State<UserList> {
     };
   }
 
+  void refresh() {
+    setState(() {});
+  }
+
   FirestoreManager firestoreManager = FirestoreManager();
 
   @override
@@ -65,6 +69,7 @@ class _UserListState extends State<UserList> {
                     return UserListElement(
                       theme: theme,
                       user: entry.value,
+                      onDelete: refresh,
                     );
                   }).toList(),
                 ),

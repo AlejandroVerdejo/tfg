@@ -15,33 +15,43 @@ class FirestoreManager {
 
   // * Añadira un nuevo libro
   Future<void> addBook(Map<String, dynamic> book) async {
-    String bookId = "";
+    // Comprueba si ya existe ese libro
     if (await checkBook(book["isbn"])) {
+      // Carga el libro
       DocumentSnapshot doc =
           await db.collection("Books").doc(book["isbn"]).get();
-      // Carga la lista de libros alquilados
       Map<String, dynamic> bookData = doc.data() as Map<String, dynamic>;
+      // Obtiene la ultima clave
       String lastKey = bookData.keys.toList().last;
       int newKeyInt = int.parse(lastKey);
+      // Crea la clave para el nuevo libro con la clave incrementada
       String bookId = (newKeyInt + 1).toString().padLeft(5, "0");
+      // Introduce el nuevo libro
       book["id"] = "${book["isbn"]}-$bookId";
       await db.collection("Books").doc(book["isbn"]).update({bookId: book});
     } else {
-      bookId = "00001";
+      // Crea la clave del libro
+      String bookId = "00001";
+      // Introduce el libro
       book["id"] = "${book["isbn"]}-$bookId";
       await db.collection("Books").doc(book["isbn"]).set({bookId: book});
+      // Introduce el libro en la lista de popularidad
       final popRef = db.collection("Books").doc("Popularity");
       popRef.update({book["isbn"]: 0});
     }
   }
 
-  // *
+  // * Edita los datos de un libro
   Future<void> editBook(Map<String, dynamic> newBook, Uint8List? image) async {
     String isbn = newBook["isbn"];
+    // Carga la referencia del libro
     final bookRef = db.collection("Books").doc(isbn);
+    // Carga los datos del libro
     DocumentSnapshot doc = await bookRef.get();
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    // Por cada elemento en el libro
     for (var book in data.entries) {
+      // Actualiza los valores
       data[book.key]["title"] = newBook["title"];
       data[book.key]["author"] = newBook["author"];
       data[book.key]["age"] = newBook["age"];
@@ -52,10 +62,12 @@ class FirestoreManager {
       data[book.key]["language"] = newBook["language"];
       data[book.key]["pages"] = newBook["pages"];
     }
+    // Actualiza los valores en base de datos
     await bookRef.set(data);
 
-    StorageManager storageManager = StorageManager();
+    // Si se ha enviado una imagen para actualizarla
     if (image != null) {
+      StorageManager storageManager = StorageManager();
       storageManager.addImage(image, newBook["isbn"]);
     }
   }
@@ -278,11 +290,15 @@ class FirestoreManager {
     var splitted = bookId.split("-");
     String isbn = splitted[0];
     String id = splitted[1];
+    // Crea la referencia al libro
     final bookRef = db.collection("Books").doc(isbn);
+    // Carga el libro
     DocumentSnapshot doc = await db.collection("Books").doc(isbn).get();
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     Map<String, dynamic> book = data[id];
+    // Define el valor de aviable como el contrario del actual
     book["aviable"] = book["aviable"] ? false : true;
+    // Actualiza el valor en la base de datos
     bookRef.update({id: book});
   }
 
@@ -292,16 +308,22 @@ class FirestoreManager {
     var splitted = bookId.split("-");
     String isbn = splitted[0];
     String id = splitted[1];
+    // Crea la referencia al libro
     final bookRef = db.collection("Books").doc(isbn);
+    // Carga los datos del libro
     DocumentSnapshot doc = await bookRef.get();
     Map<String, dynamic> books = doc.data() as Map<String, dynamic>;
+    // Elimina el libro indicado
     books.remove(id);
+    // Actualiza el valor en la base de datos
     await bookRef.set(books);
   }
 
-  // *
+  // * Eliminara el libro indicado
   Future<void> deleteAllBooks(String bookId) async {
+    // Crea la referencia al libro
     final bookRef = db.collection("Books").doc(isbn);
+    // Elimina el libro de la base de datos
     await bookRef.delete();
   }
 
@@ -313,12 +335,32 @@ class FirestoreManager {
 
   // * Crear un nuevo usuario
   Future<void> addUser(Map<String, dynamic> user) async {
+    // Crea los datos por defecto del nuevo usuario
     user["rents"] = [];
     user["waitlist"] = [];
     user["wishlist"] = [];
     user["active"] = true;
+    // Crea la referencia para el nuevo usuario
     DocumentReference newUserRef = db.collection("Users").doc(user["email"]);
     await newUserRef.set(user);
+  }
+
+  // * Eliminara el usuario indicado
+  Future<void> deleteUser(String email) async {
+    // Crea la referencia al usuario
+    final userRef = db.collection("Users").doc(email);
+    // Elimina el usuario de la base de datos
+    await userRef.delete();
+  }
+
+  // * Modificara los datos del libro indicado
+  Future<void> editUser(Map<String, dynamic> user) async {
+    // Crea la referencia al usuario
+    final userRef = db.collection("Users").doc(user["email"]);
+    // Actualiza los datos en la base de datos
+    userRef.update({"username": user["username"]});
+    userRef.update({"password": user["password"]});
+    userRef.update({"level": user["level"]});
   }
 
   // * Devolvera true/false segun si el usuario existe o no
@@ -536,10 +578,6 @@ class FirestoreManager {
         }
       }
     }
-    // for (var i = 0; i < activeRents.length; i++) {
-    //   activeRents[i]["bookData"] =
-    //       await getMergedBook(activeRents[i]["book"]["isbn"]);
-    // }
     return activeRents;
   }
 

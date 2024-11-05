@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/widgets/catalog/book_list_element.dart';
-import 'package:tfg_library/widgets/userlists/delete_book_list_dialog.dart';
+import 'package:tfg_library/widgets/delete_dialog.dart';
 
 class UserBookListElement extends StatefulWidget {
   const UserBookListElement({
@@ -62,7 +62,7 @@ class _UserBookListElementState extends State<UserBookListElement> {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return DeleteBookListDialog(
+                        return DeleteDialog(
                           theme: theme,
                           title: getLang("deleteBookListDialog-title"),
                           message: getLang("deleteBookListDialog-content"),

@@ -137,20 +137,17 @@ class _ReturnBookState extends State<ReturnBook> {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           // await firestoreManager.newUserRent(user, book, date);
                           if (position > -1) {
-                            log("-valido-");
-                            log("-libro- ${userActiveRents[position]["bookData"]["title"]}");
-                            log("-posicion- ${userActiveRents[position]["listPosition"]}");
-                            log("-isbn- ${userActiveRents[position]["book"]["isbn"]}");
-                            log("-id- ${userActiveRents[position]["book"]["id"]}");
                             await firestoreManager.returnUserRent(
                               userController.text,
                               userActiveRents[position]["book"]["isbn"],
                               userActiveRents[position]["book"]["id"],
                               userActiveRents[position]["listPosition"],
                             );
-                            // setState(() {
-                            //   _update();
-                            // });
+                            showSnackBar(context,
+                                "Se ha devuelto el libro correctamente");
+                            setState(() {
+                              _update();
+                            });
                           } else {
                             showSnackBar(
                                 context, "Selecciona un libro para devolver");

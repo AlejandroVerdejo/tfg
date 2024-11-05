@@ -9,7 +9,7 @@ import 'package:tfg_library/widgets/better_divider.dart';
 import 'package:tfg_library/widgets/text/bar_text.dart';
 import 'package:tfg_library/widgets/text/list_data_text.dart';
 import 'package:tfg_library/widgets/text/sinopsis_book_text.dart';
-import 'package:tfg_library/widgets/userlists/delete_book_list_dialog.dart';
+import 'package:tfg_library/widgets/delete_dialog.dart';
 
 class Book extends StatefulWidget {
   const Book({
@@ -198,7 +198,7 @@ class _BookState extends State<Book> {
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                  return DeleteBookListDialog(
+                                                  return DeleteDialog(
                                                     theme: theme,
                                                     title: getLang(
                                                         "deleteBookDialog-title"),
@@ -233,7 +233,7 @@ class _BookState extends State<Book> {
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                  return DeleteBookListDialog(
+                                                  return DeleteDialog(
                                                     theme: theme,
                                                     title: getLang(
                                                         "deleteAllBookDialog-title"),

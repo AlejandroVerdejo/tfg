@@ -20,10 +20,12 @@ class AddBookData extends StatefulWidget {
     super.key,
     required this.theme,
     this.bookkey,
+    required this.onRefresh,
   });
 
   final String theme;
   final String? bookkey;
+  final VoidCallback onRefresh;
 
   @override
   State<AddBookData> createState() => AddBookDataState();
@@ -609,6 +611,7 @@ class AddBookDataState extends State<AddBookData> {
                                 image!, isbnController.text);
                           }
                           showSnackBar(context, getLang("addBook-success"));
+                          widget.onRefresh();
                         } else {}
                       },
                       child: Text(
