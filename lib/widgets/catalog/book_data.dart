@@ -99,7 +99,7 @@ class _BookDataState extends State<BookData> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Tooltip(
-                                message: "Editar libro",
+                                message: getLang("editBook"),
                                 child: IconButton(
                                   onPressed: () async {
                                     widget.onEdit!();
@@ -111,7 +111,7 @@ class _BookDataState extends State<BookData> {
                                 ),
                               ),
                               Tooltip(
-                                message: "Cambiar disponibilidad",
+                                message: getLang("changeAviability"),
                                 child: IconButton(
                                   onPressed: () {
                                     firestoreManager
@@ -126,7 +126,7 @@ class _BookDataState extends State<BookData> {
                                 ),
                               ),
                               Tooltip(
-                                message: "Eliminar este libro",
+                                message: getLang("deleteBook"),
                                 child: IconButton(
                                   onPressed: () {
                                     showDialog(
@@ -155,7 +155,7 @@ class _BookDataState extends State<BookData> {
                                 ),
                               ),
                               Tooltip(
-                                message: "Eliminar todos los libros como este",
+                                message: getLang("deleteAllBooks"),
                                 child: IconButton(
                                   onPressed: () {
                                     showDialog(

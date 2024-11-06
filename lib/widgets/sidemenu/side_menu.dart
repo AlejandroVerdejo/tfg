@@ -42,17 +42,14 @@ class _SideMenuState extends State<SideMenu> {
               children: [
                 CircleAvatar(
                   radius: 40,
-                  child: Text(
-                    user["username"][0].toUpperCase(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 40),
-                  ),
+                  backgroundImage: MemoryImage(user["pfp"]),
                 ),
                 const SizedBox(height: 10),
                 BarText(text: user["username"]),
               ],
             ),
           ),
+          // ? Perfil
           ListTile(
             leading: Icon(
               Icons.person,
@@ -83,6 +80,7 @@ class _SideMenuState extends State<SideMenu> {
                   },
                 )
               : const SizedBox.shrink(),
+          // ? Catalogo
           ListTile(
             leading: Icon(
               Icons.book,
@@ -97,34 +95,41 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.of(context).pop();
             },
           ),
-          ListTile(
-            leading: Icon(
-              Icons.bookmarks,
-              color: colors[theme]["mainTextColor"],
-            ),
-            title: Text(
-              getLang("wishlist"),
-              style: getStyle("sideMenuTextStyle", theme),
-            ),
-            onTap: () {
-              widget.onScreenChange("wishlist");
-              Navigator.of(context).pop();
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.timer,
-              color: colors[theme]["mainTextColor"],
-            ),
-            title: Text(
-              getLang("waitlist"),
-              style: getStyle("sideMenuTextStyle", theme),
-            ),
-            onTap: () {
-              widget.onScreenChange("waitlist");
-              Navigator.of(context).pop();
-            },
-          ),
+          // ? Lista de deseados
+          user["level"] == 2
+              ? ListTile(
+                  leading: Icon(
+                    Icons.bookmarks,
+                    color: colors[theme]["mainTextColor"],
+                  ),
+                  title: Text(
+                    getLang("wishlist"),
+                    style: getStyle("sideMenuTextStyle", theme),
+                  ),
+                  onTap: () {
+                    widget.onScreenChange("wishlist");
+                    Navigator.of(context).pop();
+                  },
+                )
+              : const SizedBox.shrink(),
+          // ? Recordatorios
+          user["level"] == 2
+              ? ListTile(
+                  leading: Icon(
+                    Icons.timer,
+                    color: colors[theme]["mainTextColor"],
+                  ),
+                  title: Text(
+                    getLang("waitlist"),
+                    style: getStyle("sideMenuTextStyle", theme),
+                  ),
+                  onTap: () {
+                    widget.onScreenChange("waitlist");
+                    Navigator.of(context).pop();
+                  },
+                )
+              : const SizedBox.shrink(),
+          // ? Ajuestes?
           ListTile(
             leading: Icon(
               Icons.settings,
@@ -139,6 +144,7 @@ class _SideMenuState extends State<SideMenu> {
             },
           ),
           BetterDivider(theme: theme),
+          // ? Tema
           ListTile(
             leading: Icon(
               theme == "light" ? Icons.sunny : Icons.nightlight,
@@ -152,6 +158,7 @@ class _SideMenuState extends State<SideMenu> {
               widget.onRefresh();
             },
           ),
+          // ? Cerrar sesion
           ListTile(
             leading: Icon(
               Icons.logout,

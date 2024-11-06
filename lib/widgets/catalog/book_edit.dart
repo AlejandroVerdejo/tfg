@@ -366,8 +366,10 @@ class _BookEditState extends State<BookEdit> {
                                   backgroundColor: colors[theme]
                                       ["mainBackgroundColor"],
                                   selectedValue: state,
-                                  items: ["Disponible", "No disponible"],
-                                  itemBuilder: (context, item, isSelected) {
+                                  items: [
+                                    getLang("aviable"),
+                                    getLang("notAviable")
+                                  ], itemBuilder: (context, item, isSelected) {
                                 return SelectDialogField(
                                   theme: theme,
                                   item: item,

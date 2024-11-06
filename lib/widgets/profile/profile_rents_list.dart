@@ -54,7 +54,12 @@ class ProfileRentsList extends StatelessWidget {
                     }).toList(),
                   ),
                 )
-              : const SizedBox.shrink()
+              : Center(
+                  child: NormalText(
+                    theme: theme,
+                    text: getLang("noActiveRents"),
+                  ),
+                )
         ],
       ),
     );

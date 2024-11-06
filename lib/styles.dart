@@ -22,11 +22,14 @@ EdgeInsets profileHeaderPadding = isAndroid
 EdgeInsets imageBookListPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 15)
     : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 30);
+EdgeInsets dialogPadding =
+    const EdgeInsets.only(top: 60, left: 15, bottom: 20, right: 15);
 double elementImageSize = isAndroid ? 100 : 200;
 double rentsElementWidth = isAndroid ? 125 : 250;
 double rentsElementHeight = isAndroid ? 150 : 300;
 double bookImageSize = isAndroid ? 200 : 400;
 double verticalDividerHeight = isAndroid ? 160 : 320;
+double dialogWidth = 600;
 
 const Map<String, dynamic> colors = {
   "light": {

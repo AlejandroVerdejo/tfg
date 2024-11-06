@@ -157,7 +157,7 @@ class _BookState extends State<Book> {
                                           MainAxisAlignment.spaceAround,
                                       children: [
                                         Tooltip(
-                                          message: "Editar libro",
+                                          message: getLang("editBook"),
                                           child: IconButton(
                                             onPressed: () async {
                                               // Meotodo para cargar EditBook
@@ -174,10 +174,9 @@ class _BookState extends State<Book> {
                                           ),
                                         ),
                                         Tooltip(
-                                          message: "Cambiar disponibilidad",
+                                          message: getLang("changeAviability"),
                                           child: IconButton(
                                             onPressed: () {
-                                              log("disponibilidad");
                                               firestoreManager
                                                   .updateAviability(book["id"]);
                                               widget.onUpdate!();
@@ -191,7 +190,7 @@ class _BookState extends State<Book> {
                                           ),
                                         ),
                                         Tooltip(
-                                          message: "Eliminar este libro",
+                                          message: "deleteBook",
                                           child: IconButton(
                                             onPressed: () {
                                               showDialog(
@@ -225,8 +224,7 @@ class _BookState extends State<Book> {
                                           ),
                                         ),
                                         Tooltip(
-                                          message:
-                                              "Eliminar todos los libros como este",
+                                          message: getLang("deleteAllBooks"),
                                           child: IconButton(
                                             onPressed: () {
                                               showDialog(
@@ -347,62 +345,68 @@ class _BookState extends State<Book> {
                       ),
                     ],
                   ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      color: colors[theme]["headerBackgroundColor"],
-                      padding: EdgeInsets.zero,
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (widget.type == "wishlist") {
-                                updated = true;
-                              }
-                              inWishList
-                                  ? showSnackBar(
-                                      context, getLang("wishListToggle-del"))
-                                  : showSnackBar(
-                                      context, getLang("wishListToggle-add"));
-                              _toggleWishList(inWishList, user["email"]);
-                            },
-                            icon: Icon(
-                              inWishList
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border,
-                              color: colors[theme]["headerTextColor"],
-                            ),
-                          ),
-                          book["aviable"]
-                              ? const SizedBox.shrink()
-                              : IconButton(
+                  user["level"] == 2
+                      ? Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            color: colors[theme]["headerBackgroundColor"],
+                            padding: EdgeInsets.zero,
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IconButton(
                                   onPressed: () {
-                                    if (widget.type == "waitlist") {
+                                    if (widget.type == "wishlist") {
                                       updated = true;
                                     }
-                                    inWaitList
+                                    inWishList
                                         ? showSnackBar(context,
-                                            getLang("waitListToggle-del"))
+                                            getLang("wishListToggle-del"))
                                         : showSnackBar(context,
-                                            getLang("waitListToggle-add"));
-                                    _toggleWaitList(inWaitList, user["email"]);
+                                            getLang("wishListToggle-add"));
+                                    _toggleWishList(inWishList, user["email"]);
                                   },
                                   icon: Icon(
-                                    inWaitList
-                                        ? Icons.timer
-                                        : Icons.timer_outlined,
+                                    inWishList
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border,
                                     color: colors[theme]["headerTextColor"],
                                   ),
                                 ),
-                        ],
-                      ),
-                    ),
-                  )
+                                book["aviable"]
+                                    ? const SizedBox.shrink()
+                                    : IconButton(
+                                        onPressed: () {
+                                          if (widget.type == "waitlist") {
+                                            updated = true;
+                                          }
+                                          inWaitList
+                                              ? showSnackBar(context,
+                                                  getLang("waitListToggle-del"))
+                                              : showSnackBar(
+                                                  context,
+                                                  getLang(
+                                                      "waitListToggle-add"));
+                                          _toggleWaitList(
+                                              inWaitList, user["email"]);
+                                        },
+                                        icon: Icon(
+                                          inWaitList
+                                              ? Icons.timer
+                                              : Icons.timer_outlined,
+                                          color: colors[theme]
+                                              ["headerTextColor"],
+                                        ),
+                                      ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink()
                 ],
               ),
             );

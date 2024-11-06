@@ -81,6 +81,10 @@ class AddBookDataState extends State<AddBookData> {
   void initState() {
     super.initState();
     // Asigna el valor de la primera carga
+    clearData();
+  }
+
+  void clearData() {
     bookLoaded = false;
     titleController = TextEditingController();
     title = "";
@@ -413,8 +417,10 @@ class AddBookDataState extends State<AddBookData> {
                               backgroundColor: colors[theme]
                                   ["mainBackgroundColor"],
                               selectedValue: state,
-                              items: ["Disponible", "No disponible"],
-                              itemBuilder: (context, item, isSelected) {
+                              items: [
+                                getLang("aviable"),
+                                getLang("notAviable")
+                              ], itemBuilder: (context, item, isSelected) {
                             return SelectDialogField(
                               theme: theme,
                               item: item,
@@ -551,7 +557,7 @@ class AddBookDataState extends State<AddBookData> {
                                   const Icon(Icons.image),
                                   DescriptionRichText(
                                       theme: theme,
-                                      text: "Selecciona una imagen"),
+                                      text: getLang("imageSelect")),
                                 ],
                               ),
                             ),
@@ -599,7 +605,6 @@ class AddBookDataState extends State<AddBookData> {
                             "editorial": editorialController.text,
                             "genres": genres,
                             "language": languageController.text,
-                            // "id": "",
                             "pages": int.parse(pagesController.text),
                             "return_date": "",
                             "description": descriptionController.text

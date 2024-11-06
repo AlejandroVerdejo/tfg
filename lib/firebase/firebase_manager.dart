@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tfg_library/management/add_book_data.dart';
+import 'package:tfg_library/management/edit_book.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
@@ -320,11 +320,15 @@ class FirestoreManager {
   }
 
   // * Eliminara el libro indicado
-  Future<void> deleteAllBooks(String bookId) async {
+  Future<void> deleteAllBooks(String isbn) async {
     // Crea la referencia al libro
     final bookRef = db.collection("Books").doc(isbn);
     // Elimina el libro de la base de datos
     await bookRef.delete();
+    // Crea la referencia a la lista de popularidad
+    final popRef = db.collection("Books").doc("Popularity");
+    // Elimina el libro de la lista de popularidad
+    popRef.update({isbn: FieldValue.delete()});
   }
 
   // ?
@@ -371,6 +375,19 @@ class FirestoreManager {
     return doc.exists;
   }
 
+  // * Devolvera true/false segun si el usuario es un cliente o no
+  Future<bool> checkUserClient(String email) async {
+    Map<String, dynamic> user = await getUser(email);
+    if (user["level"] == 2) {
+      return true;
+    }
+    {
+      return false;
+    }
+
+    // return doc.exists;
+  }
+
   // * Devolvera true/false segun si la contraseña coincide con la del usuario o no
   Future<bool> checkPassword(String email, String password) async {
     // Carga el Documento del usuario
@@ -392,11 +409,13 @@ class FirestoreManager {
       "password": data["password"],
       "email": data["email"],
       "level": data["level"],
+      "pfp": await storageManager.getPFP(data["email"]),
     };
 
     return user;
   }
 
+  // * Devolvera los usuarios
   Future<Map<String, dynamic>> getUsers() async {
     Map<String, dynamic> users = {};
 
@@ -412,6 +431,7 @@ class FirestoreManager {
     return users;
   }
 
+  // * Devolvera los usuario de los trabajadores
   Future<Map<String, dynamic>> getWorkers() async {
     Map<String, dynamic> workers = {};
 
@@ -424,6 +444,14 @@ class FirestoreManager {
     }
 
     return workers;
+  }
+
+  // * Actualizara el nombre de usuario
+  Future<void> updateUsername(String email, String newUsername) async {
+    // Crea la refrencia al usuario
+    final userRef = db.collection("Users").doc(email);
+    // Actualiza el nombre de usuario
+    userRef.update({"username": newUsername});
   }
 
   // ?
@@ -757,6 +785,7 @@ class FirestoreManager {
 class StorageManager {
   // Referencia al directorio con las imagenes de los libros
   final bookImagesRef = storage.ref().child("book-images");
+  final pfpRef = storage.ref().child("pfp");
 
   // * Devolvera la imagen en bytes
   Future<Uint8List?> getImage(String name) async {
@@ -772,6 +801,33 @@ class StorageManager {
     // Crea la referencia para la imagen
     // final imageRef = bookImagesRef.child(name);
     final imageRef = storage.ref("book-images/$name");
+    // Sube el archivo a la base de datos
+    UploadTask uploadTask = imageRef.putData(image);
+
+    // Se crea una snapshot para esperar a que la subida se complete
+    // ignore: unused_local_variable
+    TaskSnapshot snapshot = await uploadTask;
+  }
+
+  // * Devolvera la imagen de perfil en bytes
+  Future<Uint8List?> getPFP(String name) async {
+    var defaultRef = pfpRef.child("default");
+    // Crea la referencia a la imagen
+    var imageRef = pfpRef.child(name);
+    // Carga la imagen
+    Uint8List? imageBytes;
+    try {
+      imageBytes = await imageRef.getData();
+    } catch (e) {
+      imageBytes = await defaultRef.getData();
+    }
+    return imageBytes;
+  }
+
+  // * Añadira una imagen de perfil a la base de datos
+  Future<void> setPFP(Uint8List image, String name) async {
+    // Crea la referencia para la imagen
+    final imageRef = storage.ref("pfp/$name");
     // Sube el archivo a la base de datos
     UploadTask uploadTask = imageRef.putData(image);
 

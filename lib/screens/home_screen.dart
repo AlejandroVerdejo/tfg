@@ -36,7 +36,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Map<String, dynamic> user = {};
+
   FirestoreManager firestoreManager = FirestoreManager();
+  StorageManager storageManager = StorageManager();
   Widget? activeWigdet;
   String appBarText = "";
   bool home = true;
@@ -54,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case "home":
         activeWigdet = Home(
           theme: theme,
-          user: widget.user,
+          user: user,
           onScreenChange: updateScreen,
         );
         appBarText = "";
@@ -64,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
       case "profile":
         activeWigdet = Profile(
           theme: theme,
-          user: widget.user,
+          user: user,
+          onUpdate: updateUser,
         );
         appBarText = getLang("profile");
         home = false;
@@ -79,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case "catalog":
         activeWigdet = Catalog(
           theme: theme,
-          user: widget.user,
+          user: user,
           onScreenChange: updateScreen,
         );
         appBarText = getLang("catalog");
@@ -89,8 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
       case "wishlist":
         activeWigdet = WishList(
           theme: theme,
-          user: widget.user,
-          email: widget.user["email"],
+          user: user,
+          email: user["email"],
         );
         appBarText = getLang("wishlist");
         home = false;
@@ -99,8 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
       case "waitlist":
         activeWigdet = WaitList(
           theme: theme,
-          user: widget.user,
-          email: widget.user["email"],
+          user: user,
+          email: user["email"],
         );
         appBarText = getLang("waitlist");
         home = false;
@@ -137,21 +141,34 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  void updateUser() async {
+    log("refresh");
+    user = await firestoreManager.getUser(widget.user["email"]);
+    widget.user["pfp"] = await storageManager.getPFP(widget.user["email"]);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    activeWigdet = Home(
+    // activeWigdet = Home(
+    //   theme: widget.theme,
+    //   user: widget.user,
+    //   onScreenChange: updateScreen,
+    // );
+    user = widget.user;
+    activeWigdet = Profile(
       theme: widget.theme,
-      user: widget.user,
-      onScreenChange: updateScreen,
+      user: user,
+      onUpdate: updateUser,
     );
     appBarText = "";
-    home = true;
+    // home = true;
+    home = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    var user = widget.user;
     var theme = widget.theme;
     return Scaffold(
       appBar: AppBar(

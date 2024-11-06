@@ -9,6 +9,7 @@ const lang = {
     "login": "Iniciar Sesión",
     "register": "Registrarse",
     "user": "Usuario",
+    "username": "Nombre de usuario",
     "password": "Contraseña",
     "login_createHere": "¿No tienes cuenta? Créala aquí.",
     "login_loginHere": "¿Ya tienes una cuenta? Inicia sesión aquí.",
@@ -62,7 +63,8 @@ const lang = {
     "rentBookLoadBook": "Cargar libro",
     "rentBookLoadBook-error": "No se ha encontrado el libro",
     "rentBookLoadUser": "Cargar usuario",
-    "rentBookLoadUser-error": "No se ha encontrado el usuario",
+    "rentBookLoadUser-error":
+        "No se ha encontrado el usuario o no es un usuario válido",
     "rentBookAction": "Realizar préstamo",
     "rentBook-success": "Préstamo realizado correctamente",
     "rentBook-error": "Datos incorrectos para realizar el préstamo",
@@ -95,8 +97,18 @@ const lang = {
     "returnBook": "Devolver libro",
     "waitlistReminder": "Hay libros de tus recordatorios disponibles",
     "waitlistShortcut": "Pulsa aquí para ver tus recordatorios",
-    "returnBookAction": "Devolver"
+    "returnBookAction": "Devolver",
     // ^^ Corregido ^^
+    "returnBook-success": "Se ha devuelto el libro correctamente",
+    "returnBook-select": "Selecciona un libro para devolver",
+    "save": "Guardar",
+    "imageSelect": "Selecciona una imagen",
+    "deleteUser": "Se eliminara al siguiente usuario",
+    "confirmation": "¿Estas seguro?",
+    "changeAviability": "Cambiar disponibilidad",
+    "deleteBook": "Eliminar este libro",
+    "deleteAllBooks": "Eliminar todos los libros como este",
+    "noActiveRents": "No tienes ningun prestamo activo",
   }
 };
 

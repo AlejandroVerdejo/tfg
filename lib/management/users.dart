@@ -23,8 +23,6 @@ class Users extends StatefulWidget {
 
 class _UsersState extends State<Users> {
   void _onUserAdded(Map user) async {
-    log(user["email"]);
-    log(user["password"]);
     setState(() {});
   }
 

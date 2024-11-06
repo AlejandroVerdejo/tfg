@@ -154,8 +154,12 @@ class _RentBookState extends State<RentBook> {
                   style: getStyle("loginButtonStyle", theme),
                   onPressed: () async {
                     if (userController.text.isNotEmpty) {
-                      userLoaded =
+                      bool userExists =
                           await firestoreManager.checkUser(userController.text);
+                      if (userExists) {
+                        userLoaded = await firestoreManager
+                            .checkUserClient(userController.text);
+                      }
                       if (userLoaded) {
                         user = userController.text;
                       } else {

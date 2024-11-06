@@ -143,14 +143,13 @@ class _ReturnBookState extends State<ReturnBook> {
                               userActiveRents[position]["book"]["id"],
                               userActiveRents[position]["listPosition"],
                             );
-                            showSnackBar(context,
-                                "Se ha devuelto el libro correctamente");
+                            showSnackBar(
+                                context, getLang("returnBook-success"));
                             setState(() {
                               _update();
                             });
                           } else {
-                            showSnackBar(
-                                context, "Selecciona un libro para devolver");
+                            showSnackBar(context, getLang("returnBook-select"));
                           }
                         }
                       },

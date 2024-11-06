@@ -31,99 +31,94 @@ class _UserListElementState extends State<UserListElement> {
   Widget build(BuildContext context) {
     var theme = widget.theme;
     var user = widget.user;
-    return GestureDetector(
-      onTap: () {
-        log("taptap");
-      },
-      child: Row(
-        children: [
-          Expanded(
-              child: NormalText(
-            theme: theme,
-            text: user["email"],
-            alignment: TextAlign.center,
-          )),
-          Expanded(
-              child: NormalText(
-            theme: theme,
-            text: user["username"],
-            alignment: TextAlign.center,
-          )),
-          Expanded(
-              child: NormalText(
-            theme: theme,
-            text: user["active"] ? getLang("active") : getLang("notActive"),
-            alignment: TextAlign.center,
-          )),
-          Expanded(
-              child: NormalText(
-            theme: theme,
-            text: user["level"] == 1 ? getLang("worker") : getLang("admin"),
-            alignment: TextAlign.center,
-          )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // ? Ver
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return UserViewDialog(
-                            theme: theme,
-                            user: user,
-                            edit: false,
-                          );
-                        });
-                  },
-                  icon: Icon(
-                    Icons.list_alt,
-                    color: colors[theme]["mainTextColor"],
-                  )),
-              // ? Editar
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return UserViewDialog(
-                            theme: theme,
-                            user: user,
-                            edit: true,
-                          );
-                        });
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                    color: colors[theme]["mainTextColor"],
-                  )),
-              // ? Eliminar
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeleteDialog(
-                            theme: theme,
-                            title: "Se eliminara el siguiente usuario",
-                            message: "¿Estas seguro?",
-                            onAccept: () async {
-                              log("del");
-                              await firestoreManager.deleteUser(user["email"]);
-                              widget.onDelete();
-                            },
-                          );
-                        });
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                    color: colors[theme]["mainTextColor"],
-                  )),
-            ],
-          )
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(
+            child: NormalText(
+          theme: theme,
+          text: user["email"],
+          alignment: TextAlign.center,
+        )),
+        Expanded(
+            child: NormalText(
+          theme: theme,
+          text: user["username"],
+          alignment: TextAlign.center,
+        )),
+        Expanded(
+            child: NormalText(
+          theme: theme,
+          text: user["active"] ? getLang("active") : getLang("notActive"),
+          alignment: TextAlign.center,
+        )),
+        Expanded(
+            child: NormalText(
+          theme: theme,
+          text: user["level"] == 1 ? getLang("worker") : getLang("admin"),
+          alignment: TextAlign.center,
+        )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // ? Ver
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return UserViewDialog(
+                          theme: theme,
+                          user: user,
+                          edit: false,
+                        );
+                      });
+                },
+                icon: Icon(
+                  Icons.list_alt,
+                  color: colors[theme]["mainTextColor"],
+                )),
+            // ? Editar
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return UserViewDialog(
+                          theme: theme,
+                          user: user,
+                          edit: true,
+                          onEdit: widget.onDelete,
+                        );
+                      });
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: colors[theme]["mainTextColor"],
+                )),
+            // ? Eliminar
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DeleteDialog(
+                          theme: theme,
+                          title: getLang("deleteUser"),
+                          message: getLang("confirmation"),
+                          onAccept: () async {
+                            await firestoreManager.deleteUser(user["email"]);
+                            widget.onDelete();
+                          },
+                        );
+                      });
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: colors[theme]["mainTextColor"],
+                )),
+          ],
+        )
+      ],
     );
   }
 }

@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
                       alignment: TextAlign.center,
                     ),
                     PopularList(theme: theme, popularBooks: popularBooks),
-                    waitListAviability
+                    waitListAviability && level == 2
                         ? Container(
                             padding: const EdgeInsets.only(
                                 left: 80, top: 30, right: 80, bottom: 30),

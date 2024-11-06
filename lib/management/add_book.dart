@@ -82,7 +82,8 @@ class _AddBookState extends State<AddBook> {
                         loadBook = true;
                         setState(() {});
                       } else {
-                        showSnackBar(context, "rentBookLoadBook-error");
+                        showSnackBar(
+                            context, getLang("rentBookLoadBook-error"));
                       }
                       // childKey.currentState?.refresh();
                     }
