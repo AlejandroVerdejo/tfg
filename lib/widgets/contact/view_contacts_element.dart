@@ -34,7 +34,7 @@ class _ViewContactsElementState extends State<ViewContactsElement> {
         elevation: 2,
         // margin: EdgeInsets.all(80),
         child: Padding(
-          padding: const EdgeInsets.only(left: 100, right: 100),
+          padding: cardPadding,
           child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -43,6 +43,7 @@ class _ViewContactsElementState extends State<ViewContactsElement> {
                   theme: theme,
                   text: widget.contact["type"],
                   alignment: TextAlign.center,
+                  style: getStyle("cardTextStyle", theme),
                 ),
               ),
               Expanded(
@@ -50,6 +51,7 @@ class _ViewContactsElementState extends State<ViewContactsElement> {
                   theme: theme,
                   text: widget.contact["user"],
                   alignment: TextAlign.center,
+                  style: getStyle("cardTextStyle", theme),
                 ),
               ),
               Expanded(
@@ -57,13 +59,7 @@ class _ViewContactsElementState extends State<ViewContactsElement> {
                   theme: theme,
                   text: widget.contact["date"],
                   alignment: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: NormalText(
-                  theme: theme,
-                  text: widget.contact["active"] ? "Activa" : "Inactiva",
-                  alignment: TextAlign.center,
+                  style: getStyle("cardTextStyle", theme),
                 ),
               ),
             ],

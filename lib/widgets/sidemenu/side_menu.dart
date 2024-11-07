@@ -147,35 +147,39 @@ class _SideMenuState extends State<SideMenu> {
                 )
               : const SizedBox.shrink(),
           // ? Contactanos
-          ListTile(
-            leading: Icon(
-              Icons.mail,
-              color: colors[theme]["mainTextColor"],
-            ),
-            title: Text(
-              getLang("contactUs"),
-              style: getStyle("sideMenuTextStyle", theme),
-            ),
-            onTap: () {
-              widget.onScreenChange("contact");
-              Navigator.of(context).pop();
-            },
-          ),
-          // ? Contactanos
-          ListTile(
-            leading: Icon(
-              Icons.mail,
-              color: colors[theme]["mainTextColor"],
-            ),
-            title: Text(
-              "Mensajes",
-              style: getStyle("sideMenuTextStyle", theme),
-            ),
-            onTap: () {
-              widget.onScreenChange("contacts");
-              Navigator.of(context).pop();
-            },
-          ),
+          user["level"] == 2
+              ? ListTile(
+                  leading: Icon(
+                    Icons.mail,
+                    color: colors[theme]["mainTextColor"],
+                  ),
+                  title: Text(
+                    getLang("contactUs"),
+                    style: getStyle("sideMenuTextStyle", theme),
+                  ),
+                  onTap: () {
+                    widget.onScreenChange("contact");
+                    Navigator.of(context).pop();
+                  },
+                )
+              : const SizedBox.shrink(),
+          // ? Mensajes
+          user["level"] <= 1
+              ? ListTile(
+                  leading: Icon(
+                    Icons.mail,
+                    color: colors[theme]["mainTextColor"],
+                  ),
+                  title: Text(
+                    "Mensajes",
+                    style: getStyle("sideMenuTextStyle", theme),
+                  ),
+                  onTap: () {
+                    widget.onScreenChange("contacts");
+                    Navigator.of(context).pop();
+                  },
+                )
+              : const SizedBox.shrink(),
           BetterDivider(theme: theme),
           // ? Tema
           ListTile(

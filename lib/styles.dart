@@ -24,12 +24,16 @@ EdgeInsets imageBookListPadding = isAndroid
     : const EdgeInsets.only(top: 30, left: 30, bottom: 30, right: 30);
 EdgeInsets dialogPadding =
     const EdgeInsets.only(top: 60, left: 15, bottom: 20, right: 15);
+EdgeInsets cardPadding = isAndroid
+    ? const EdgeInsets.only()
+    : const EdgeInsets.only(left: 80, right: 80);
 double elementImageSize = isAndroid ? 100 : 200;
 double rentsElementWidth = isAndroid ? 125 : 250;
 double rentsElementHeight = isAndroid ? 150 : 300;
 double bookImageSize = isAndroid ? 200 : 400;
 double verticalDividerHeight = isAndroid ? 160 : 320;
 double dialogWidth = 600;
+double gridAspectRatio = isAndroid ? 5 : 25;
 
 const Map<String, dynamic> colors = {
   "light": {
@@ -50,7 +54,7 @@ const Map<String, dynamic> colors = {
     "chipBackgroundColor": Color.fromRGBO(231, 231, 238, 1),
     "dividerColor": Color.fromRGBO(50, 47, 54, 1),
     "hintTextColor": Color.fromRGBO(96, 93, 100, 1),
-    "priorityColor": Color.fromRGBO(228,168,202, 1),
+    "priorityColor": Color.fromRGBO(228, 168, 202, 1),
   },
   "dark": {
     "mainBackgroundColor": Color.fromRGBO(73, 69, 79, 1),
@@ -80,6 +84,11 @@ getStyle(String style, String theme) {
     "normalTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.w500,
       fontSize: isAndroid ? 14 : 20,
+      color: colors[theme]["mainTextColor"],
+    ),
+    "cardTextStyle": GoogleFonts.nunito(
+      fontWeight: FontWeight.w500,
+      fontSize: isAndroid ? 11 : 20,
       color: colors[theme]["mainTextColor"],
     ),
     "titleTextStyle": GoogleFonts.nunito(

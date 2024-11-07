@@ -63,7 +63,7 @@ class ViewContactsState extends State<ViewContacts> {
             padding: bodyPadding,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
-              childAspectRatio: 25,
+              childAspectRatio: gridAspectRatio,
               mainAxisSpacing: 10,
             ),
             itemCount: contacts.length,

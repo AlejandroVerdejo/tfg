@@ -179,7 +179,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
               )
             // ? Ver
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ListDataText(
                       theme: theme,

@@ -1,11 +1,8 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/widgets/management/edit_book.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
 import 'package:tfg_library/widgets/text/header_text.dart';
@@ -54,7 +51,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 
     if (pickedFile != null) {
       image = await pickedFile.readAsBytes();
-      storageManager.setPFP(image!, "default");
+      // storageManager.setPFP(image!, "default");
       pfpUpdated = true;
       setState(() {});
     }
