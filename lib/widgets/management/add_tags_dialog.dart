@@ -56,7 +56,7 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       controller: editorialController,
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle(
-                          "defaultTextFieldStyle", theme, getLang("editorial")),
+                          "defaultTextFieldStyle", theme, getLang("editorial"), ""),
                       obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
@@ -98,7 +98,7 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       controller: languageController,
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle(
-                          "defaultTextFieldStyle", theme, getLang("language")),
+                          "defaultTextFieldStyle", theme, getLang("language"), ""),
                       obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
@@ -140,7 +140,7 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       controller: categoryController,
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle(
-                          "defaultTextFieldStyle", theme, getLang("category")),
+                          "defaultTextFieldStyle", theme, getLang("category"), ""),
                       obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
@@ -182,7 +182,7 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       controller: genreController,
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle(
-                          "defaultTextFieldStyle", theme, getLang("genre")),
+                          "defaultTextFieldStyle", theme, getLang("genre"), ""),
                       obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [

@@ -109,6 +109,9 @@ const lang = {
     "deleteBook": "Eliminar este libro",
     "deleteAllBooks": "Eliminar todos los libros como este",
     "noActiveRents": "No tienes ningun prestamo activo",
+    "contactUs": "Contactanos",
+    "home": "Inicio",
+    "send": "Enviar"
   }
 };
 

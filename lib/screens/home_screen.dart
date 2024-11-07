@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/management/add_book.dart';
-import 'package:tfg_library/management/edit_book.dart';
-import 'package:tfg_library/management/rent_book.dart';
-import 'package:tfg_library/management/return_book.dart';
-import 'package:tfg_library/management/users.dart';
+import 'package:tfg_library/widgets/management/add_book.dart';
+import 'package:tfg_library/widgets/management/edit_book.dart';
+import 'package:tfg_library/widgets/management/rent_book.dart';
+import 'package:tfg_library/widgets/management/return_book.dart';
+import 'package:tfg_library/widgets/management/users.dart';
 import 'package:tfg_library/widgets/catalog/catalog.dart';
+import 'package:tfg_library/widgets/contact/contact.dart';
+import 'package:tfg_library/widgets/contact/view_contacts.dart';
 import 'package:tfg_library/widgets/profile/profile.dart';
 import 'package:tfg_library/widgets/userlists/wait_list.dart';
 import 'package:tfg_library/widgets/userlists/wish_list.dart';
@@ -21,13 +23,13 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.user,
-    required this.theme,
+    required this.widgetTheme,
     required this.onLogOut,
     required this.onThemeUpdate,
   });
 
   final Map<String, dynamic> user;
-  final String theme;
+  final String widgetTheme;
   final VoidCallback onLogOut;
   final VoidCallback onThemeUpdate;
 
@@ -40,86 +42,101 @@ class _HomeScreenState extends State<HomeScreen> {
 
   FirestoreManager firestoreManager = FirestoreManager();
   StorageManager storageManager = StorageManager();
+  final GlobalKey<HomeState> homeChildKey = GlobalKey<HomeState>();
+  final GlobalKey<ProfileState> profileChildKey = GlobalKey<ProfileState>();
+  final GlobalKey<CatalogState> catalogChildKey = GlobalKey<CatalogState>();
+  final GlobalKey<WishListState> wishlistChildKey = GlobalKey<WishListState>();
+  final GlobalKey<WaitListState> waitlistChildKey = GlobalKey<WaitListState>();
+  final GlobalKey<AddBookState> addBookChildKey = GlobalKey<AddBookState>();
+  final GlobalKey<EditBookState> editBookChildKey = GlobalKey<EditBookState>();
+  final GlobalKey<RentBookState> rentBookChildKey = GlobalKey<RentBookState>();
+  final GlobalKey<ReturnBookState> returnBookChildKey =
+      GlobalKey<ReturnBookState>();
+  final GlobalKey<ContactState> contactChildKey = GlobalKey<ContactState>();
+  final GlobalKey<ViewContactsState> viewContactsChildKey =
+      GlobalKey<ViewContactsState>();
+
   Widget? activeWigdet;
+  String currentWidget = "";
   String appBarText = "";
-  bool home = true;
+  String theme = "";
 
   void updateScreen(String screen) {
+    currentWidget = screen;
     String bookId = "";
     if (screen.contains("editBook")) {
       var splitted = screen.split("|");
       screen = splitted[0];
       bookId = splitted[1];
     }
-    var theme = widget.theme;
     switch (screen) {
       // ? | INICIO |
       case "home":
         activeWigdet = Home(
+          key: homeChildKey,
           theme: theme,
           user: user,
           onScreenChange: updateScreen,
         );
-        appBarText = "";
-        home = true;
+        appBarText = getLang("home");
         break;
       // ? | PERFIL |
       case "profile":
         activeWigdet = Profile(
+          key: profileChildKey,
           theme: theme,
           user: user,
           onUpdate: updateUser,
         );
         appBarText = getLang("profile");
-        home = false;
         break;
       // ? | USUARIOS |
       case "users":
         activeWigdet = Users(theme: theme);
         appBarText = getLang("users");
-        home = false;
         break;
       // ? | CATALOGO |
       case "catalog":
         activeWigdet = Catalog(
+          key: catalogChildKey,
           theme: theme,
           user: user,
           onScreenChange: updateScreen,
         );
         appBarText = getLang("catalog");
-        home = false;
         break;
       // ? | LISTA DE DESEADOS |
       case "wishlist":
         activeWigdet = WishList(
+          key: wishlistChildKey,
           theme: theme,
           user: user,
           email: user["email"],
         );
         appBarText = getLang("wishlist");
-        home = false;
         break;
       // ? | LISTA DE RECORDATORIOS |
       case "waitlist":
         activeWigdet = WaitList(
+          key: waitlistChildKey,
           theme: theme,
           user: user,
           email: user["email"],
         );
         appBarText = getLang("waitlist");
-        home = false;
         break;
       // ? | AÑADIR LIBROS |
       case "addBook":
         activeWigdet = AddBook(
+          key: addBookChildKey,
           theme: theme,
         );
         appBarText = getLang("addBook");
-        home = false;
         break;
       // ? | EDITAR LIBRO |
       case "editBook":
         activeWigdet = EditBook(
+          key: editBookChildKey,
           theme: theme,
           bookKey: bookId,
           onEdit: updateScreen,
@@ -128,48 +145,105 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       // ? | PRESTAMO |
       case "rentBook":
-        activeWigdet = RentBook(theme: theme);
+        activeWigdet = RentBook(
+          key: rentBookChildKey,
+          theme: theme,
+        );
         appBarText = getLang("rentBook");
-        home = false;
         break;
       // ? | DEVOLUCION |
       case "returnBook":
-        activeWigdet = ReturnBook(theme: theme);
+        activeWigdet = ReturnBook(
+          key: returnBookChildKey,
+          theme: theme,
+        );
         appBarText = getLang("returnBook");
-        home = false;
+        break;
+      // ? | CONTACTAR |
+      case "contact":
+        activeWigdet = Contact(
+          key: contactChildKey,
+          theme: theme,
+          user: user,
+        );
+        appBarText = getLang("contactUs");
+        break;
+      // ? | MENSAJES |
+      case "contacts":
+        activeWigdet = ViewContacts(
+          key: viewContactsChildKey,
+          theme: theme,
+        );
+        appBarText = "Mensajes";
+        break;
     }
     setState(() {});
   }
 
   void updateUser() async {
-    log("refresh");
     user = await firestoreManager.getUser(widget.user["email"]);
     widget.user["pfp"] = await storageManager.getPFP(widget.user["email"]);
     setState(() {});
   }
 
+  void updateTheme() async {
+    widget.onThemeUpdate();
+    theme == "dark" ? theme = "light" : theme = "dark";
+    await Future.delayed(const Duration(milliseconds: 50));
+    switch (currentWidget) {
+      case "home":
+        homeChildKey.currentState?.refreshTheme();
+        break;
+      case "profile":
+        profileChildKey.currentState?.refreshTheme();
+        break;
+      case "catalog":
+        catalogChildKey.currentState?.refreshTheme();
+        break;
+      case "wishlist":
+        wishlistChildKey.currentState?.refreshTheme();
+        break;
+      case "waitlist":
+        waitlistChildKey.currentState?.refreshTheme();
+        break;
+      case "addBook":
+        addBookChildKey.currentState?.refreshTheme();
+        break;
+      case "editBook":
+        editBookChildKey.currentState?.refreshTheme();
+        break;
+      case "rentBook":
+        rentBookChildKey.currentState?.refreshTheme();
+        break;
+      case "returnBook":
+        returnBookChildKey.currentState?.refreshTheme();
+        break;
+      case "contact":
+        contactChildKey.currentState?.refreshTheme();
+        break;
+      case "contacts":
+        viewContactsChildKey.currentState?.refreshTheme();
+        break;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    // activeWigdet = Home(
-    //   theme: widget.theme,
-    //   user: widget.user,
-    //   onScreenChange: updateScreen,
-    // );
-    user = widget.user;
-    activeWigdet = Profile(
-      theme: widget.theme,
-      user: user,
-      onUpdate: updateUser,
+    activeWigdet = Home(
+      key: homeChildKey,
+      theme: widget.widgetTheme,
+      user: widget.user,
+      onScreenChange: updateScreen,
     );
-    appBarText = "";
-    // home = true;
-    home = false;
+    user = widget.user;
+    appBarText = getLang("home");
+    currentWidget = "home";
+    theme = widget.widgetTheme;
   }
 
   @override
   Widget build(BuildContext context) {
-    var theme = widget.theme;
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -181,20 +255,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         foregroundColor: colors[theme]["barTextColor"],
         title: BarText(text: appBarText),
-        leading: home
-            ? null
-            : IconButton(
-                onPressed: () {
-                  updateScreen("home");
-                },
-                icon: const Icon(Icons.home),
-              ),
         backgroundColor: colors[theme]["headerBackgroundColor"],
       ),
       drawer: SideMenu(
         theme: theme,
         user: user,
-        onRefresh: widget.onThemeUpdate,
+        onRefresh: updateTheme,
         onLogOut: widget.onLogOut,
         onScreenChange: updateScreen,
       ),

@@ -16,10 +16,10 @@ class WishList extends StatefulWidget {
   final String email;
 
   @override
-  State<WishList> createState() => _WishListState();
+  State<WishList> createState() => WishListState();
 }
 
-class _WishListState extends State<WishList> {
+class WishListState extends State<WishList> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     List<dynamic> wishlist =
@@ -32,6 +32,19 @@ class _WishListState extends State<WishList> {
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    theme = widget.theme;
+  }
 
   void _update() {
     setState(() {});
@@ -56,7 +69,6 @@ class _WishListState extends State<WishList> {
         } else {
           // Ejecucion
           final data = snapshot.data!;
-          var theme = widget.theme;
           var books = data["books"];
           var wishlist = data["wishlist"];
           return ListView(

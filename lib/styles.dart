@@ -49,6 +49,8 @@ const Map<String, dynamic> colors = {
     "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
     "chipBackgroundColor": Color.fromRGBO(231, 231, 238, 1),
     "dividerColor": Color.fromRGBO(50, 47, 54, 1),
+    "hintTextColor": Color.fromRGBO(96, 93, 100, 1),
+    "priorityColor": Color.fromRGBO(228,168,202, 1),
   },
   "dark": {
     "mainBackgroundColor": Color.fromRGBO(73, 69, 79, 1),
@@ -68,6 +70,8 @@ const Map<String, dynamic> colors = {
     "linkTextColor": Color.fromRGBO(136, 137, 204, 1),
     "chipBackgroundColor": Color.fromRGBO(96, 93, 100, 1),
     "dividerColor": Color.fromRGBO(245, 245, 247, 1),
+    "hintTextColor": Color.fromRGBO(96, 93, 100, 1),
+    "priorityColor": Color.fromRGBO(193, 133, 167, 1),
   },
 };
 
@@ -185,9 +189,11 @@ getStyle(String style, String theme) {
   return styles[style];
 }
 
-getTextFieldStyle(String style, String theme, String labelText) {
+getTextFieldStyle(
+    String style, String theme, String labelText, String hintText) {
   Map<String, dynamic> styles = {
     "defaultTextFieldStyle": InputDecoration(
+      hintText: hintText,
       enabledBorder: OutlineInputBorder(
           borderSide: getStyle("loginFieldBorderSide", theme)),
       focusedBorder: OutlineInputBorder(
@@ -202,6 +208,8 @@ getTextFieldStyle(String style, String theme, String labelText) {
       floatingLabelBehavior: FloatingLabelBehavior.always,
     ),
     "filterTextFieldStyle": InputDecoration(
+      hintText: hintText,
+      hintStyle: GoogleFonts.nunito(color: colors[theme]["hintTextColor"]),
       border: UnderlineInputBorder(
         borderSide: BorderSide(
           color: colors[theme]["mainTextColor"],

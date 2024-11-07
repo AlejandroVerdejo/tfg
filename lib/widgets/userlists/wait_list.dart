@@ -17,10 +17,10 @@ class WaitList extends StatefulWidget {
   final String email;
 
   @override
-  State<WaitList> createState() => _WaitListState();
+  State<WaitList> createState() => WaitListState();
 }
 
-class _WaitListState extends State<WaitList> {
+class WaitListState extends State<WaitList> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, dynamic> books = await firestoreManager.getMergedBooks();
     List<dynamic> waitlist =
@@ -33,6 +33,19 @@ class _WaitListState extends State<WaitList> {
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    theme = widget.theme;
+  }
 
   void _update() {
     setState(() {});
@@ -56,7 +69,6 @@ class _WaitListState extends State<WaitList> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
-            var theme = widget.theme;
             var books = data["books"];
             var waitlist = data["waitlist"];
             return ListView(

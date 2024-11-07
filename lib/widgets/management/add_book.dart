@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/add_book_data.dart';
-import 'package:tfg_library/management/add_tags_dialog.dart';
+import 'package:tfg_library/widgets/management/add_book_data.dart';
+import 'package:tfg_library/widgets/management/add_tags_dialog.dart';
 import 'package:tfg_library/styles.dart';
 
 class AddBook extends StatefulWidget {
@@ -15,7 +15,7 @@ class AddBook extends StatefulWidget {
   final String theme;
 
   @override
-  State<AddBook> createState() => _AddBookState();
+  State<AddBook> createState() => AddBookState();
 }
 
 FirestoreManager firestoreManager = FirestoreManager();
@@ -23,9 +23,15 @@ FirestoreManager firestoreManager = FirestoreManager();
 TextEditingController existentBookController = TextEditingController();
 bool loadBook = false;
 
-class _AddBookState extends State<AddBook> {
+class AddBookState extends State<AddBook> {
   final GlobalKey<AddBookDataState> childKey = GlobalKey<AddBookDataState>();
   final _formKey = GlobalKey<FormBuilderState>();
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -33,6 +39,7 @@ class _AddBookState extends State<AddBook> {
     // Asigna el valor de la primera carga
     existentBookController = TextEditingController();
     loadBook = false;
+    theme = widget.theme;
   }
 
   void showSnackBar(BuildContext context, String text) {
@@ -51,7 +58,6 @@ class _AddBookState extends State<AddBook> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = widget.theme;
     return ListView(
       children: [
         Container(
@@ -69,7 +75,7 @@ class _AddBookState extends State<AddBook> {
                     name: "bookId",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("bookId")),
+                        "defaultTextFieldStyle", theme, getLang("bookId"), ""),
                   ),
                 ),
                 const SizedBox(height: 30),

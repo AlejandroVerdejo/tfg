@@ -26,10 +26,10 @@ class Catalog extends StatefulWidget {
   final Function(String) onScreenChange;
 
   @override
-  State<Catalog> createState() => _CatalogState();
+  State<Catalog> createState() => CatalogState();
 }
 
-class _CatalogState extends State<Catalog> {
+class CatalogState extends State<Catalog> {
   Future<Map<String, dynamic>> _loadData() async {
     // Obtiene los | Libros |
     Map<String, dynamic> books = widget.user["level"] <= 1
@@ -53,9 +53,15 @@ class _CatalogState extends State<Catalog> {
     super.initState();
     // Asigna un valor diferente en la primera carga
     expanded = false;
+    theme = widget.theme;
   }
 
   void refresh() {
+    setState(() {});
+  }
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
     setState(() {});
   }
 
@@ -63,6 +69,8 @@ class _CatalogState extends State<Catalog> {
   List<String> selectedGenres = [];
   List<String> selectedEditorials = [];
   List<String> selectedLanguages = [];
+
+  String theme = "";
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +90,6 @@ class _CatalogState extends State<Catalog> {
         } else {
           // Ejecucion
           final data = snapshot.data!;
-          var theme = widget.theme;
           var tags = data["tags"];
           var books = data["books"];
           List<String> categories = tags["categories"];

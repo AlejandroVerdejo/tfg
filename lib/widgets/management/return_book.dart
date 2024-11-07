@@ -5,8 +5,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/rent_book_user_data.dart';
-import 'package:tfg_library/management/return_book_list.dart';
+import 'package:tfg_library/widgets/management/rent_book_user_data.dart';
+import 'package:tfg_library/widgets/management/return_book_list.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 
@@ -19,7 +19,7 @@ class ReturnBook extends StatefulWidget {
   final String theme;
 
   @override
-  State<ReturnBook> createState() => _ReturnBookState();
+  State<ReturnBook> createState() => ReturnBookState();
 }
 
 FirestoreManager firestoreManager = FirestoreManager();
@@ -30,7 +30,7 @@ String user = "";
 List<dynamic> userActiveRents = [];
 int position = -1;
 
-class _ReturnBookState extends State<ReturnBook> {
+class ReturnBookState extends State<ReturnBook> {
   @override
   void initState() {
     super.initState();
@@ -40,6 +40,14 @@ class _ReturnBookState extends State<ReturnBook> {
     user = "";
     userActiveRents = [];
     position = -1;
+    theme = widget.theme;
+  }
+
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
   }
 
   void _update() {
@@ -85,8 +93,8 @@ class _ReturnBookState extends State<ReturnBook> {
                         controller: userController,
                         name: "user",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("userId")),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("userId"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),

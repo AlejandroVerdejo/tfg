@@ -6,7 +6,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/select_dialog_field.dart';
+import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/list_data_text.dart';
 
@@ -73,7 +73,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         controller: usernameController,
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("Username")),
+                            theme, getLang("Username"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -90,7 +90,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         controller: emailController,
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("email")),
+                            "defaultTextFieldStyle", theme, getLang("email"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -108,7 +108,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         controller: passwordController,
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("password")),
+                            theme, getLang("password"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -127,7 +127,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         controller: levelController,
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("level")),
+                            "defaultTextFieldStyle", theme, getLang("level"), ""),
                         onTap: () async {
                           SelectDialog.showModal(context,
                               showSearchBox: false,

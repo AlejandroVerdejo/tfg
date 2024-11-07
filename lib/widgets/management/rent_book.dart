@@ -6,8 +6,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/rent_book_book_data.dart';
-import 'package:tfg_library/management/rent_book_user_data.dart';
+import 'package:tfg_library/widgets/management/rent_book_book_data.dart';
+import 'package:tfg_library/widgets/management/rent_book_user_data.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 
@@ -20,7 +20,7 @@ class RentBook extends StatefulWidget {
   final String theme;
 
   @override
-  State<RentBook> createState() => _RentBookState();
+  State<RentBook> createState() => RentBookState();
 }
 
 FirestoreManager firestoreManager = FirestoreManager();
@@ -36,7 +36,7 @@ TextEditingController dateController = TextEditingController();
 bool dateLoaded = false;
 String date = "";
 
-class _RentBookState extends State<RentBook> {
+class RentBookState extends State<RentBook> {
   @override
   void initState() {
     super.initState();
@@ -51,6 +51,14 @@ class _RentBookState extends State<RentBook> {
     dateController = TextEditingController();
     dateLoaded = false;
     date = "";
+    theme = widget.theme;
+  }
+
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
   }
 
   void _update() {
@@ -79,7 +87,6 @@ class _RentBookState extends State<RentBook> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = widget.theme;
     return Padding(
       padding: bodyPadding,
       child: ListView(
@@ -97,7 +104,7 @@ class _RentBookState extends State<RentBook> {
                     name: "book",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("bookId")),
+                        "defaultTextFieldStyle", theme, getLang("bookId"), ""),
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                           errorText: getLang("formError-required")),
@@ -142,7 +149,7 @@ class _RentBookState extends State<RentBook> {
                     name: "user",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("userId")),
+                        "defaultTextFieldStyle", theme, getLang("userId"), ""),
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                           errorText: getLang("formError-required")),
@@ -186,8 +193,8 @@ class _RentBookState extends State<RentBook> {
                     readOnly: true,
                     name: "date",
                     style: getStyle("normalTextStyle", theme),
-                    decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("returnDate")),
+                    decoration: getTextFieldStyle("defaultTextFieldStyle",
+                        theme, getLang("returnDate"), ""),
                     onTap: () async {
                       DateTime? datePicked = await showDatePicker(
                           context: context,

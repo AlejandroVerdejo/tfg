@@ -10,7 +10,7 @@ import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/select_dialog_field.dart';
+import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
@@ -28,7 +28,7 @@ class EditBook extends StatefulWidget {
   final Function(String) onEdit;
 
   @override
-  State<EditBook> createState() => _EditBookState();
+  State<EditBook> createState() => EditBookState();
 }
 
 TextEditingController titleController = TextEditingController();
@@ -60,7 +60,7 @@ bool imageUpdated = false;
 FirestoreManager firestoreManager = FirestoreManager();
 StorageManager storageManager = StorageManager();
 
-class _EditBookState extends State<EditBook> {
+class EditBookState extends State<EditBook> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, dynamic> book =
         await firestoreManager.getMergedBook(widget.bookKey);
@@ -69,10 +69,18 @@ class _EditBookState extends State<EditBook> {
     return {"tags": tags};
   }
 
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     imageUpdated = false;
+    theme = widget.theme;
   }
 
   void setData(Map<String, dynamic> book) {
@@ -137,7 +145,6 @@ class _EditBookState extends State<EditBook> {
           } else {
             // Ejecucion
             final data = snapshot.data!;
-            var theme = widget.theme;
             var tags = data["tags"];
             return ListView(
               children: [
@@ -158,7 +165,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("title")),
+                                getLang("title"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -176,7 +184,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("author")),
+                                getLang("author"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -195,7 +204,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("editorial")),
+                                getLang("editorial"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -233,7 +243,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("date")),
+                                getLang("date"),
+                                ""),
                             onTap: () async {
                               DateTime? datePicked = await showDatePicker(
                                   context: context,
@@ -273,7 +284,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("pages")),
+                                getLang("pages"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -294,7 +306,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("language")),
+                                getLang("language"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -332,7 +345,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("isbn")),
+                                getLang("isbn"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -348,7 +362,10 @@ class _EditBookState extends State<EditBook> {
                             name: "age",
                             style: getStyle("normalTextStyle", theme),
                             decoration: getTextFieldStyle(
-                                "defaultTextFieldStyle", theme, getLang("age")),
+                                "defaultTextFieldStyle",
+                                theme,
+                                getLang("age"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -367,7 +384,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("category")),
+                                getLang("category"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -405,7 +423,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("genres")),
+                                getLang("genres"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -450,7 +469,8 @@ class _EditBookState extends State<EditBook> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("sinopsis")),
+                                getLang("sinopsis"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),

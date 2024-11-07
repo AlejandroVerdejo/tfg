@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/add_book.dart';
-import 'package:tfg_library/management/select_dialog_field.dart';
+import 'package:tfg_library/widgets/management/add_book.dart';
+import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
@@ -206,7 +206,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "title",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("title")),
+                            "defaultTextFieldStyle", theme, getLang("title"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -223,7 +223,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "author",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("author")),
+                            "defaultTextFieldStyle", theme, getLang("author"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -240,7 +240,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "editorial",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("editorial")),
+                            theme, getLang("editorial"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 SelectDialog.showModal(context,
@@ -278,7 +278,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "date",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("date")),
+                            "defaultTextFieldStyle", theme, getLang("date"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 DateTime? datePicked = await showDatePicker(
@@ -319,7 +319,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "pages",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("pages")),
+                            "defaultTextFieldStyle", theme, getLang("pages"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -338,7 +338,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "language",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("language")),
+                            theme, getLang("language"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 SelectDialog.showModal(context,
@@ -376,7 +376,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "isbn",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("isbn")),
+                            "defaultTextFieldStyle", theme, getLang("isbn"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -393,7 +393,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "age",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("age")),
+                            "defaultTextFieldStyle", theme, getLang("age"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -410,7 +410,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "state",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("state")),
+                            "defaultTextFieldStyle", theme, getLang("state"), ""),
                         onTap: () async {
                           SelectDialog.showModal(context,
                               showSearchBox: false,
@@ -448,7 +448,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "category",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("category")),
+                            theme, getLang("category"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 SelectDialog.showModal(context,
@@ -486,7 +486,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "genres",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("genres")),
+                            "defaultTextFieldStyle", theme, getLang("genres"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 SelectDialog.showModal(context,
@@ -532,7 +532,7 @@ class AddBookDataState extends State<AddBookData> {
                         name: "description",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("sinopsis")),
+                            theme, getLang("sinopsis"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),

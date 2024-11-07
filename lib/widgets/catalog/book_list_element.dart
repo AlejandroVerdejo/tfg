@@ -39,7 +39,6 @@ class _BookListElementState extends State<BookListElement> {
     var user = widget.user;
     return GestureDetector(
       onTap: () {
-        // var result = await
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -53,10 +52,6 @@ class _BookListElementState extends State<BookListElement> {
             ),
           ),
         );
-        // if (result) {
-        //   log(result.toString());
-        //   widget.onClose!();
-        // }
       },
       child: Opacity(
         opacity: book["aviable"] ? 1 : 0.3,

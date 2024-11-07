@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/management/user_list_element.dart';
-import 'package:tfg_library/management/user_list_header.dart';
+import 'package:tfg_library/widgets/management/user_list_element.dart';
+import 'package:tfg_library/widgets/management/user_list_header.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 

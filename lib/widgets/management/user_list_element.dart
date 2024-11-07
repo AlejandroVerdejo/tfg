@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/user_view_dialog.dart';
+import 'package:tfg_library/widgets/management/user_view_dialog.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 import 'package:tfg_library/widgets/delete_dialog.dart';

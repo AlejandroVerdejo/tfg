@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         name: "email",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("email")),
+                            "defaultTextFieldStyle", theme, getLang("email"), ""),
                         keyboardType: TextInputType.emailAddress,
                         validator: FormBuilderValidators.compose(
                           [
@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: getTextFieldStyle(
                                   "defaultTextFieldStyle",
                                   theme,
-                                  getLang("username")),
+                                  getLang("username"), ""),
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(
                                     errorText: getLang("formError-required")),
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         name: "password",
                         style: getStyle("normalTextStyle", theme),
                         decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("password")),
+                            theme, getLang("password"), ""),
                         obscureText: true,
                         validator: FormBuilderValidators.compose(
                           [

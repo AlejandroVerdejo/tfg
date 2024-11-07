@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tfg_library/management/edit_book.dart';
+import 'package:tfg_library/widgets/management/edit_book.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
@@ -777,6 +777,44 @@ class FirestoreManager {
     await bookRef.update({"$id.aviable": true});
     // Actualiza la fecha de devolucion del libro
     await bookRef.update({"$id.return_date": ""});
+  }
+
+  // ?
+
+  //? |                                           |
+  //? | GESTION DE CONTACTOS                      |
+  //? |                                           |
+
+  Future<List<String>> getContactTypes() async {
+    // Carga el Documento
+    DocumentSnapshot doc = await db.collection("Contact").doc("Data").get();
+    // Carga los tipos de contacto
+    List<dynamic> types = await doc.get("types");
+    return types.cast<String>().toList();
+  }
+
+  Future<void> newContact(Map contact) async {
+    // Referencia a la Coleccion
+    CollectionReference colRef = db.collection("Contact");
+    // Añade el contacto
+    await colRef.add(contact);
+  }
+
+  // * Devolvera los mensajes activos
+  Future<Map<String, dynamic>> getContacts() async {
+    Map<String, dynamic> contacts = {};
+    // Carga la Coleccion
+    await db.collection("Contact").get().then((onValue) {
+      // Recorre los Documentos
+      for (var doc in onValue.docs) {
+        // Excluye el Documento "Data"
+        if (doc.id != "Data" && doc.data()["active"]) {
+          // Introduce los Documentos
+          contacts[doc.id] = doc.data();
+        }
+      }
+    });
+    return contacts;
   }
 
   // ?

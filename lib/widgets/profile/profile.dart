@@ -16,15 +16,26 @@ class Profile extends StatefulWidget {
   final VoidCallback onUpdate;
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<Profile> createState() => ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class ProfileState extends State<Profile> {
   FirestoreManager firestoreManager = FirestoreManager();
+  String theme = "";
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    theme = widget.theme;
+  }
 
   @override
   Widget build(BuildContext context) {
-    var theme = widget.theme;
     var user = widget.user;
     return ListView(
       shrinkWrap: true,
@@ -34,6 +45,7 @@ class _ProfileState extends State<Profile> {
           user: user,
           onUpdate: widget.onUpdate,
         ),
+        const SizedBox(height: 10),
         ProfileContent(theme: theme, user: user)
       ],
     );

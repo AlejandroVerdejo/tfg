@@ -7,7 +7,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/select_dialog_field.dart';
+import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
@@ -84,7 +84,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                     name: "email",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("email")),
+                        "defaultTextFieldStyle", theme, getLang("email"), ""),
                     keyboardType: TextInputType.emailAddress,
                     validator: FormBuilderValidators.compose(
                       [
@@ -104,7 +104,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                     name: "username",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("user")),
+                        "defaultTextFieldStyle", theme, getLang("user"), ""),
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                           errorText: getLang("formError-required")),
@@ -121,7 +121,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                     name: "password",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("password")),
+                        "defaultTextFieldStyle", theme, getLang("password"), ""),
                     // obscureText: true,
                     validator: FormBuilderValidators.compose(
                       [
@@ -143,7 +143,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                     name: "level",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("level")),
+                        "defaultTextFieldStyle", theme, getLang("level"), ""),
                     onTap: () async {
                       SelectDialog.showModal(context,
                           showSearchBox: false,

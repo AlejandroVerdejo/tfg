@@ -128,7 +128,7 @@ class _BookListState extends State<BookList> {
             style: getStyle("normalTextStyle", theme),
             controller: titleFilterController,
             decoration: getTextFieldStyle(
-                "filterTextFieldStyle", theme, getLang("editorial")),
+                "filterTextFieldStyle", theme, getLang("editorial"), "Escribe un titulo para buscarlo"),
             onChanged: (value) {
               setState(() {});
             },

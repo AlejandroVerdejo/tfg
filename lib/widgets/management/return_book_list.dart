@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_library/management/return_book.dart';
-import 'package:tfg_library/management/return_book_list_element.dart';
+import 'package:tfg_library/widgets/management/return_book.dart';
+import 'package:tfg_library/widgets/management/return_book_list_element.dart';
 
 class ReturnBookList extends StatefulWidget {
   const ReturnBookList(

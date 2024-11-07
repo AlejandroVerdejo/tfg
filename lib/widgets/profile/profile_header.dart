@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/management/edit_book.dart';
+import 'package:tfg_library/widgets/management/edit_book.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
 import 'package:tfg_library/widgets/text/header_text.dart';
@@ -75,11 +75,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             const SizedBox(height: 20),
             Row(
               children: [
-                Expanded(child: SizedBox()),
+                const Expanded(child: SizedBox()),
                 !edit
                     ? IconButton(
                         onPressed: () {
-                          log("edit");
                           edit = true;
                           nameController.text = user["username"];
                           setState(() {});
@@ -92,17 +91,15 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 edit
                     ? IconButton(
                         onPressed: () async {
-                          log("save");
                           edit = false;
                           if (pfpUpdated) {
-                            log("imageUpdate");
                             imageAux = image;
                             await storageManager.setPFP(image!, user["email"]);
                           }
                           if (nameUpdated) {
-                            log("nameUpdate");
                             user["username"] = nameController.text;
-                            await firestoreManager.updateUsername(user["email"], user["username"]);
+                            await firestoreManager.updateUsername(
+                                user["email"], user["username"]);
                           }
                           pfpUpdated = false;
                           nameUpdated = false;
@@ -117,7 +114,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 edit
                     ? IconButton(
                         onPressed: () {
-                          log("cancel");
                           edit = false;
                           image = imageAux;
                           nameUpdated = false;
@@ -136,14 +132,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 alignment: Alignment.centerLeft,
                 child: CircleAvatar(
                   radius: 70,
-                  // child: Text(
-                  //   user["username"][0].toUpperCase(),
-                  //   style: const TextStyle(fontSize: 70),
-                  // ),
-                  // child: Image.memory(
-                  //   image!,
-                  //   fit: BoxFit.fill,
-                  // ),
                   backgroundImage: MemoryImage(
                     image!,
                   ),
@@ -151,7 +139,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               ),
               onTap: edit
                   ? () async {
-                      log("edit-image");
                       _pickImage();
                     }
                   : null,
@@ -162,8 +149,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     child: TextField(
                       style: getStyle("headerTextStyle", theme),
                       controller: nameController,
-                      decoration:
-                          getTextFieldStyle("filterTextFieldStyle", theme, ""),
+                      decoration: getTextFieldStyle(
+                          "filterTextFieldStyle", theme, "", ""),
                       onChanged: (value) {
                         // setState(() {});
                         nameUpdated = true;

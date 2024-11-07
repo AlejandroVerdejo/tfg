@@ -38,6 +38,7 @@ class _SideMenuState extends State<SideMenu> {
             decoration: BoxDecoration(
               color: colors[theme]["headerBackgroundColor"],
             ),
+            // ? PFP y Nombre
             child: Column(
               children: [
                 CircleAvatar(
@@ -48,6 +49,21 @@ class _SideMenuState extends State<SideMenu> {
                 BarText(text: user["username"]),
               ],
             ),
+          ),
+          // ? Inicio
+          ListTile(
+            leading: Icon(
+              Icons.home,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              getLang("home"),
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("home");
+              Navigator.of(context).pop();
+            },
           ),
           // ? Perfil
           ListTile(
@@ -64,6 +80,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.of(context).pop();
             },
           ),
+          // ? Usuarios
           user["level"] == 0
               ? ListTile(
                   leading: Icon(
@@ -129,18 +146,34 @@ class _SideMenuState extends State<SideMenu> {
                   },
                 )
               : const SizedBox.shrink(),
-          // ? Ajuestes?
+          // ? Contactanos
           ListTile(
             leading: Icon(
-              Icons.settings,
+              Icons.mail,
               color: colors[theme]["mainTextColor"],
             ),
             title: Text(
-              getLang("settings"),
+              getLang("contactUs"),
               style: getStyle("sideMenuTextStyle", theme),
             ),
             onTap: () {
-              widget.onScreenChange("settings");
+              widget.onScreenChange("contact");
+              Navigator.of(context).pop();
+            },
+          ),
+          // ? Contactanos
+          ListTile(
+            leading: Icon(
+              Icons.mail,
+              color: colors[theme]["mainTextColor"],
+            ),
+            title: Text(
+              "Mensajes",
+              style: getStyle("sideMenuTextStyle", theme),
+            ),
+            onTap: () {
+              widget.onScreenChange("contacts");
+              Navigator.of(context).pop();
             },
           ),
           BetterDivider(theme: theme),

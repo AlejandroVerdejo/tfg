@@ -20,10 +20,10 @@ class Home extends StatefulWidget {
   final Function(String) onScreenChange;
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Home> createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   Future<Map<String, dynamic>> _loadData() async {
     List<String> popularBooks = await firestoreManager.getPopularity();
     bool waitListAviability = await firestoreManager
@@ -34,12 +34,26 @@ class _HomeState extends State<Home> {
     };
   }
 
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    theme = widget.theme;
+    _futureData = _loadData();
+  }
+
   FirestoreManager firestoreManager = FirestoreManager();
+  String theme = "";
+  Future<Map>? _futureData;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _loadData(),
+      future: _futureData,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
@@ -53,7 +67,6 @@ class _HomeState extends State<Home> {
           );
         } else {
           // Ejecucion
-          var theme = widget.theme;
           var level = widget.user["level"];
           final data = snapshot.data!;
           var popularBooks = data["popularBooks"];
