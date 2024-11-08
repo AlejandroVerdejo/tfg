@@ -11,9 +11,11 @@ class ViewContacts extends StatefulWidget {
   const ViewContacts({
     super.key,
     required this.theme,
+    required this.user,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
 
   @override
   State<ViewContacts> createState() => ViewContactsState();
@@ -37,6 +39,10 @@ class ViewContactsState extends State<ViewContacts> {
   void initState() {
     super.initState();
     theme = widget.theme;
+  }
+
+  void _update() {
+    setState(() {});
   }
 
   @override
@@ -73,8 +79,10 @@ class ViewContactsState extends State<ViewContacts> {
 
               return ViewContactsElement(
                 theme: theme,
+                user: widget.user,
                 contactKey: key,
                 contact: item,
+                onUpdate: _update,
               );
             },
           );

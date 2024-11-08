@@ -142,7 +142,7 @@ getStyle(String style, String theme) {
     "loginButtonStyle": OutlinedButton.styleFrom(
       side: BorderSide(color: colors[theme]["mainTextColor"]),
       backgroundColor: colors[theme]["secondaryBackgroundColor"],
-      fixedSize: const Size(double.maxFinite, 50),
+      // fixedSize: const Size(double.maxFinite, 50),
       foregroundColor: colors[theme]["mainTextColor"],
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
@@ -230,6 +230,36 @@ getTextFieldStyle(
         ),
       ),
       hoverColor: colors[theme]["mainTextColor"],
+    ),
+  };
+
+  return styles[style];
+}
+
+getTextFieldWButtonStyle(String style, String theme, String labelText,
+    String hintText, IconData icon, Function()? function) {
+  Map<String, dynamic> styles = {
+    "defaultTextFieldStyle": InputDecoration(
+      hintText: hintText,
+      enabledBorder: OutlineInputBorder(
+          borderSide: getStyle("loginFieldBorderSide", theme)),
+      focusedBorder: OutlineInputBorder(
+          borderSide: getStyle("loginFieldBorderSide", theme)),
+      errorStyle: const TextStyle(color: Colors.red),
+      errorBorder:
+          const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+      border: const OutlineInputBorder(),
+      labelText: labelText,
+      labelStyle: getStyle("normalTextStyle", theme),
+      floatingLabelStyle: getStyle("normalTextStyle", theme),
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      suffixIcon: IconButton(
+        onPressed: function,
+        icon: Icon(
+          icon,
+          color: colors[theme]["mainTextColor"],
+        ),
+      ),
     ),
   };
 

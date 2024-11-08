@@ -8,13 +8,17 @@ class ViewContactsElement extends StatefulWidget {
   const ViewContactsElement({
     super.key,
     required this.theme,
+    required this.user,
     required this.contactKey,
     required this.contact,
+    required this.onUpdate,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
   final String contactKey;
   final Map<String, dynamic> contact;
+  final VoidCallback onUpdate;
 
   @override
   State<ViewContactsElement> createState() => _ViewContactsElementState();
@@ -67,14 +71,15 @@ class _ViewContactsElementState extends State<ViewContactsElement> {
         ),
       ),
       onTap: () {
-        log("contact-tap");
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ContactView(
               theme: theme,
+              user: widget.user,
               contactKey: contactKey,
               contact: contact,
+              onUpdate: widget.onUpdate,
             ),
           ),
         );

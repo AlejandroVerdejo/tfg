@@ -111,7 +111,8 @@ const lang = {
     "noActiveRents": "No tienes ningun prestamo activo",
     "contactUs": "Contactanos",
     "home": "Inicio",
-    "send": "Enviar"
+    "send": "Enviar",
+    "solve": "Marcar como solucionado"
   }
 };
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
@@ -47,6 +49,7 @@ class WishListState extends State<WishList> {
   }
 
   void _update() {
+    log("update");
     setState(() {});
   }
 

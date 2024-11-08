@@ -147,9 +147,6 @@ class ContactState extends State<Contact> {
                                   if (_formKey.currentState
                                           ?.saveAndValidate() ??
                                       false) {
-                                    log("enviar");
-                                    String date = DateFormat("dd/MM/yyyy")
-                                        .format(DateTime.now());
                                     Map<String, dynamic> contact = {
                                       "user": user["email"],
                                       "active": true,
@@ -158,7 +155,8 @@ class ContactState extends State<Contact> {
                                       "content": contentController.text
                                           .replaceAll("\n", "<n><n>"),
                                       "comments": [],
-                                      "date": date
+                                      "date": DateFormat("dd/MM/yyyy")
+                                          .format(DateTime.now())
                                     };
                                     await firestoreManager.newContact(contact);
                                   }

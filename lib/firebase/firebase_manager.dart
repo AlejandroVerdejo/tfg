@@ -302,7 +302,7 @@ class FirestoreManager {
     bookRef.update({id: book});
   }
 
-  // *
+  // * Eliminara el libro indicado
   Future<void> deleteSingleBook(String bookId) async {
     // Divide el identificador
     var splitted = bookId.split("-");
@@ -815,6 +815,51 @@ class FirestoreManager {
       }
     });
     return contacts;
+  }
+
+  // * Cambiara el valor de la prioridad del contacto
+  Future<void> setContactPriority(String contactKey, bool prio) async {
+    // Crea la referencia al contacto
+    final contactRef = db.collection("Contact").doc(contactKey);
+    // Actualiza el valor en base de datos
+    await contactRef.update({"prio": prio});
+  }
+
+  // * Desactivara el contacto
+  Future<void> archiveContact(String contactKey) async {
+    // Crea la referencia al contacto
+    final contactRef = db.collection("Contact").doc(contactKey);
+    // Actualiza el valor en base de datos
+    await contactRef.update({"active": false});
+  }
+
+  // * Añadira un comentario al contacto
+  Future<void> addComment(
+      String contactKey, Map<String, dynamic> newComment) async {
+    // Crea la referencia al contacto
+    final contactRef = db.collection("Contact").doc(contactKey);
+    // Carga el Documento del contacto
+    DocumentSnapshot doc = await contactRef.get();
+    // Carga los comentarios
+    List<dynamic> comments = doc.get("comments");
+    // Añade el comentario a la lista
+    comments.add(newComment);
+    // Actualiza el valor en la base de datos
+    contactRef.update({"comments": comments});
+  }
+
+  // * Eliminara un comentario del contacto
+  Future<void> delComment(String contactKey, int pos) async {
+    // Crea la referencia al contacto
+    final contactRef = db.collection("Contact").doc(contactKey);
+    // Carga el Documento del contacto
+    DocumentSnapshot doc = await contactRef.get();
+    // Carga los comentarios
+    List<dynamic> comments = doc.get("comments");
+    // Elimina el comentario de la lista
+    comments.removeAt(pos);
+    // Actualiza el valor en la base de datos
+    contactRef.update({"comments": comments});
   }
 
   // ?

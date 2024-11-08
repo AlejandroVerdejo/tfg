@@ -173,6 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
         activeWigdet = ViewContacts(
           key: viewContactsChildKey,
           theme: theme,
+          user: user,
         );
         appBarText = "Mensajes";
         break;

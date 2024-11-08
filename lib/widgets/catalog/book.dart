@@ -87,6 +87,9 @@ class _BookState extends State<Book> {
     super.didChangeDependencies();
     _route = ModalRoute.of(context);
     _route?.addScopedWillPopCallback(() async {
+      if (updated) {
+        widget.onUpdate!();
+      }
       Navigator.pop(context, updated);
       return true;
     });
