@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/widgets/management/add_book.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
+import 'package:tfg_library/widgets/management/books/add_book.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
@@ -173,14 +175,10 @@ class AddBookDataState extends State<AddBookData> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingWidget();
           } else if (snapshot.hasError) {
             // Error
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return const LoadingErrorWidget();
           } else {
             // Ejecucion
             final data = snapshot.data!;
@@ -205,8 +203,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: bookLoaded,
                         name: "title",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("title"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("title"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -222,8 +220,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: bookLoaded,
                         name: "author",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("author"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("author"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -277,8 +275,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: true,
                         name: "date",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("date"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("date"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 DateTime? datePicked = await showDatePicker(
@@ -318,8 +316,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: bookLoaded,
                         name: "pages",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("pages"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("pages"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -375,8 +373,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: bookLoaded,
                         name: "isbn",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("isbn"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("isbn"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -409,8 +407,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: true,
                         name: "state",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("state"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("state"), ""),
                         onTap: () async {
                           SelectDialog.showModal(context,
                               showSearchBox: false,
@@ -485,8 +483,8 @@ class AddBookDataState extends State<AddBookData> {
                         readOnly: true,
                         name: "genres",
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("genres"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("genres"), ""),
                         onTap: !bookLoaded
                             ? () async {
                                 SelectDialog.showModal(context,

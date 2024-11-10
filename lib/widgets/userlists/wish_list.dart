@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/book_list.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 
 class WishList extends StatefulWidget {
   const WishList({
@@ -60,15 +62,10 @@ class WishListState extends State<WishList> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingWidget();
         } else if (snapshot.hasError) {
           // Error
-          return Center(
-            // child: Text(getLang("error")),
-            child: Text(snapshot.error.toString()),
-          );
+          return const LoadingErrorWidget();
         } else {
           // Ejecucion
           final data = snapshot.data!;

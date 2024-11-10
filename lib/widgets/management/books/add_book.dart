@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/widgets/management/add_book_data.dart';
+import 'package:tfg_library/widgets/management/books/add_book_data.dart';
 import 'package:tfg_library/widgets/management/add_tags_dialog.dart';
 import 'package:tfg_library/styles.dart';
 
@@ -67,7 +67,6 @@ class AddBookState extends State<AddBook> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 20),
                 TextSelectionTheme(
                   data: getStyle("loginFieldSelectionTheme", theme),
                   child: FormBuilderTextField(

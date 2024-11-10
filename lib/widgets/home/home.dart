@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/home/popular_list.dart';
+import 'package:tfg_library/widgets/home/wait_list_reminder.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class Home extends StatefulWidget {
@@ -57,14 +60,10 @@ class HomeState extends State<Home> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingWidget();
         } else if (snapshot.hasError) {
           // Error
-          return Center(
-            child: Text(getLang("error")),
-          );
+          return const LoadingErrorWidget();
         } else {
           // Ejecucion
           var level = widget.user["level"];
@@ -77,47 +76,11 @@ class HomeState extends State<Home> {
                 padding: bodyPadding,
                 child: Column(
                   children: [
-                    const SizedBox(height: 30),
-                    NormalText(
-                      theme: theme,
-                      text: getLang("popularBooks"),
-                      alignment: TextAlign.center,
-                    ),
-                    PopularList(theme: theme, popularBooks: popularBooks),
                     waitListAviability && level == 2
-                        ? Container(
-                            padding: const EdgeInsets.only(
-                                left: 80, top: 30, right: 80, bottom: 30),
-                            decoration: BoxDecoration(
-                              color: colors[theme]
-                                  ["mainBackgroundColorTransparent"],
-                              border: Border.all(
-                                  color: colors[theme]["mainTextColor"],
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                NormalText(
-                                  theme: theme,
-                                  text: getLang("waitlistReminder"),
-                                  alignment: TextAlign.center,
-                                ),
-                                const SizedBox(height: 20),
-                                TextButton(
-                                  onPressed: () {
-                                    widget.onScreenChange("waitlist");
-                                  },
-                                  child: NormalText(
-                                    theme: theme,
-                                    text: getLang("waitlistShortcut"),
-                                    alignment: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
+                        ? WaitListReminder(theme: theme, widget: widget)
+                        : const SizedBox.shrink(),
+                    level == 2
+                        ? PopularList(theme: theme, popularBooks: popularBooks)
                         : const SizedBox.shrink(),
                     const SizedBox(height: 30),
                     // Crear nuevo prestamo

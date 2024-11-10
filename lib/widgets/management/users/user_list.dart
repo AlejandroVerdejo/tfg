@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/widgets/management/user_list_element.dart';
-import 'package:tfg_library/widgets/management/user_list_header.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
+import 'package:tfg_library/widgets/management/users/user_list_element.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/text/normal_richtext.dart';
 
 class UserList extends StatefulWidget {
   const UserList({
@@ -38,43 +43,26 @@ class _UserListState extends State<UserList> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingWidget();
         } else if (snapshot.hasError) {
           // Error
-          return const Center(
-            child: Text("Error"),
-          );
+          return const LoadingErrorWidget();
         } else {
           // Ejecucion
           final data = snapshot.data!;
           var theme = widget.theme;
           var workers = data["workers"];
           workers = workers.entries.toList();
-          return Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border:
-                  Border.all(color: colors[theme]["mainTextColor"], width: 1),
-            ),
-            child: Column(
-              children: [
-                UserListHeader(theme: theme),
-                BetterDivider(theme: theme),
-                Wrap(
-                  runSpacing: 10.0,
-                  children: workers.map<Widget>((entry) {
-                    return UserListElement(
-                      theme: theme,
-                      user: entry.value,
-                      onDelete: refresh,
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
+          return StaggeredGrid.count(
+            crossAxisCount: 1,
+            mainAxisSpacing: 10,
+            children: workers.map<Widget>((entry) {
+              return UserListElement(
+                theme: theme,
+                user: entry.value,
+                onDelete: refresh,
+              );
+            }).toList(),
           );
         }
       },

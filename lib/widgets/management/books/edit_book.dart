@@ -10,6 +10,8 @@ import 'package:select_dialog/select_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
@@ -134,14 +136,10 @@ class EditBookState extends State<EditBook> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingWidget();
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
-            );
+            return const LoadingErrorWidget();
           } else {
             // Ejecucion
             final data = snapshot.data!;
@@ -154,7 +152,6 @@ class EditBookState extends State<EditBook> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        const SizedBox(height: 30),
                         // ? Titulo
                         TextSelectionTheme(
                           data: getStyle("loginFieldSelectionTheme", theme),

@@ -2,28 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/rent_text.dart';
 
-class RentBookBookData extends StatefulWidget {
-  const RentBookBookData({
+class RentBookUserData extends StatefulWidget {
+  const RentBookUserData({
     super.key,
     required this.theme,
-    required this.bookkey,
+    required this.email,
   });
 
   final String theme;
-  final String bookkey;
+  final String email;
 
   @override
-  State<RentBookBookData> createState() => _RentBookBookDataState();
+  State<RentBookUserData> createState() => _RentBookUserDataState();
 }
 
-class _RentBookBookDataState extends State<RentBookBookData> {
+class _RentBookUserDataState extends State<RentBookUserData> {
   Future<Map<String, dynamic>> _loadData() async {
-    Map<String, dynamic> book =
-        await firestoreManager.getUnMergedBook(widget.bookkey);
+    Map<String, dynamic> user = await firestoreManager.getUser(widget.email);
+    int activeRents =
+        await firestoreManager.getUserActiveRentsNumber(widget.email);
     return {
-      "book": book,
+      "user": user,
+      "activeRents": activeRents,
     };
   }
 
@@ -36,42 +40,30 @@ class _RentBookBookDataState extends State<RentBookBookData> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingWidget();
           } else if (snapshot.hasError) {
             // Error
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return const LoadingErrorWidget();
           } else {
             // Ejecucion
             final data = snapshot.data!;
             var theme = widget.theme;
-            var book = data["book"];
+            var user = data["user"];
+            var activeRents = data["activeRents"];
             return Container(
               width: rentsElementWidth,
               padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: rentsElementHeight,
-                    child: Image.memory(
-                      book["image"],
-                      width: elementImageSize,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
                   RentText(
                     theme: theme,
-                    text: book["title"],
+                    text: user["username"],
                     alignment: TextAlign.center,
                   ),
                   RentText(
                     theme: theme,
-                    text: book["aviable"]
-                        ? getLang("aviable")
-                        : getLang("notAviable"),
+                    text:
+                        "${getLang("userActiveRents")}: ${activeRents.toString()}",
                     alignment: TextAlign.center,
                   ),
                 ],

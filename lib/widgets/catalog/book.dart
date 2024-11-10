@@ -6,6 +6,8 @@ import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/screens/home_screen.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/bar_text.dart';
 import 'package:tfg_library/widgets/text/list_data_text.dart';
 import 'package:tfg_library/widgets/text/sinopsis_book_text.dart';
@@ -108,14 +110,10 @@ class _BookState extends State<Book> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingWidget();
           } else if (snapshot.hasError) {
             // Error
-            return Center(
-              child: Text(getLang("error")),
-            );
+            return const LoadingErrorWidget();
           } else {
             // Ejecucion
             final data = snapshot.data!;
@@ -145,7 +143,6 @@ class _BookState extends State<Book> {
                 children: [
                   ListView(
                     children: [
-                      const SizedBox(height: 10),
                       ConstrainedBox(
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width),
@@ -222,7 +219,7 @@ class _BookState extends State<Book> {
                                             icon: Icon(
                                               Icons.delete,
                                               color: colors[theme]
-                                                  ["headerTextColor"],
+                                                  ["headerBackgroundColor"],
                                             ),
                                           ),
                                         ),
@@ -255,7 +252,7 @@ class _BookState extends State<Book> {
                                             icon: Icon(
                                               Icons.delete_forever,
                                               color: colors[theme]
-                                                  ["headerTextColor"],
+                                                  ["headerBackgroundColor"],
                                             ),
                                           ),
                                         ),

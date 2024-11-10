@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
@@ -43,6 +45,14 @@ class ContactState extends State<Contact> {
     setState(() {});
   }
 
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -56,14 +66,10 @@ class ContactState extends State<Contact> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingWidget();
           } else if (snapshot.hasError) {
             // Error
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return const LoadingErrorWidget();
           } else {
             // Ejecucion
             final data = snapshot.data!;
@@ -99,7 +105,6 @@ class ContactState extends State<Contact> {
                                             getLang("formError-required")),
                                   ]),
                                   onTap: () async {
-                                    log("types");
                                     SelectDialog.showModal(context,
                                         showSearchBox: false,
                                         backgroundColor: colors[theme]
@@ -159,6 +164,10 @@ class ContactState extends State<Contact> {
                                           .format(DateTime.now())
                                     };
                                     await firestoreManager.newContact(contact);
+                                    contentController.text = "";
+                                    typeController.text = "";
+                                    showSnackBar(
+                                        context, "Se ha enviado correctamente");
                                   }
                                 },
                                 child: Text(

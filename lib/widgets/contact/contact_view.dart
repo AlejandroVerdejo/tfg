@@ -11,6 +11,7 @@ import 'package:tfg_library/widgets/text/bar_text.dart';
 import 'package:tfg_library/widgets/text/normal_richtext.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:tfg_library/widgets/text/title_text.dart';
 
 class ContactView extends StatefulWidget {
   const ContactView({
@@ -38,7 +39,6 @@ class _ContactViewState extends State<ContactView> {
   TextEditingController commentController = TextEditingController();
   String contactKey = "";
   Map<String, dynamic> contact = {};
-  bool coment = false;
   bool updated = false;
 
   FirestoreManager firestoreManager = FirestoreManager();
@@ -50,12 +50,9 @@ class _ContactViewState extends State<ContactView> {
     super.didChangeDependencies();
     _route = ModalRoute.of(context);
     _route?.addScopedWillPopCallback(() async {
-      log("cerrar");
       if (updated) {
-        log("updated");
         widget.onUpdate();
       }
-      Navigator.pop(context, updated);
       return true;
     });
   }
@@ -74,7 +71,6 @@ class _ContactViewState extends State<ContactView> {
     commentController = TextEditingController();
     contactKey = widget.contactKey;
     contact = widget.contact;
-    coment = false;
     updated = false;
   }
 
@@ -92,103 +88,190 @@ class _ContactViewState extends State<ContactView> {
               )),
           foregroundColor: colors[theme]["barTextColor"],
           title: BarText(
-            // text: "${contact["type"]} - $contactKey",
             text: "",
           ),
           backgroundColor: colors[theme]["headerBackgroundColor"],
         ),
         backgroundColor: colors[theme]["mainBackgroundColor"],
-        body: Container(
-          padding: bodyPadding,
-          child: ListView(
-            children: [
-              // ? Tipo
-              TextSelectionTheme(
-                data: getStyle("loginFieldSelectionTheme", theme),
-                child: FormBuilderTextField(
-                  controller: typeController,
-                  readOnly: true,
-                  name: "type",
-                  style: getStyle("normalTextStyle", theme),
-                  decoration: getTextFieldStyle(
-                      "defaultTextFieldStyle", theme, "Tipo", ""),
-                ),
-              ),
-              const SizedBox(height: 30),
-              // ? Contenido
-              TextSelectionTheme(
-                data: getStyle("loginFieldSelectionTheme", theme),
-                child: FormBuilderTextField(
-                  controller: contentController,
-                  readOnly: true,
-                  name: "content",
-                  style: getStyle("normalTextStyle", theme),
-                  decoration: getTextFieldStyle(
-                      "defaultTextFieldStyle", theme, "Contenido", ""),
-                ),
-              ),
-              const SizedBox(height: 30),
-              // ? Comentarios
-              StaggeredGrid.count(
-                crossAxisCount: 1,
-                mainAxisSpacing: 10,
-                children: contact["comments"].map<Widget>((entry) {
-                  int pos = count;
-                  count++;
-                  return Card(
-                    color: colors[theme]["chipBackgroundColor"],
-                    child: Container(
-                      padding: bodyPadding,
-                      width: double.maxFinite,
-                      child: Row(
-                        // mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              // mainAxisAlignment:
-                              //     MainAxisAlignment.spaceEvenly,
-                              children: [
-                                NormalRichText(
-                                  theme: theme,
-                                  text:
-                                      "${entry["date"]}   -   ${entry["user"]}\n${entry["comment"]}",
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return DeleteDialog(
-                                          theme: theme,
-                                          title:
-                                              "Se eliminara el siguiente comentario",
-                                          message: "¿Estas seguro?",
-                                          onAccept: () {
-                                            log("borrar - $pos");
-                                            firestoreManager.delComment(
-                                                contactKey, pos);
-                                            contact["comments"].removeAt(pos);
-                                            setState(() {});
-                                          });
-                                    });
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: colors[theme]["mainTextColor"],
-                              ))
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: ListView(
+          children: [
+            Container(
+              padding: bodyPadding,
+              child: Column(
                 children: [
+                  // ? Tipo
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: typeController,
+                      readOnly: true,
+                      name: "type",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, "Tipo", ""),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Contenido
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: contentController,
+                      maxLines: null,
+                      readOnly: true,
+                      name: "content",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, "Contenido", ""),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          border: Border.all(
+                            color: colors[theme]["mainTextColor"],
+                            width: 1.0,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: bodyPadding,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              // ? Comentarios
+                              StaggeredGrid.count(
+                                crossAxisCount: 1,
+                                mainAxisSpacing: 10,
+                                children:
+                                    contact["comments"].map<Widget>((entry) {
+                                  int pos = count;
+                                  count++;
+                                  return Card(
+                                    color: colors[theme]
+                                        ["secondaryBackgroundColor"],
+                                    child: Container(
+                                      padding: cardPadding,
+                                      width: double.maxFinite,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
+                                                    children: [
+                                                      TitleText(
+                                                          theme: theme,
+                                                          text:
+                                                              "${entry["date"]}  -  ${entry["user"]}"),
+                                                      NormalRichText(
+                                                          theme: theme,
+                                                          text:
+                                                              entry["comment"])
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return DeleteDialog(
+                                                    theme: theme,
+                                                    title:
+                                                        "Se eliminara el siguiente comentario",
+                                                    message: "¿Estas seguro?",
+                                                    onAccept: () {
+                                                      firestoreManager
+                                                          .delComment(
+                                                              contactKey, pos);
+                                                      contact["comments"]
+                                                          .removeAt(pos);
+                                                      setState(() {});
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: colors[theme]
+                                                  ["headerBackgroundColor"],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(height: 10),
+                              // ? Añadir Comentario
+                              TextSelectionTheme(
+                                data:
+                                    getStyle("loginFieldSelectionTheme", theme),
+                                child: FormBuilderTextField(
+                                  controller: commentController,
+                                  maxLines: null,
+                                  name: "comment",
+                                  style: getStyle("normalTextStyle", theme),
+                                  decoration: getTextFieldWButtonStyle(
+                                    "defaultTextFieldStyle",
+                                    theme,
+                                    "",
+                                    "",
+                                    Icons.send,
+                                    () async {
+                                      if (commentController.text.isNotEmpty) {
+                                        Map<String, dynamic> newComment = {
+                                          "user": widget.user["username"],
+                                          "email": widget.user["email"],
+                                          "date": DateFormat("dd/MM/yyyy")
+                                              .format(DateTime.now()),
+                                          "comment": commentController.text,
+                                        };
+                                        await firestoreManager.addComment(
+                                            contactKey, newComment);
+                                        commentController.text = "";
+                                        contact["comments"].add(newComment);
+                                        setState(() {});
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 8.0,
+                        top: isAndroid ? -9 : -13.0,
+                        child: Container(
+                          color: colors[theme]["mainBackgroundColor"],
+                          padding: const EdgeInsets.only(left: 3, right: 5),
+                          child: NormalText(
+                            theme: theme,
+                            text: getLang("comments"),
+                            style: getStyle("labelTextStyle", theme),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
                   OutlinedButton(
                     style: getStyle("loginButtonStyle", theme),
                     onPressed: () async {
@@ -210,68 +293,23 @@ class _ContactViewState extends State<ContactView> {
                       contact["prio"] ? "Quitar prioridad" : "Dar prioridad",
                     ),
                   ),
+                  const SizedBox(height: 30),
                   OutlinedButton(
                     style: getStyle("loginButtonStyle", theme),
                     onPressed: () async {
-                      coment = !coment;
-                      setState(() {});
+                      await firestoreManager.archiveContact(contactKey);
+                      // updated = true;
+                      widget.onUpdate();
+                      Navigator.pop(context, false);
                     },
                     child: Text(
-                      "Añadir comentario",
+                      getLang("solve"),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
-              // ? Comentario
-              coment
-                  ? TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: commentController,
-                        name: "comment",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldWButtonStyle(
-                          "defaultTextFieldStyle",
-                          theme,
-                          "",
-                          "",
-                          Icons.send,
-                          () async {
-                            if (commentController.text.isNotEmpty) {
-                              log("enviado");
-                              log("${widget.user["username"]} - ${widget.user["email"]}");
-                              Map<String, dynamic> newComment = {
-                                "user": widget.user["username"],
-                                "email": widget.user["email"],
-                                "date": DateFormat("dd/MM/yyyy")
-                                    .format(DateTime.now()),
-                                "comment": commentController.text,
-                              };
-                              await firestoreManager.addComment(
-                                  contactKey, newComment);
-                              commentController.text = "";
-                            }
-                          },
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-              const SizedBox(height: 30),
-              OutlinedButton(
-                style: getStyle("loginButtonStyle", theme),
-                onPressed: () async {
-                  await firestoreManager.archiveContact(contactKey);
-                  // updated = true;
-                  widget.onUpdate();
-                  Navigator.pop(context, false);
-                },
-                child: Text(
-                  getLang("solve"),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ));
   }
 }

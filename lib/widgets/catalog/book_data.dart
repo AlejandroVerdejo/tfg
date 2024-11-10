@@ -150,7 +150,8 @@ class _BookDataState extends State<BookData> {
                                   },
                                   icon: Icon(
                                     Icons.delete,
-                                    color: colors[theme]["headerTextColor"],
+                                    color: colors[theme]
+                                        ["headerBackgroundColor"],
                                   ),
                                 ),
                               ),
@@ -179,7 +180,8 @@ class _BookDataState extends State<BookData> {
                                   },
                                   icon: Icon(
                                     Icons.delete_forever,
-                                    color: colors[theme]["headerTextColor"],
+                                    color: colors[theme]
+                                        ["headerBackgroundColor"],
                                   ),
                                 ),
                               ),

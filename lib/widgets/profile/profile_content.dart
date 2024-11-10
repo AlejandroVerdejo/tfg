@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/profile/profile_rents_list.dart';
 
 class ProfileContent extends StatefulWidget {
@@ -37,14 +39,10 @@ class _ProfileContentState extends State<ProfileContent> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Carga
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingWidget();
           } else if (snapshot.hasError) {
             // Error
-            return const Center(
-              child: Text("Error"),
-            );
+            return const LoadingErrorWidget();
           } else {
             // Ejecucion
             final data = snapshot.data!;

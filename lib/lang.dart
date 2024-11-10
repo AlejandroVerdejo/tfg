@@ -112,7 +112,9 @@ const lang = {
     "contactUs": "Contactanos",
     "home": "Inicio",
     "send": "Enviar",
-    "solve": "Marcar como solucionado"
+    "solve": "Marcar como solucionado",
+    "contacts": "Soporte",
+    "comments": "Comentarios"
   }
 };
 

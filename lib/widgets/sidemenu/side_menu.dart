@@ -163,7 +163,7 @@ class _SideMenuState extends State<SideMenu> {
                   },
                 )
               : const SizedBox.shrink(),
-          // ? Mensajes
+          // ? Soporte
           user["level"] <= 1
               ? ListTile(
                   leading: Icon(
@@ -171,7 +171,7 @@ class _SideMenuState extends State<SideMenu> {
                     color: colors[theme]["mainTextColor"],
                   ),
                   title: Text(
-                    "Mensajes",
+                    getLang("contacts"),
                     style: getStyle("sideMenuTextStyle", theme),
                   ),
                   onTap: () {

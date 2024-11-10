@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tfg_library/widgets/management/edit_book.dart';
+import 'package:tfg_library/widgets/management/books/edit_book.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
@@ -89,6 +89,15 @@ class FirestoreManager {
     });
 
     return books;
+  }
+
+  // * Devolvera la lista de libros indicados
+  Future<List<Map<String, dynamic>>> getBooksList(List<String> books) async {
+    List<Map<String, dynamic>> bookList = [];
+    for (var book in books) {
+      bookList.add(await getMergedBook(book));
+    }
+    return bookList;
   }
 
   // * Devolvera la lista de libros uniendo los datos de los duplicados
@@ -438,7 +447,7 @@ class FirestoreManager {
     // Carga los usuarios
     Map<String, dynamic> users = await getUsers();
     for (var user in users.entries) {
-      if (user.value["level"] <= 1) {
+      if (user.value["level"] <= 1 && user.value["active"]) {
         workers[user.key] = user.value;
       }
     }

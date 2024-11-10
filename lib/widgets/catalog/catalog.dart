@@ -6,7 +6,9 @@ import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 import 'package:tfg_library/widgets/catalog/book_list.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/help_tooltip.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
 // void main() async {
@@ -79,14 +81,10 @@ class CatalogState extends State<Catalog> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingWidget();
         } else if (snapshot.hasError) {
           // Error
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
+          return const LoadingErrorWidget();
         } else {
           // Ejecucion
           final data = snapshot.data!;
@@ -102,7 +100,6 @@ class CatalogState extends State<Catalog> {
                 padding: bodyPadding,
                 child: Column(
                   children: [
-                    const SizedBox(height: 10),
                     SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
@@ -154,6 +151,13 @@ class CatalogState extends State<Catalog> {
                                           backgroundColor: colors[theme]
                                               ["chipBackgroundColor"],
                                           label: Text(tag),
+                                          side: const BorderSide(
+                                              width: 0,
+                                              color: Colors.transparent),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                15.0), // Cambia la forma del borde
+                                          ),
                                           selected:
                                               selectedCategories.contains(tag),
                                           onSelected: (bool selected) {
@@ -193,6 +197,12 @@ class CatalogState extends State<Catalog> {
                                       backgroundColor: colors[theme]
                                           ["chipBackgroundColor"],
                                       label: Text(tag),
+                                      side: const BorderSide(
+                                          width: 0, color: Colors.transparent),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            15.0), // Cambia la forma del borde
+                                      ),
                                       selected: selectedGenres.contains(tag),
                                       onSelected: (bool selected) {
                                         setState(() {
@@ -229,6 +239,12 @@ class CatalogState extends State<Catalog> {
                                       backgroundColor: colors[theme]
                                           ["chipBackgroundColor"],
                                       label: Text(tag),
+                                      side: const BorderSide(
+                                          width: 0, color: Colors.transparent),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            15.0), // Cambia la forma del borde
+                                      ),
                                       selected:
                                           selectedEditorials.contains(tag),
                                       onSelected: (bool selected) {
@@ -266,6 +282,12 @@ class CatalogState extends State<Catalog> {
                                       backgroundColor: colors[theme]
                                           ["chipBackgroundColor"],
                                       label: Text(tag),
+                                      side: const BorderSide(
+                                          width: 0, color: Colors.transparent),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            15.0), // Cambia la forma del borde
+                                      ),
                                       selected: selectedLanguages.contains(tag),
                                       onSelected: (bool selected) {
                                         setState(() {

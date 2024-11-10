@@ -6,8 +6,10 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/delete_dialog.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/profile/profile_header.dart';
 import 'package:tfg_library/widgets/text/list_data_text.dart';
 
 class UserViewDialog extends StatefulWidget {
@@ -16,13 +18,13 @@ class UserViewDialog extends StatefulWidget {
     required this.theme,
     required this.user,
     required this.edit,
-    this.onEdit,
+    required this.onEdit,
   });
 
   final String theme;
   final Map<String, dynamic> user;
   final bool edit;
-  final VoidCallback? onEdit;
+  final VoidCallback onEdit;
 
   @override
   State<UserViewDialog> createState() => _UserViewDialogState();
@@ -33,9 +35,16 @@ class _UserViewDialogState extends State<UserViewDialog> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController levelController = TextEditingController();
+  bool edit = false;
 
   FirestoreManager firestoreManager = FirestoreManager();
   final _formKey = GlobalKey<FormBuilderState>();
+
+  @override
+  void initState() {
+    super.initState();
+    edit = widget.edit;
+  }
 
   void loadData() {
     usernameController.text = widget.user["username"];
@@ -50,7 +59,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
     var theme = widget.theme;
     var user = widget.user;
     usernameController.text = user["username"];
-    if (widget.edit) {
+    if (edit) {
       loadData();
     }
     return AlertDialog(
@@ -58,13 +67,53 @@ class _UserViewDialogState extends State<UserViewDialog> {
       content: Container(
         width: dialogWidth,
         padding: dialogPadding,
-        child: widget.edit
+        child: edit
             // ? Editar
             ? FormBuilder(
                 key: _formKey,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Row(
+                      children: [
+                        const Expanded(child: SizedBox()),
+                        // ? Cancelar
+                        IconButton(
+                            onPressed: () {
+                              log("cancel");
+                              edit = false;
+                              setState(() {});
+                            },
+                            icon: Icon(
+                              Icons.cancel,
+                              color: colors[theme]["mainTextColor"],
+                            )),
+                        // ? Eliminar
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return DeleteDialog(
+                                      theme: theme,
+                                      title: getLang("deleteUser"),
+                                      message: getLang("confirmation"),
+                                      onAccept: () async {
+                                        await firestoreManager
+                                            .deleteUser(user["email"]);
+                                        widget.onEdit();
+                                        Navigator.pop(context, false);
+                                      },
+                                    );
+                                  });
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: colors[theme]["headerBackgroundColor"],
+                            )),
+                      ],
+                    ),
                     // ? Nombre
                     TextSelectionTheme(
                       data: getStyle("loginFieldSelectionTheme", theme),
@@ -89,8 +138,8 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         readOnly: true,
                         controller: emailController,
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("email"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("email"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
                               errorText: getLang("formError-required")),
@@ -126,8 +175,8 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         readOnly: true,
                         controller: levelController,
                         style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("level"), ""),
+                        decoration: getTextFieldStyle("defaultTextFieldStyle",
+                            theme, getLang("level"), ""),
                         onTap: () async {
                           SelectDialog.showModal(context,
                               showSearchBox: false,
@@ -167,7 +216,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
                           };
                           await firestoreManager.editUser(newUserData);
                           Navigator.of(context).pop();
-                          widget.onEdit!();
+                          widget.onEdit();
                         }
                       },
                       child: Text(
@@ -179,8 +228,48 @@ class _UserViewDialogState extends State<UserViewDialog> {
               )
             // ? Ver
             : Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      const Expanded(child: SizedBox()),
+                      // ? Editar
+                      IconButton(
+                          onPressed: () {
+                            log("edit");
+                            edit = true;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: colors[theme]["mainTextColor"],
+                          )),
+                      // ? Eliminar
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeleteDialog(
+                                    theme: theme,
+                                    title: getLang("deleteUser"),
+                                    message: getLang("confirmation"),
+                                    onAccept: () async {
+                                      await firestoreManager
+                                          .deleteUser(user["email"]);
+                                      widget.onEdit();
+                                      Navigator.pop(context, false);
+                                    },
+                                  );
+                                });
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: colors[theme]["headerBackgroundColor"],
+                          )),
+                    ],
+                  ),
                   ListDataText(
                       theme: theme,
                       title: getLang("username"),
@@ -191,7 +280,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
                       text: user["email"]),
                   ListDataText(
                       theme: theme,
-                      title: getLang("email"),
+                      title: getLang("password"),
                       text: user["password"]),
                   ListDataText(
                       theme: theme,

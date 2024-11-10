@@ -35,7 +35,6 @@ bool pfpUpdated = false;
 class _ProfileHeaderState extends State<ProfileHeader> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     edit = false;
     image = widget.user["pfp"];

@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
@@ -124,14 +126,10 @@ class _BookEditState extends State<BookEdit> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Carga
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const LoadingWidget();
                 } else if (snapshot.hasError) {
                   // Error
-                  return const Center(
-                    child: Text("Error"),
-                  );
+                  return const LoadingErrorWidget();
                 } else {
                   // Ejecucion
                   final data = snapshot.data!;
@@ -151,7 +149,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("title"), ""),
+                                getLang("title"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -169,7 +168,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("author"), ""),
+                                getLang("author"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -188,7 +188,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("editorial"), ""),
+                                getLang("editorial"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -226,7 +227,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("date"), ""),
+                                getLang("date"),
+                                ""),
                             onTap: () async {
                               DateTime? datePicked = await showDatePicker(
                                   context: context,
@@ -266,7 +268,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("pages"), ""),
+                                getLang("pages"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -287,7 +290,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("language"), ""),
+                                getLang("language"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -324,7 +328,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("isbn"), ""),
+                                getLang("isbn"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -340,7 +345,10 @@ class _BookEditState extends State<BookEdit> {
                             name: "age",
                             style: getStyle("normalTextStyle", theme),
                             decoration: getTextFieldStyle(
-                                "defaultTextFieldStyle", theme, getLang("age"), ""),
+                                "defaultTextFieldStyle",
+                                theme,
+                                getLang("age"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),
@@ -359,7 +367,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("state"), ""),
+                                getLang("state"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -399,7 +408,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("category"), ""),
+                                getLang("category"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -437,7 +447,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("genres"), ""),
+                                getLang("genres"),
+                                ""),
                             onTap: () async {
                               SelectDialog.showModal(context,
                                   showSearchBox: false,
@@ -482,7 +493,8 @@ class _BookEditState extends State<BookEdit> {
                             decoration: getTextFieldStyle(
                                 "defaultTextFieldStyle",
                                 theme,
-                                getLang("sinopsis"), ""),
+                                getLang("sinopsis"),
+                                ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
                                   errorText: getLang("formError-required")),

@@ -76,6 +76,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
             width: dialogWidth,
             padding: dialogPadding,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 // ? | CORREO ELECTRONICO |
                 TextSelectionTheme(
@@ -120,8 +121,8 @@ class _AddUserDialogState extends State<AddUserDialog> {
                     controller: passwordController,
                     name: "password",
                     style: getStyle("normalTextStyle", theme),
-                    decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("password"), ""),
+                    decoration: getTextFieldStyle("defaultTextFieldStyle",
+                        theme, getLang("password"), ""),
                     // obscureText: true,
                     validator: FormBuilderValidators.compose(
                       [

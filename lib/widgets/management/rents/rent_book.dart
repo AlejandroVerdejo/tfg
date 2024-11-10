@@ -6,8 +6,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/widgets/management/rent_book_book_data.dart';
-import 'package:tfg_library/widgets/management/rent_book_user_data.dart';
+import 'package:tfg_library/widgets/management/rents/rent_book_book_data.dart';
+import 'package:tfg_library/widgets/management/rents/rent_book_user_data.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 
@@ -95,7 +95,6 @@ class RentBookState extends State<RentBook> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 30),
                 // ? Libro
                 TextSelectionTheme(
                   data: getStyle("loginFieldSelectionTheme", theme),

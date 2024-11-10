@@ -54,138 +54,143 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: colors[theme]["mainBackgroundColor"],
       body: ListView(
         children: [
-          Center(
-            child: SizedBox(
-              width: 500,
-              child: FormBuilder(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 90),
-                    Text(
-                      login ? getLang("login") : getLang("register"),
-                      style: getStyle("loginTextStyle", theme),
-                    ),
-                    Image.asset(
-                      "assets/images/app_icon.png",
-                      width: 180,
-                      color: colors[theme]["mainTextColor"],
-                    ),
-                    const SizedBox(height: 30),
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        name: "email",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("email"), ""),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: FormBuilderValidators.compose(
-                          [
-                            FormBuilderValidators.required(
-                                errorText: getLang("formError-required")),
-                            FormBuilderValidators.email(
-                                errorText: getLang("formError-email"))
-                          ],
-                        ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: SizedBox(
+                width: 500,
+                child: FormBuilder(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 90),
+                      Text(
+                        login ? getLang("login") : getLang("register"),
+                        style: getStyle("loginTextStyle", theme),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    login
-                        ? const SizedBox.shrink()
-                        : TextSelectionTheme(
-                            data: getStyle("loginFieldSelectionTheme", theme),
-                            child: FormBuilderTextField(
-                              name: "username",
-                              style: getStyle("normalTextStyle", theme),
-                              decoration: getTextFieldStyle(
-                                  "defaultTextFieldStyle",
-                                  theme,
-                                  getLang("username"), ""),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(
-                                    errorText: getLang("formError-required")),
-                              ]),
-                            ),
+                      Image.asset(
+                        "assets/images/app_icon.png",
+                        width: 180,
+                        color: colors[theme]["mainTextColor"],
+                      ),
+                      const SizedBox(height: 30),
+                      TextSelectionTheme(
+                        data: getStyle("loginFieldSelectionTheme", theme),
+                        child: FormBuilderTextField(
+                          name: "email",
+                          style: getStyle("normalTextStyle", theme),
+                          decoration: getTextFieldStyle("defaultTextFieldStyle",
+                              theme, getLang("email"), ""),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: FormBuilderValidators.compose(
+                            [
+                              FormBuilderValidators.required(
+                                  errorText: getLang("formError-required")),
+                              FormBuilderValidators.email(
+                                  errorText: getLang("formError-email"))
+                            ],
                           ),
-                    login
-                        ? const SizedBox.shrink()
-                        : const SizedBox(height: 30),
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        name: "password",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("password"), ""),
-                        obscureText: true,
-                        validator: FormBuilderValidators.compose(
-                          [
-                            FormBuilderValidators.required(
-                                errorText: getLang("formError-required")),
-                            FormBuilderValidators.minLength(8,
-                                errorText: getLang("formError-minLength"))
-                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    TextButton(
-                      style: getStyle(
-                        "loginTextButtonStyle",
-                        theme,
+                      const SizedBox(height: 30),
+                      login
+                          ? const SizedBox.shrink()
+                          : TextSelectionTheme(
+                              data: getStyle("loginFieldSelectionTheme", theme),
+                              child: FormBuilderTextField(
+                                name: "username",
+                                style: getStyle("normalTextStyle", theme),
+                                decoration: getTextFieldStyle(
+                                    "defaultTextFieldStyle",
+                                    theme,
+                                    getLang("username"),
+                                    ""),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: getLang("formError-required")),
+                                ]),
+                              ),
+                            ),
+                      login
+                          ? const SizedBox.shrink()
+                          : const SizedBox(height: 30),
+                      TextSelectionTheme(
+                        data: getStyle("loginFieldSelectionTheme", theme),
+                        child: FormBuilderTextField(
+                          name: "password",
+                          style: getStyle("normalTextStyle", theme),
+                          decoration: getTextFieldStyle("defaultTextFieldStyle",
+                              theme, getLang("password"), ""),
+                          obscureText: true,
+                          validator: FormBuilderValidators.compose(
+                            [
+                              FormBuilderValidators.required(
+                                  errorText: getLang("formError-required")),
+                              FormBuilderValidators.minLength(8,
+                                  errorText: getLang("formError-minLength"))
+                            ],
+                          ),
+                        ),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          login ? login = false : login = true;
-                        });
-                      },
-                      child: Text(
-                        login
-                            ? getLang("login_createHere")
-                            : getLang("login_loginHere"),
+                      const SizedBox(height: 30),
+                      TextButton(
+                        style: getStyle(
+                          "loginTextButtonStyle",
+                          theme,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            login ? login = false : login = true;
+                          });
+                        },
+                        child: Text(
+                          login
+                              ? getLang("login_createHere")
+                              : getLang("login_loginHere"),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
-                        if (_formKey.currentState?.saveAndValidate() ?? false) {
-                          var values = _formKey.currentState?.value;
-                          if (login) {
-                            if (await firestoreManager
-                                .checkUser(values?["email"])) {
-                              if (await firestoreManager.checkPassword(
-                                  values?["email"], values?["password"])) {
-                                _saveUser(values?["email"]);
+                      const SizedBox(height: 30),
+                      OutlinedButton(
+                        style: getStyle("loginButtonStyle", theme),
+                        onPressed: () async {
+                          if (_formKey.currentState?.saveAndValidate() ??
+                              false) {
+                            var values = _formKey.currentState?.value;
+                            if (login) {
+                              if (await firestoreManager
+                                  .checkUser(values?["email"])) {
+                                if (await firestoreManager.checkPassword(
+                                    values?["email"], values?["password"])) {
+                                  _saveUser(values?["email"]);
+                                } else {
+                                  showSnackBar(context, getLang("loginError"));
+                                }
                               } else {
                                 showSnackBar(context, getLang("loginError"));
                               }
                             } else {
-                              showSnackBar(context, getLang("loginError"));
-                            }
-                          } else {
-                            if (await firestoreManager
-                                .checkUser(values?["email"])) {
-                              showSnackBar(context, getLang("registerError"));
-                            } else {
-                              Map<String, dynamic> user = {
-                                "email": values?["email"],
-                                "username": values?["username"],
-                                "password": values?["password"],
-                                "level": 2
-                              };
-                              await firestoreManager.addUser(user);
-                              _saveUser(values?["email"]);
+                              if (await firestoreManager
+                                  .checkUser(values?["email"])) {
+                                showSnackBar(context, getLang("registerError"));
+                              } else {
+                                Map<String, dynamic> user = {
+                                  "email": values?["email"],
+                                  "username": values?["username"],
+                                  "password": values?["password"],
+                                  "level": 2
+                                };
+                                await firestoreManager.addUser(user);
+                                _saveUser(values?["email"]);
+                              }
                             }
                           }
-                        }
-                      },
-                      child: Text(
-                        getLang("login"),
-                      ),
-                    )
-                  ],
+                        },
+                        child: Text(
+                          login ? getLang("login") : getLang("register"),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

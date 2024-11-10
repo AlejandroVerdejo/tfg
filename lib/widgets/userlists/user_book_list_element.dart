@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/book_list_element.dart';
 import 'package:tfg_library/widgets/delete_dialog.dart';
 
@@ -53,8 +54,8 @@ class _UserBookListElementState extends State<UserBookListElement> {
           onClose: _refresh,
         ),
         Positioned(
-          top: 10,
-          right: 10,
+          top: 0,
+          right: 0,
           child: Tooltip(
             message: getLang("deleteFromList"),
             child: IconButton(
@@ -70,9 +71,9 @@ class _UserBookListElementState extends State<UserBookListElement> {
                         );
                       });
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.delete,
-                  color: Colors.red,
+                  color: colors[theme]["headerBackgroundColor"],
                 )),
           ),
         ),

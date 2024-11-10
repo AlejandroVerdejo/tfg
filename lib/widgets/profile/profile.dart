@@ -38,7 +38,7 @@ class ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var user = widget.user;
     return ListView(
-      shrinkWrap: true,
+      // shrinkWrap: true,
       children: [
         ProfileHeader(
           theme: theme,
@@ -46,7 +46,9 @@ class ProfileState extends State<Profile> {
           onUpdate: widget.onUpdate,
         ),
         const SizedBox(height: 10),
-        ProfileContent(theme: theme, user: user)
+        user["level"] == 2
+            ? ProfileContent(theme: theme, user: user)
+            : const SizedBox.shrink(),
       ],
     );
   }

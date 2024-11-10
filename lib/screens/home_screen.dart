@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/widgets/management/add_book.dart';
-import 'package:tfg_library/widgets/management/edit_book.dart';
-import 'package:tfg_library/widgets/management/rent_book.dart';
-import 'package:tfg_library/widgets/management/return_book.dart';
-import 'package:tfg_library/widgets/management/users.dart';
+import 'package:tfg_library/widgets/management/books/add_book.dart';
+import 'package:tfg_library/widgets/management/books/edit_book.dart';
+import 'package:tfg_library/widgets/management/rents/rent_book.dart';
+import 'package:tfg_library/widgets/management/returns/return_book.dart';
+import 'package:tfg_library/widgets/management/users/users.dart';
 import 'package:tfg_library/widgets/catalog/catalog.dart';
 import 'package:tfg_library/widgets/contact/contact.dart';
 import 'package:tfg_library/widgets/contact/view_contacts.dart';
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
           theme: theme,
           user: user,
         );
-        appBarText = "Mensajes";
+        appBarText = getLang("contacts");
         break;
     }
     setState(() {});

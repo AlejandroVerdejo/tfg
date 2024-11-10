@@ -1,10 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/contact/view_contacts_element.dart';
+import 'package:tfg_library/widgets/error_widget.dart';
+import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class ViewContacts extends StatefulWidget {
@@ -52,39 +55,30 @@ class ViewContactsState extends State<ViewContacts> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingWidget();
         } else if (snapshot.hasError) {
           // Error
-          return const Center(
-            child: Text("Error"),
-          );
+          return const LoadingErrorWidget();
         } else {
           // Ejecucion
           final data = snapshot.data!;
           var contacts = data["contacts"];
-
-          return GridView.builder(
+          contacts = contacts.entries.toList();
+          return Container(
             padding: bodyPadding,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            child: StaggeredGrid.count(
               crossAxisCount: 1,
-              childAspectRatio: gridAspectRatio,
               mainAxisSpacing: 10,
+              children: contacts.map<Widget>((entry) {
+                return ViewContactsElement(
+                  theme: theme,
+                  user: widget.user,
+                  contactKey: entry.key,
+                  contact: entry.value,
+                  onUpdate: _update,
+                );
+              }).toList(),
             ),
-            itemCount: contacts.length,
-            itemBuilder: (context, index) {
-              String key = contacts.keys.elementAt(index);
-              Map<String, dynamic> item = contacts[key]!;
-
-              return ViewContactsElement(
-                theme: theme,
-                user: widget.user,
-                contactKey: key,
-                contact: item,
-                onUpdate: _update,
-              );
-            },
           );
         }
       },
