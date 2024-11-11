@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -136,8 +134,8 @@ class _BookDataState extends State<BookData> {
                                           theme: theme,
                                           title:
                                               getLang("deleteBookDialog-title"),
-                                          message: getLang(
-                                              "deleteBookDialog-content"),
+                                          message:
+                                              getLang("alertDialog-confirm"),
                                           onAccept: () {
                                             firestoreManager.deleteSingleBook(
                                                 widget.book["id"]);
@@ -166,8 +164,8 @@ class _BookDataState extends State<BookData> {
                                           theme: theme,
                                           title: getLang(
                                               "deleteAllBookDialog-title"),
-                                          message: getLang(
-                                              "deleteBookDialog-content"),
+                                          message:
+                                              getLang("alertDialog-confirm"),
                                           onAccept: () {
                                             firestoreManager.deleteAllBooks(
                                                 widget.book["isbn"]);
@@ -208,64 +206,78 @@ class _BookDataState extends State<BookData> {
                         ? ListDataText(
                             theme: theme,
                             title: getLang("id"),
-                            text: "${book["id"]}")
+                            text: "${book["id"]}",
+                          )
                         : const SizedBox.shrink(),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("title"),
-                        text: "${book["title"]}"),
+                      theme: theme,
+                      title: getLang("title"),
+                      text: "${book["title"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("author"),
-                        text: "${book["author"]}"),
+                      theme: theme,
+                      title: getLang("author"),
+                      text: "${book["author"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("editorial"),
-                        text: "${book["editorial"]}"),
+                      theme: theme,
+                      title: getLang("editorial"),
+                      text: "${book["editorial"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("date"),
-                        text: "${book["date"]}"),
+                      theme: theme,
+                      title: getLang("date"),
+                      text: "${book["date"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("pages"),
-                        text: "${book["pages"]}"),
+                      theme: theme,
+                      title: getLang("pages"),
+                      text: "${book["pages"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("language"),
-                        text: "${book["language"]}"),
+                      theme: theme,
+                      title: getLang("language"),
+                      text: "${book["language"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("isbn"),
-                        text: "${book["isbn"]}"),
+                      theme: theme,
+                      title: getLang("isbn"),
+                      text: "${book["isbn"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("age"),
-                        text: "${book["age"]}"),
+                      theme: theme,
+                      title: getLang("age"),
+                      text: "${book["age"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("state"),
-                        text: book["aviable"]
-                            ? getLang("aviable")
-                            : getLang("notAviable")),
+                      theme: theme,
+                      title: getLang("state"),
+                      text: book["aviable"]
+                          ? getLang("aviable")
+                          : getLang("notAviable"),
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("category"),
-                        text: "${book["category"]}"),
+                      theme: theme,
+                      title: getLang("category"),
+                      text: "${book["category"]}",
+                    ),
                     ListDataText(
-                        theme: theme,
-                        title: getLang("genres"),
-                        text: "${book["genres"].join(", ")}"),
+                      theme: theme,
+                      title: getLang("genres"),
+                      text: "${book["genres"].join(", ")}",
+                    ),
                     book["aviable"] || book["return_date"] == null
                         ? const SizedBox.shrink()
                         : ListDataText(
                             theme: theme,
                             title: getLang("espectedAviable"),
-                            text: "${book["return_date"]}"),
+                            text: "${book["return_date"]}",
+                          ),
                     SinopsisBookText(
-                        theme: theme,
-                        title: getLang("sinopsis"),
-                        text: "${book["description"]}"),
+                      theme: theme,
+                      title: getLang("sinopsis"),
+                      text: "${book["description"]}",
+                    ),
                   ],
                 ),
               ),
@@ -290,8 +302,14 @@ class _BookDataState extends State<BookData> {
                       widget.updated();
                     }
                     inWishList
-                        ? showSnackBar(context, getLang("wishListToggle-del"))
-                        : showSnackBar(context, getLang("wishListToggle-add"));
+                        ? showSnackBar(
+                            context,
+                            getLang("wishListToggle-del"),
+                          )
+                        : showSnackBar(
+                            context,
+                            getLang("wishListToggle-add"),
+                          );
                     _toggleWishList(inWishList, user["email"]);
                   },
                   icon: Icon(
@@ -308,9 +326,13 @@ class _BookDataState extends State<BookData> {
                           }
                           inWaitList
                               ? showSnackBar(
-                                  context, getLang("waitListToggle-del"))
+                                  context,
+                                  getLang("waitListToggle-del"),
+                                )
                               : showSnackBar(
-                                  context, getLang("waitListToggle-add"));
+                                  context,
+                                  getLang("waitListToggle-add"),
+                                );
                           _toggleWaitList(inWaitList, user["email"]);
                         },
                         icon: Icon(

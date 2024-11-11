@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/contact/view_contacts_element.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
-import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class ViewContacts extends StatefulWidget {
   const ViewContacts({

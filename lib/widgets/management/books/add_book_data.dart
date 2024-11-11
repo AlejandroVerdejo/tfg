@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/management/books/add_book.dart';
@@ -207,7 +207,8 @@ class AddBookDataState extends State<AddBookData> {
                             theme, getLang("title"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -224,7 +225,8 @@ class AddBookDataState extends State<AddBookData> {
                             theme, getLang("author"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -262,7 +264,8 @@ class AddBookDataState extends State<AddBookData> {
                             : null,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -303,7 +306,8 @@ class AddBookDataState extends State<AddBookData> {
                             : null,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -320,9 +324,11 @@ class AddBookDataState extends State<AddBookData> {
                             theme, getLang("pages"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                           FormBuilderValidators.numeric(
-                              errorText: getLang("formError-numeric"))
+                            errorText: getLang("formError-numeric"),
+                          )
                         ]),
                       ),
                     ),
@@ -360,7 +366,8 @@ class AddBookDataState extends State<AddBookData> {
                             : null,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -377,7 +384,8 @@ class AddBookDataState extends State<AddBookData> {
                             theme, getLang("isbn"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -394,7 +402,8 @@ class AddBookDataState extends State<AddBookData> {
                             "defaultTextFieldStyle", theme, getLang("age"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -432,7 +441,8 @@ class AddBookDataState extends State<AddBookData> {
                         },
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -470,7 +480,8 @@ class AddBookDataState extends State<AddBookData> {
                             : null,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -506,16 +517,19 @@ class AddBookDataState extends State<AddBookData> {
                                   // setState(() {});
                                 }, okButtonBuilder: (context, onPressed) {
                                   return TextButton(
-                                      onPressed: onPressed,
-                                      child: NormalText(
-                                          theme: theme,
-                                          text: getLang("selectDialogButton")));
+                                    onPressed: onPressed,
+                                    child: NormalText(
+                                      theme: theme,
+                                      text: getLang("selectDialogButton"),
+                                    ),
+                                  );
                                 });
                               }
                             : null,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -533,7 +547,8 @@ class AddBookDataState extends State<AddBookData> {
                             theme, getLang("sinopsis"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
@@ -541,53 +556,53 @@ class AddBookDataState extends State<AddBookData> {
                     // ? Seleccionar imagen
                     image == null
                         ? GestureDetector(
+                            onTap: !loadBook
+                                ? () async {
+                                    _pickImage();
+                                  }
+                                : null,
                             child: Container(
                               color: colors[theme]["secondaryBackgroundColor"],
-                              constraints: BoxConstraints(
-                                minWidth: 250, // Ancho mínimo
-                                maxWidth: 300, // Ancho máximo
-                                minHeight: 350, // Altura mínima
-                                // maxHeight: 400, // Altura máxima
+                              constraints: const BoxConstraints(
+                                minWidth: 250,
+                                maxWidth: 300,
+                                minHeight: 350,
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Icon(Icons.image),
                                   DescriptionRichText(
-                                      theme: theme,
-                                      text: getLang("imageSelect")),
+                                    theme: theme,
+                                    text: getLang("imageSelect"),
+                                  ),
                                 ],
                               ),
                             ),
+                          )
+                        : GestureDetector(
                             onTap: !loadBook
                                 ? () async {
                                     _pickImage();
                                   }
                                 : null,
-                          )
-                        : GestureDetector(
                             child: Container(
-                              constraints: BoxConstraints(
-                                minWidth: 250, // Ancho mínimo
-                                maxWidth: 300, // Ancho máximo
-                                minHeight: 350, // Altura mínima
-                                // maxHeight: 400, // Altura máxima
+                              constraints: const BoxConstraints(
+                                minWidth: 250,
+                                maxWidth: 300,
+                                minHeight: 350,
                               ),
                               child: Image.memory(
                                 image!,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            onTap: !loadBook
-                                ? () async {
-                                    _pickImage();
-                                  }
-                                : null,
                           ),
                     const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
+                    DefaultButton(
+                      theme: theme,
+                      text: getLang("addBook"),
+                      onClick: () async {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           Map<String, dynamic> book = {
                             "title": titleController.text,
@@ -613,14 +628,15 @@ class AddBookDataState extends State<AddBookData> {
                             await storageManager.addImage(
                                 image!, isbnController.text);
                           }
-                          showSnackBar(context, getLang("addBook-success"));
+                          showSnackBar(
+                            context,
+                            getLang("addBook-success"),
+                          );
                           widget.onRefresh();
                         } else {}
                       },
-                      child: Text(
-                        getLang("addBook"),
-                      ),
                     ),
+
                     const SizedBox(height: 30),
                   ],
                 ),

@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
-import 'package:tfg_library/screens/home_screen.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
@@ -127,11 +124,12 @@ class _BookState extends State<Book> {
             return Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(1.5),
-                    child: Container(
-                      color: colors[theme]["headerBorderColor"],
-                      height: 1.5,
-                    )),
+                  preferredSize: const Size.fromHeight(1.5),
+                  child: Container(
+                    color: colors[theme]["headerBorderColor"],
+                    height: 1.5,
+                  ),
+                ),
                 foregroundColor: colors[theme]["barTextColor"],
                 title: BarText(
                   text: book["title"],
@@ -202,7 +200,7 @@ class _BookState extends State<Book> {
                                                     title: getLang(
                                                         "deleteBookDialog-title"),
                                                     message: getLang(
-                                                        "deleteBookDialog-content"),
+                                                        "alertDialog-confirm"),
                                                     onAccept: () {
                                                       firestoreManager
                                                           .deleteSingleBook(
@@ -236,7 +234,7 @@ class _BookState extends State<Book> {
                                                     title: getLang(
                                                         "deleteAllBookDialog-title"),
                                                     message: getLang(
-                                                        "deleteBookDialog-content"),
+                                                        "alertDialog-confirm"),
                                                     onAccept: () {
                                                       firestoreManager
                                                           .deleteAllBooks(widget
@@ -281,64 +279,78 @@ class _BookState extends State<Book> {
                                   ? ListDataText(
                                       theme: theme,
                                       title: getLang("id"),
-                                      text: "${book["id"]}")
+                                      text: "${book["id"]}",
+                                    )
                                   : const SizedBox.shrink(),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("title"),
-                                  text: "${book["title"]}"),
+                                theme: theme,
+                                title: getLang("title"),
+                                text: "${book["title"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("author"),
-                                  text: "${book["author"]}"),
+                                theme: theme,
+                                title: getLang("author"),
+                                text: "${book["author"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("editorial"),
-                                  text: "${book["editorial"]}"),
+                                theme: theme,
+                                title: getLang("editorial"),
+                                text: "${book["editorial"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("date"),
-                                  text: "${book["date"]}"),
+                                theme: theme,
+                                title: getLang("date"),
+                                text: "${book["date"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("pages"),
-                                  text: "${book["pages"]}"),
+                                theme: theme,
+                                title: getLang("pages"),
+                                text: "${book["pages"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("language"),
-                                  text: "${book["language"]}"),
+                                theme: theme,
+                                title: getLang("language"),
+                                text: "${book["language"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("isbn"),
-                                  text: "${book["isbn"]}"),
+                                theme: theme,
+                                title: getLang("isbn"),
+                                text: "${book["isbn"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("age"),
-                                  text: "${book["age"]}"),
+                                theme: theme,
+                                title: getLang("age"),
+                                text: "${book["age"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("state"),
-                                  text: book["aviable"]
-                                      ? getLang("aviable")
-                                      : getLang("notAviable")),
+                                theme: theme,
+                                title: getLang("state"),
+                                text: book["aviable"]
+                                    ? getLang("aviable")
+                                    : getLang("notAviable"),
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("category"),
-                                  text: "${book["category"]}"),
+                                theme: theme,
+                                title: getLang("category"),
+                                text: "${book["category"]}",
+                              ),
                               ListDataText(
-                                  theme: theme,
-                                  title: getLang("genres"),
-                                  text: "${book["genres"].join(", ")}"),
+                                theme: theme,
+                                title: getLang("genres"),
+                                text: "${book["genres"].join(", ")}",
+                              ),
                               book["aviable"] || book["return_date"] == null
                                   ? const SizedBox.shrink()
                                   : ListDataText(
                                       theme: theme,
                                       title: getLang("espectedAviable"),
-                                      text: "${book["return_date"]}"),
+                                      text: "${book["return_date"]}",
+                                    ),
                               SinopsisBookText(
-                                  theme: theme,
-                                  title: getLang("sinopsis"),
-                                  text: "${book["description"]}"),
+                                theme: theme,
+                                title: getLang("sinopsis"),
+                                text: "${book["description"]}",
+                              ),
                             ],
                           ),
                         ),
@@ -364,11 +376,18 @@ class _BookState extends State<Book> {
                                       updated = true;
                                     }
                                     inWishList
-                                        ? showSnackBar(context,
-                                            getLang("wishListToggle-del"))
-                                        : showSnackBar(context,
-                                            getLang("wishListToggle-add"));
-                                    _toggleWishList(inWishList, user["email"]);
+                                        ? showSnackBar(
+                                            context,
+                                            getLang("wishListToggle-del"),
+                                          )
+                                        : showSnackBar(
+                                            context,
+                                            getLang("wishListToggle-add"),
+                                          );
+                                    _toggleWishList(
+                                      inWishList,
+                                      user["email"],
+                                    );
                                   },
                                   icon: Icon(
                                     inWishList
@@ -385,14 +404,18 @@ class _BookState extends State<Book> {
                                             updated = true;
                                           }
                                           inWaitList
-                                              ? showSnackBar(context,
-                                                  getLang("waitListToggle-del"))
+                                              ? showSnackBar(
+                                                  context,
+                                                  getLang("waitListToggle-del"),
+                                                )
                                               : showSnackBar(
                                                   context,
-                                                  getLang(
-                                                      "waitListToggle-add"));
+                                                  getLang("waitListToggle-add"),
+                                                );
                                           _toggleWaitList(
-                                              inWaitList, user["email"]);
+                                            inWaitList,
+                                            user["email"],
+                                          );
                                         },
                                         icon: Icon(
                                           inWaitList

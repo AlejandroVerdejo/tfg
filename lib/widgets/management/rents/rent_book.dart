@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/management/rents/rent_book_book_data.dart';
 import 'package:tfg_library/widgets/management/rents/rent_book_user_data.dart';
 import 'package:tfg_library/styles.dart';
@@ -106,14 +105,16 @@ class RentBookState extends State<RentBook> {
                         "defaultTextFieldStyle", theme, getLang("bookId"), ""),
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
-                          errorText: getLang("formError-required")),
+                        errorText: getLang("formError-required"),
+                      ),
                     ]),
                   ),
                 ),
                 const SizedBox(height: 30),
-                OutlinedButton(
-                  style: getStyle("loginButtonStyle", theme),
-                  onPressed: () async {
+                DefaultButton(
+                  theme: theme,
+                  text: getLang("rentBookLoadBook"),
+                  onClick: () async {
                     if (bookController.text.isNotEmpty) {
                       bookLoaded = await firestoreManager
                           .checkIndividualBook(bookController.text);
@@ -123,14 +124,13 @@ class RentBookState extends State<RentBook> {
                             await firestoreManager.checkBookAviability(book);
                       } else {
                         showSnackBar(
-                            context, getLang("rentBookLoadBook-error"));
+                          context,
+                          getLang("rentBookLoadBook-error"),
+                        );
                       }
                       setState(() {});
                     }
                   },
-                  child: Text(
-                    getLang("rentBookLoadBook"),
-                  ),
                 ),
                 const SizedBox(height: 15),
                 bookLoaded
@@ -151,14 +151,16 @@ class RentBookState extends State<RentBook> {
                         "defaultTextFieldStyle", theme, getLang("userId"), ""),
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
-                          errorText: getLang("formError-required")),
+                        errorText: getLang("formError-required"),
+                      ),
                     ]),
                   ),
                 ),
                 const SizedBox(height: 30),
-                OutlinedButton(
-                  style: getStyle("loginButtonStyle", theme),
-                  onPressed: () async {
+                DefaultButton(
+                  theme: theme,
+                  text: getLang("rentBookLoadUser"),
+                  onClick: () async {
                     if (userController.text.isNotEmpty) {
                       bool userExists =
                           await firestoreManager.checkUser(userController.text);
@@ -170,14 +172,13 @@ class RentBookState extends State<RentBook> {
                         user = userController.text;
                       } else {
                         showSnackBar(
-                            context, getLang("rentBookLoadUser-error"));
+                          context,
+                          getLang("rentBookLoadUser-error"),
+                        );
                       }
                       setState(() {});
                     }
                   },
-                  child: Text(
-                    getLang("rentBookLoadUser"),
-                  ),
                 ),
                 const SizedBox(height: 15),
                 userLoaded
@@ -214,29 +215,36 @@ class RentBookState extends State<RentBook> {
                     },
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
-                          errorText: getLang("formError-required")),
+                        errorText: getLang("formError-required"),
+                      ),
                     ]),
                   ),
                 ),
                 const SizedBox(height: 15),
                 BetterDivider(theme: theme),
                 const SizedBox(height: 15),
-                OutlinedButton(
-                  style: getStyle("loginButtonStyle", theme),
-                  onPressed: () async {
+                DefaultButton(
+                  theme: theme,
+                  text: getLang("rentBookAction"),
+                  onClick: () async {
                     if (_formKey.currentState?.saveAndValidate() ?? false) {
                       if (userLoaded && bookLoaded) {
                         await firestoreManager.newUserRent(user, book, date);
-                        showSnackBar(context, getLang("rentBook-success"));
+                        showSnackBar(
+                          context,
+                          getLang("rentBook-success"),
+                        );
                         setState(() {
                           _update();
                         });
                       } else {
-                        showSnackBar(context, getLang("rentBook-error"));
+                        showSnackBar(
+                          context,
+                          getLang("rentBook-error"),
+                        );
                       }
                     }
                   },
-                  child: Text(getLang("rentBookAction")),
                 ),
               ],
             ),

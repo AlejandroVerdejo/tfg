@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
 import 'package:tfg_library/widgets/catalog/book_list.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/help_tooltip.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
@@ -305,17 +304,18 @@ class CatalogState extends State<Catalog> {
                               ),
                               BetterDivider(theme: theme),
                               Center(
-                                child: OutlinedButton(
-                                    style:
-                                        getStyle("filtersButtonStyle", theme),
-                                    onPressed: () {
-                                      selectedCategories.clear();
-                                      selectedGenres.clear();
-                                      selectedEditorials.clear();
-                                      selectedLanguages.clear();
-                                      setState(() {});
-                                    },
-                                    child: Text(getLang("cleanFilters"))),
+                                child: DefaultButton(
+                                  theme: theme,
+                                  text: getLang("cleanFilters"),
+                                  onClick: () {
+                                    selectedCategories.clear();
+                                    selectedGenres.clear();
+                                    selectedEditorials.clear();
+                                    selectedLanguages.clear();
+                                    setState(() {});
+                                  },
+                                  style: "filtersButtonStyle",
+                                ),
                               ),
                               BetterDivider(theme: theme),
                               const SizedBox(height: 10),

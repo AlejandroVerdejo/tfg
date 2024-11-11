@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
@@ -52,69 +50,92 @@ class _BookListState extends State<BookList> {
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
-    var orderedBooks = Map.fromEntries(widget.books.entries.toList()
-      ..sort((b1, b2) {
-        // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
-        int aviableComp = (b2.value["aviable"] ? 1 : 0)
-            .compareTo(b1.value["aviable"] ? 1 : 0);
-        // Ordena por nombre si tienen la misma disponibilidad
-        if (aviableComp == 0) {
-          return b1.value["title"].compareTo(b2.value["title"]);
-        }
-        return aviableComp;
-      }));
+    var orderedBooks = Map.fromEntries(
+      widget.books.entries.toList()
+        ..sort((b1, b2) {
+          // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
+          int aviableComp = (b2.value["aviable"] ? 1 : 0)
+              .compareTo(b1.value["aviable"] ? 1 : 0);
+          // Ordena por nombre si tienen la misma disponibilidad
+          if (aviableComp == 0) {
+            return b1.value["title"].compareTo(b2.value["title"]);
+          }
+          return aviableComp;
+        }),
+    );
     Map<String, dynamic> bookslist;
     bookslist = orderedBooks;
     // Filtrar por libros que se encuentren en la | Wish List | enviada
     if (widget.type == "wishlist") {
       var filteredBooks = Map.fromEntries(
-        bookslist.entries.where((e) => widget.wishList!.contains(e.key)),
+        bookslist.entries.where(
+          (e) => widget.wishList!.contains(e.key),
+        ),
       );
       bookslist = filteredBooks;
     }
     // Filtrar por libros que se encuentren en la | Wait List | enviada
     if (widget.type == "waitlist") {
       var filteredBooks = Map.fromEntries(
-        bookslist.entries.where((e) => widget.waitList!.contains(e.key)),
+        bookslist.entries.where(
+          (e) => widget.waitList!.contains(e.key),
+        ),
       );
       bookslist = filteredBooks;
     }
     // Filtrar por | Categorias |
     if (widget.categoriesFilter != null &&
         widget.categoriesFilter!.isNotEmpty) {
-      var filteredBooks = Map.fromEntries(bookslist.entries.where(
-          (e) => widget.categoriesFilter!.contains(e.value["category"])));
+      var filteredBooks = Map.fromEntries(
+        bookslist.entries.where(
+          (e) => widget.categoriesFilter!.contains(e.value["category"]),
+        ),
+      );
       bookslist = filteredBooks;
     }
     // Filtrar por | Generos |
     if (widget.genresFilter != null && widget.genresFilter!.isNotEmpty) {
-      var filteredBooks = Map.fromEntries(bookslist.entries.where((e) {
-        List<String> bookGenres = List<String>.from(e.value["genres"]);
-        return widget.genresFilter!
-            .every((genre) => bookGenres.contains(genre));
-      }));
+      var filteredBooks = Map.fromEntries(
+        bookslist.entries.where(
+          (e) {
+            List<String> bookGenres = List<String>.from(e.value["genres"]);
+            return widget.genresFilter!.every(
+              (genre) => bookGenres.contains(genre),
+            );
+          },
+        ),
+      );
       bookslist = filteredBooks;
     }
     // Filtrar por | Editoriales |
     if (widget.editorialsFilter != null &&
         widget.editorialsFilter!.isNotEmpty) {
-      var filteredBooks = Map.fromEntries(bookslist.entries.where(
-          (e) => widget.editorialsFilter!.contains(e.value["editorial"])));
+      var filteredBooks = Map.fromEntries(
+        bookslist.entries.where(
+          (e) => widget.editorialsFilter!.contains(e.value["editorial"]),
+        ),
+      );
       bookslist = filteredBooks;
     }
     // Filtrar por | Idiomas |
     if (widget.languagesFilter != null && widget.languagesFilter!.isNotEmpty) {
-      var filteredBooks = Map.fromEntries(bookslist.entries
-          .where((e) => widget.languagesFilter!.contains(e.value["language"])));
+      var filteredBooks = Map.fromEntries(
+        bookslist.entries.where(
+          (e) => widget.languagesFilter!.contains(e.value["language"]),
+        ),
+      );
       bookslist = filteredBooks;
     }
 
     // Filtrar por | Titulo |
     if (titleFilterController.text.isNotEmpty) {
-      var filteredBooks = Map.fromEntries(bookslist.entries.where((e) => e
-          .value["title"]
-          .toLowerCase()
-          .contains(titleFilterController.text.toLowerCase())));
+      var filteredBooks = Map.fromEntries(
+        bookslist.entries.where(
+          (e) => e.value["title"]
+              .toLowerCase()
+              .contains(titleFilterController.text.toLowerCase()),
+        ),
+      );
       bookslist = filteredBooks;
     }
 
@@ -128,34 +149,39 @@ class _BookListState extends State<BookList> {
             style: getStyle("normalTextStyle", theme),
             controller: titleFilterController,
             decoration: getTextFieldStyle(
-                "filterTextFieldStyle", theme, getLang("editorial"), "Escribe un titulo para buscarlo"),
+              "filterTextFieldStyle",
+              theme,
+              getLang("editorial"),
+              getLang("catalog-hint"),
+            ),
             onChanged: (value) {
               setState(() {});
             },
           ),
         ),
         Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: booklistentries.map((entry) {
-              if (widget.type == "wishlist" || widget.type == "waitlist") {
-                return UserBookListElement(
-                  theme: theme,
-                  user: widget.user,
-                  type: widget.type!,
-                  book: entry.value,
-                  onDelete: widget.onRefresh!,
-                );
-              }
-              return BookListElement(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: booklistentries.map((entry) {
+            if (widget.type == "wishlist" || widget.type == "waitlist") {
+              return UserBookListElement(
                 theme: theme,
                 user: widget.user,
-                type: "book",
+                type: widget.type!,
                 book: entry.value,
-                onClose: widget.onRefresh,
-                onScreenChange: widget.onScreenChange,
+                onDelete: widget.onRefresh!,
               );
-            }).toList()),
+            }
+            return BookListElement(
+              theme: theme,
+              user: widget.user,
+              type: "book",
+              book: entry.value,
+              onClose: widget.onRefresh,
+              onScreenChange: widget.onScreenChange,
+            );
+          }).toList(),
+        ),
       ],
     );
   }

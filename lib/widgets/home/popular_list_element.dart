@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/better_divider.dart';
-import 'package:tfg_library/widgets/error_widget.dart';
-import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/rent_text.dart';
 
 class PopularListElement extends StatefulWidget {

@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/management/rents/rent_book_user_data.dart';
 import 'package:tfg_library/widgets/management/returns/return_book_list.dart';
 import 'package:tfg_library/styles.dart';
@@ -96,14 +95,16 @@ class ReturnBookState extends State<ReturnBook> {
                             theme, getLang("userId"), ""),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
+                            errorText: getLang("formError-required"),
+                          ),
                         ]),
                       ),
                     ),
                     const SizedBox(height: 30),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
+                    DefaultButton(
+                      theme: theme,
+                      text: getLang("rentBookLoadUser"),
+                      onClick: () async {
                         if (userController.text.isNotEmpty) {
                           userLoaded = await firestoreManager
                               .checkUser(userController.text);
@@ -113,15 +114,15 @@ class ReturnBookState extends State<ReturnBook> {
                             user = userController.text;
                           } else {
                             showSnackBar(
-                                context, getLang("rentBookLoadUser-error"));
+                              context,
+                              getLang("rentBookLoadUser-error"),
+                            );
                           }
                           setState(() {});
                         }
                       },
-                      child: Text(
-                        getLang("rentBookLoadUser"),
-                      ),
                     ),
+
                     const SizedBox(height: 15),
                     userLoaded
                         ? RentBookUserData(theme: theme, email: user)
@@ -138,11 +139,11 @@ class ReturnBookState extends State<ReturnBook> {
                     const SizedBox(height: 15),
                     BetterDivider(theme: theme),
                     const SizedBox(height: 15),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
+                    DefaultButton(
+                      theme: theme,
+                      text: getLang("returnBookAction"),
+                      onClick: () async {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
-                          // await firestoreManager.newUserRent(user, book, date);
                           if (position > -1) {
                             await firestoreManager.returnUserRent(
                               userController.text,
@@ -151,16 +152,20 @@ class ReturnBookState extends State<ReturnBook> {
                               userActiveRents[position]["listPosition"],
                             );
                             showSnackBar(
-                                context, getLang("returnBook-success"));
+                              context,
+                              getLang("returnBook-success"),
+                            );
                             setState(() {
                               _update();
                             });
                           } else {
-                            showSnackBar(context, getLang("returnBook-select"));
+                            showSnackBar(
+                              context,
+                              getLang("returnBook-select"),
+                            );
                           }
                         }
                       },
-                      child: Text(getLang("returnBookAction")),
                     ),
                   ],
                 ),

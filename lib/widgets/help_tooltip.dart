@@ -18,10 +18,10 @@ class HelpTooltip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(3),
         decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(
-                color: colors[theme]["mainTextColor"], width: 1),
-            borderRadius: BorderRadius.circular(30)),
+          color: Colors.transparent,
+          border: Border.all(color: colors[theme]["mainTextColor"], width: 1),
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Icon(
           Icons.question_mark,
           color: colors[theme]["mainTextColor"],

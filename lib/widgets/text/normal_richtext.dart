@@ -14,6 +14,10 @@ class NormalRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-        text: TextSpan(text: text, style: getStyle("normalTextStyle", theme)));
+      text: TextSpan(
+        text: text,
+        style: getStyle("normalTextStyle", theme),
+      ),
+    );
   }
 }

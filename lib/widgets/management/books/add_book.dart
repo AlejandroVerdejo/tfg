@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/management/books/add_book_data.dart';
 import 'package:tfg_library/widgets/management/add_tags_dialog.dart';
 import 'package:tfg_library/styles.dart';
@@ -78,9 +79,10 @@ class AddBookState extends State<AddBook> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                OutlinedButton(
-                  style: getStyle("loginButtonStyle", theme),
-                  onPressed: () async {
+                DefaultButton(
+                  theme: theme,
+                  text: getLang("loadBook"),
+                  onClick: () async {
                     if (existentBookController.text.isNotEmpty) {
                       if (await firestoreManager
                           .checkBook(existentBookController.text)) {
@@ -88,19 +90,19 @@ class AddBookState extends State<AddBook> {
                         setState(() {});
                       } else {
                         showSnackBar(
-                            context, getLang("rentBookLoadBook-error"));
+                          context,
+                          getLang("rentBookLoadBook-error"),
+                        );
                       }
                       // childKey.currentState?.refresh();
                     }
                   },
-                  child: Text(
-                    getLang("loadBook"),
-                  ),
                 ),
                 const SizedBox(height: 30),
-                OutlinedButton(
-                  style: getStyle("loginButtonStyle", theme),
-                  onPressed: () async {
+                DefaultButton(
+                  theme: theme,
+                  text: getLang("addTags"),
+                  onClick: () async {
                     await showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -108,9 +110,6 @@ class AddBookState extends State<AddBook> {
                         });
                     childKey.currentState?.refresh();
                   },
-                  child: Text(
-                    getLang("addTags"),
-                  ),
                 ),
                 const SizedBox(height: 30),
                 loadBook

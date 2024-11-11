@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -7,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -85,9 +84,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: FormBuilderValidators.compose(
                             [
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                               FormBuilderValidators.email(
-                                  errorText: getLang("formError-email"))
+                                errorText: getLang("formError-email"),
+                              )
                             ],
                           ),
                         ),
@@ -107,7 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ""),
                                 validator: FormBuilderValidators.compose([
                                   FormBuilderValidators.required(
-                                      errorText: getLang("formError-required")),
+                                    errorText: getLang("formError-required"),
+                                  ),
                                 ]),
                               ),
                             ),
@@ -125,9 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: FormBuilderValidators.compose(
                             [
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
-                              FormBuilderValidators.minLength(8,
-                                  errorText: getLang("formError-minLength"))
+                                errorText: getLang("formError-required"),
+                              ),
+                              FormBuilderValidators.minLength(
+                                8,
+                                errorText: getLang("formError-minLength"),
+                              )
                             ],
                           ),
                         ),
@@ -150,9 +155,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      OutlinedButton(
-                        style: getStyle("loginButtonStyle", theme),
-                        onPressed: () async {
+                      DefaultButton(
+                        theme: theme,
+                        text: login ? getLang("login") : getLang("register"),
+                        onClick: () async {
                           if (_formKey.currentState?.saveAndValidate() ??
                               false) {
                             var values = _formKey.currentState?.value;
@@ -163,15 +169,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                     values?["email"], values?["password"])) {
                                   _saveUser(values?["email"]);
                                 } else {
-                                  showSnackBar(context, getLang("loginError"));
+                                  showSnackBar(
+                                    context,
+                                    getLang("loginError"),
+                                  );
                                 }
                               } else {
-                                showSnackBar(context, getLang("loginError"));
+                                showSnackBar(
+                                  context,
+                                  getLang("loginError"),
+                                );
                               }
                             } else {
                               if (await firestoreManager
                                   .checkUser(values?["email"])) {
-                                showSnackBar(context, getLang("registerError"));
+                                showSnackBar(
+                                  context,
+                                  getLang("registerError"),
+                                );
                               } else {
                                 Map<String, dynamic> user = {
                                   "email": values?["email"],
@@ -185,10 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           }
                         },
-                        child: Text(
-                          login ? getLang("login") : getLang("register"),
-                        ),
-                      )
+                      ),
                     ],
                   ),
                 ),

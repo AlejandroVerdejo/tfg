@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
@@ -67,11 +65,12 @@ class _BookListElementState extends State<BookListElement> {
                   Row(
                     children: [
                       Padding(
-                          padding: imageBookListPadding,
-                          child: Image.memory(
-                            book["image"],
-                            width: elementImageSize,
-                          )),
+                        padding: imageBookListPadding,
+                        child: Image.memory(
+                          book["image"],
+                          width: elementImageSize,
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(right: 30),
                         child: BetterVerticalDivider(theme: theme),
@@ -97,11 +96,12 @@ class _BookListElementState extends State<BookListElement> {
                                 title: getLang("language"),
                                 text: "${book["language"]}"),
                             ListDataText(
-                                theme: theme,
-                                title: getLang("state"),
-                                text: book["aviable"]
-                                    ? getLang("aviable")
-                                    : getLang("notAviable")),
+                              theme: theme,
+                              title: getLang("state"),
+                              text: book["aviable"]
+                                  ? getLang("aviable")
+                                  : getLang("notAviable"),
+                            ),
                             ListDataText(
                                 theme: theme,
                                 title: getLang("category"),

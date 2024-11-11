@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/widgets/management/returns/return_book_list.dart';
@@ -23,7 +21,7 @@ class ReturnBookListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: 600,
         maxWidth: 800,
       ),

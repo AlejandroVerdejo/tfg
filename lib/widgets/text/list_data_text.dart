@@ -22,7 +22,10 @@ class ListDataText extends StatelessWidget {
           text: "$title: ",
           style: getStyle("normalTitleTextStyle", theme),
           children: [
-            TextSpan(text: text, style: getStyle("normalTextStyle", theme))
+            TextSpan(
+              text: text,
+              style: getStyle("normalTextStyle", theme),
+            )
           ],
         ),
       ),

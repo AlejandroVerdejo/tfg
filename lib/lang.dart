@@ -45,13 +45,12 @@ const lang = {
     "id": "ID",
     "popularBooks": "Libros más populares",
     "email": "Correo electrónico",
+    "alertDialog-confirm": "¿Estás seguro?",
     "deleteBookListDialog-title": "Se eliminará el libro de la lista",
-    "deleteBookListDialog-content": "¿Estás seguro?",
     "deleteBookListDialog-true": "Eliminar",
     "deleteBookListDialog-false": "Cancelar",
     "deleteBookDialog-title": "Se eliminará el libro",
     "deleteAllBookDialog-title": "Se eliminarán todos los libros como este",
-    "deleteBookDialog-content": "¿Estás seguro?",
     "wishListToggle-add": "Libro añadido a la lista de deseados",
     "wishListToggle-del": "Libro eliminado de la lista de deseados",
     "waitListToggle-add": "Libro añadido a recordatorios",
@@ -114,7 +113,14 @@ const lang = {
     "send": "Enviar",
     "solve": "Marcar como solucionado",
     "contacts": "Soporte",
-    "comments": "Comentarios"
+    "comments": "Comentarios",
+    "prio-on": "Dar prioridad",
+    "prio-off": "Quitar prioridad",
+    "deleteCommentDialog-title": "Se eliminara el siguiente comentario",
+    "content": "Contenido",
+    "type": "Tipo",
+    "send-confirmation": "Se ha enviado correctamente",
+    "catalog-hint": "Escribe un titulo para buscarlo",
   }
 };
 

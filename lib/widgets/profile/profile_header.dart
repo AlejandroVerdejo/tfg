@@ -71,7 +71,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             const SizedBox(height: 20),
             Row(
               children: [
-                const Expanded(child: SizedBox()),
+                const Expanded(
+                  child: SizedBox(),
+                ),
                 !edit
                     ? IconButton(
                         onPressed: () {
@@ -82,7 +84,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                         icon: Icon(
                           Icons.edit,
                           color: colors["light"]["headerTextColor"],
-                        ))
+                        ),
+                      )
                     : const SizedBox.shrink(),
                 edit
                     ? IconButton(
@@ -105,7 +108,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                         icon: Icon(
                           Icons.save,
                           color: colors["light"]["headerTextColor"],
-                        ))
+                        ),
+                      )
                     : const SizedBox.shrink(),
                 edit
                     ? IconButton(
@@ -119,7 +123,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                         icon: Icon(
                           Icons.cancel,
                           color: colors["light"]["headerTextColor"],
-                        ))
+                        ),
+                      )
                     : const SizedBox.shrink()
               ],
             ),

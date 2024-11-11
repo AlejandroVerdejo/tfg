@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/widgets/catalog/book_list_element.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
@@ -53,30 +52,38 @@ class _UserBookListState extends State<UserBookList> {
             final data = snapshot.data!;
             var theme = widget.theme;
             var books = data["books"];
-            var orderedBooks = Map.fromEntries(books.entries.toList()
-              ..sort((b1, b2) {
-                // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
-                int aviableComp = (b2.value["aviable"] ? 1 : 0)
-                    .compareTo(b1.value["aviable"] ? 1 : 0);
-                // Ordena por nombre si tienen la misma disponibilidad
-                if (aviableComp == 0) {
-                  return b1.value["title"].compareTo(b2.value["title"]);
-                }
-                return aviableComp;
-              }));
+            var orderedBooks = Map.fromEntries(
+              books.entries.toList()
+                ..sort(
+                  (b1, b2) {
+                    // Ordena por disponibilidad de mayor a menor | 1 disponible / 0 no disponible |
+                    int aviableComp = (b2.value["aviable"] ? 1 : 0)
+                        .compareTo(b1.value["aviable"] ? 1 : 0);
+                    // Ordena por nombre si tienen la misma disponibilidad
+                    if (aviableComp == 0) {
+                      return b1.value["title"].compareTo(b2.value["title"]);
+                    }
+                    return aviableComp;
+                  },
+                ),
+            );
             Map<dynamic, dynamic> bookslist;
             bookslist = orderedBooks;
             // Filtrar por libros que se encuentren en la | Wish List | enviada
             if (widget.type == "wishlist") {
               var filteredBooks = Map.fromEntries(
-                bookslist.entries.where((e) => widget.list!.contains(e.key)),
+                bookslist.entries.where(
+                  (e) => widget.list!.contains(e.key),
+                ),
               );
               bookslist = filteredBooks;
             }
             // Filtrar por libros que se encuentren en la | Wait List | enviada
             if (widget.type == "waitlist") {
               var filteredBooks = Map.fromEntries(
-                bookslist.entries.where((e) => widget.list!.contains(e.key)),
+                bookslist.entries.where(
+                  (e) => widget.list!.contains(e.key),
+                ),
               );
               bookslist = filteredBooks;
             }

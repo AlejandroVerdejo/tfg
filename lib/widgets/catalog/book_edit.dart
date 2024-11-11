@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
@@ -153,7 +154,8 @@ class _BookEditState extends State<BookEdit> {
                                 ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -172,7 +174,8 @@ class _BookEditState extends State<BookEdit> {
                                 ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -211,7 +214,8 @@ class _BookEditState extends State<BookEdit> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -253,7 +257,8 @@ class _BookEditState extends State<BookEdit> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -272,9 +277,11 @@ class _BookEditState extends State<BookEdit> {
                                 ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                               FormBuilderValidators.numeric(
-                                  errorText: getLang("formError-numeric"))
+                                errorText: getLang("formError-numeric"),
+                              )
                             ]),
                           ),
                         ),
@@ -313,7 +320,8 @@ class _BookEditState extends State<BookEdit> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -332,7 +340,8 @@ class _BookEditState extends State<BookEdit> {
                                 ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -351,7 +360,8 @@ class _BookEditState extends State<BookEdit> {
                                 ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -392,7 +402,8 @@ class _BookEditState extends State<BookEdit> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -431,7 +442,8 @@ class _BookEditState extends State<BookEdit> {
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -469,15 +481,18 @@ class _BookEditState extends State<BookEdit> {
                                 // setState(() {});
                               }, okButtonBuilder: (context, onPressed) {
                                 return TextButton(
-                                    onPressed: onPressed,
-                                    child: NormalText(
-                                        theme: theme,
-                                        text: getLang("selectDialogButton")));
+                                  onPressed: onPressed,
+                                  child: NormalText(
+                                    theme: theme,
+                                    text: getLang("selectDialogButton"),
+                                  ),
+                                );
                               });
                             },
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -497,7 +512,8 @@ class _BookEditState extends State<BookEdit> {
                                 ""),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(
-                                  errorText: getLang("formError-required")),
+                                errorText: getLang("formError-required"),
+                              ),
                             ]),
                           ),
                         ),
@@ -508,19 +524,19 @@ class _BookEditState extends State<BookEdit> {
                                 child: Container(
                                   color: colors[theme]
                                       ["secondaryBackgroundColor"],
-                                  constraints: BoxConstraints(
-                                    minWidth: 250, // Ancho mínimo
-                                    maxWidth: 300, // Ancho máximo
-                                    minHeight: 350, // Altura mínima
-                                    // maxHeight: 400, // Altura máxima
+                                  constraints: const BoxConstraints(
+                                    minWidth: 250,
+                                    maxWidth: 300,
+                                    minHeight: 350,
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const Icon(Icons.image),
                                       DescriptionRichText(
-                                          theme: theme,
-                                          text: "Selecciona una imagen"),
+                                        theme: theme,
+                                        text: getLang("imageSelect"),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -530,11 +546,10 @@ class _BookEditState extends State<BookEdit> {
                               )
                             : GestureDetector(
                                 child: Container(
-                                  constraints: BoxConstraints(
-                                    minWidth: 250, // Ancho mínimo
-                                    maxWidth: 300, // Ancho máximo
-                                    minHeight: 350, // Altura mínima
-                                    // maxHeight: 400, // Altura máxima
+                                  constraints: const BoxConstraints(
+                                    minWidth: 250,
+                                    maxWidth: 300,
+                                    minHeight: 350,
                                   ),
                                   child: Image.memory(
                                     image!,
@@ -546,9 +561,10 @@ class _BookEditState extends State<BookEdit> {
                                 },
                               ),
                         const SizedBox(height: 30),
-                        OutlinedButton(
-                          style: getStyle("loginButtonStyle", theme),
-                          onPressed: () async {
+                        DefaultButton(
+                          theme: theme,
+                          text: getLang("addBook"),
+                          onClick: () async {
                             if (_formKey.currentState?.saveAndValidate() ??
                                 false) {
                               Map<String, dynamic> book = {
@@ -572,14 +588,8 @@ class _BookEditState extends State<BookEdit> {
                                     .replaceAll("\n", "<n><n>"),
                               };
                               await firestoreManager.addBook(book);
-                              // if (!loadBook) {
-                              //   await storageManager.addImage(image!, isbnController.text);
-                              // }
-                            } else {}
+                            }
                           },
-                          child: Text(
-                            getLang("addBook"),
-                          ),
                         ),
                         const SizedBox(height: 30),
                       ],

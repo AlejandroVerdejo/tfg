@@ -148,14 +148,25 @@ getStyle(String style, String theme) {
       cursorColor: colors[theme]["headerBackgroundColor"],
       selectionHandleColor: colors[theme]["headerBackgroundColor"],
     ),
-    "loginButtonStyle": OutlinedButton.styleFrom(
+    "defaultButtonStyle": OutlinedButton.styleFrom(
       side: const BorderSide(color: Colors.transparent),
       backgroundColor: colors[theme]["headerBackgroundColor"],
-      // fixedSize: const Size(double.maxFinite, 50),
-      // maximumSize: Size(600, 60),
-      // minimumSize: Size(100, 60),
       fixedSize: const Size(600, 60),
       foregroundColor: colors[theme]["headerTextColor"],
+      textStyle: GoogleFonts.nunito(
+        fontWeight: FontWeight.w500,
+        fontSize: isAndroid ? 16 : 20,
+      ),
+    ),
+    "homeButtonStyle": OutlinedButton.styleFrom(
+      side: const BorderSide(color: Colors.transparent),
+      backgroundColor: colors[theme]["headerBackgroundColor"],
+      fixedSize: const Size(350, 200),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      foregroundColor: colors[theme]["headerTextColor"],
+      alignment: Alignment.center,
       textStyle: GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
         fontSize: isAndroid ? 16 : 20,
@@ -220,14 +231,15 @@ getTextFieldStyle(
     "defaultTextFieldStyle": InputDecoration(
       hintText: hintText,
       enabledBorder: OutlineInputBorder(
-          borderSide: getStyle("loginFieldBorderSide", theme)),
+        borderSide: getStyle("loginFieldBorderSide", theme),
+      ),
       focusedBorder: OutlineInputBorder(
-          borderSide: getStyle("loginFieldBorderSide", theme)),
-      errorStyle:
-          TextStyle(color: colors[theme]["headerBackgroundColor"]),
+        borderSide: getStyle("loginFieldBorderSide", theme),
+      ),
+      errorStyle: TextStyle(color: colors[theme]["headerBackgroundColor"]),
       errorBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: colors[theme]["headerBackgroundColor"])),
+        borderSide: BorderSide(color: colors[theme]["headerBackgroundColor"]),
+      ),
       border: const OutlineInputBorder(),
       labelText: labelText,
       labelStyle: getStyle("normalTextStyle", theme),
@@ -260,14 +272,15 @@ getTextFieldWButtonStyle(String style, String theme, String labelText,
     "defaultTextFieldStyle": InputDecoration(
       hintText: hintText,
       enabledBorder: OutlineInputBorder(
-          borderSide: getStyle("loginFieldBorderSide", theme)),
+        borderSide: getStyle("loginFieldBorderSide", theme),
+      ),
       focusedBorder: OutlineInputBorder(
-          borderSide: getStyle("loginFieldBorderSide", theme)),
-      errorStyle:
-          TextStyle(color: colors[theme]["headerBackgroundColor"]),
+        borderSide: getStyle("loginFieldBorderSide", theme),
+      ),
+      errorStyle: TextStyle(color: colors[theme]["headerBackgroundColor"]),
       errorBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: colors[theme]["headerBackgroundColor"])),
+        borderSide: BorderSide(color: colors[theme]["headerBackgroundColor"]),
+      ),
       border: const OutlineInputBorder(),
       labelText: labelText,
       labelStyle: getStyle("normalTextStyle", theme),

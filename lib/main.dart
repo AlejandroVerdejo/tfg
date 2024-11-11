@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
@@ -33,11 +31,12 @@ void main() async {
   if (savedUser.isNotEmpty) {
     user = await firestoreManager.getUser(savedUser);
   }
-  runApp(MainApp(
-    theme: theme,
-    savedUser: user,
-  ));
-  // runApp(const MainApp());
+  runApp(
+    MainApp(
+      theme: theme,
+      savedUser: user,
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {

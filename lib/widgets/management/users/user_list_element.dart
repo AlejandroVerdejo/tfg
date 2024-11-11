@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/widgets/management/users/user_view_dialog.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
-import 'package:tfg_library/widgets/delete_dialog.dart';
 
 class UserListElement extends StatefulWidget {
   const UserListElement({
@@ -77,13 +74,14 @@ class _UserListElementState extends State<UserListElement> {
                       ),
                     ),
                     Expanded(
-                        child: NormalText(
-                      theme: theme,
-                      text: user["level"] == 1
-                          ? getLang("worker")
-                          : getLang("admin"),
-                      alignment: TextAlign.center,
-                    )),
+                      child: NormalText(
+                        theme: theme,
+                        text: user["level"] == 1
+                            ? getLang("worker")
+                            : getLang("admin"),
+                        alignment: TextAlign.center,
+                      ),
+                    ),
                   ],
                 ),
         ),

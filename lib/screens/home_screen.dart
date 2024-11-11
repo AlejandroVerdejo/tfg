@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/widgets/management/books/add_book.dart';
@@ -207,6 +205,13 @@ class _HomeScreenState extends State<HomeScreen> {
       case "waitlist":
         waitlistChildKey.currentState?.refreshTheme();
         break;
+      case "contact":
+        contactChildKey.currentState?.refreshTheme();
+        break;
+      case "contacts":
+        viewContactsChildKey.currentState?.refreshTheme();
+        break;
+      // * Eliminar y hacer estas ventanas de retroceso?
       case "addBook":
         addBookChildKey.currentState?.refreshTheme();
         break;
@@ -219,12 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case "returnBook":
         returnBookChildKey.currentState?.refreshTheme();
         break;
-      case "contact":
-        contactChildKey.currentState?.refreshTheme();
-        break;
-      case "contacts":
-        viewContactsChildKey.currentState?.refreshTheme();
-        break;
+      case "tags":
     }
   }
 

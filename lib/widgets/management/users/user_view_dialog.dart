@@ -1,16 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
+import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/delete_dialog.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/profile/profile_header.dart';
-import 'package:tfg_library/widgets/text/list_data_text.dart';
 
 class UserViewDialog extends StatefulWidget {
   const UserViewDialog({
@@ -44,6 +41,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
   void initState() {
     super.initState();
     edit = widget.edit;
+    loadData();
   }
 
   void loadData() {
@@ -58,126 +56,148 @@ class _UserViewDialogState extends State<UserViewDialog> {
   Widget build(BuildContext context) {
     var theme = widget.theme;
     var user = widget.user;
-    usernameController.text = user["username"];
-    if (edit) {
-      loadData();
-    }
     return AlertDialog(
       backgroundColor: colors[theme]["mainBackgroundColor"],
+      scrollable: true,
       content: Container(
         width: dialogWidth,
         padding: dialogPadding,
-        child: edit
-            // ? Editar
-            ? FormBuilder(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        const Expanded(child: SizedBox()),
-                        // ? Cancelar
-                        IconButton(
-                            onPressed: () {
-                              log("cancel");
-                              edit = false;
-                              setState(() {});
+        child: FormBuilder(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  const Expanded(
+                    child: SizedBox(),
+                  ),
+                  !edit
+                      ?
+                      // ? Editar
+                      IconButton(
+                          onPressed: () {
+                            edit = true;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: colors[theme]["mainTextColor"],
+                          ),
+                        )
+                      :
+                      // ? Cancelar
+                      IconButton(
+                          onPressed: () {
+                            edit = false;
+                            loadData();
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.cancel,
+                            color: colors[theme]["mainTextColor"],
+                          ),
+                        ),
+                  // ? Eliminar
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeleteDialog(
+                            theme: theme,
+                            title: getLang("deleteUser"),
+                            message: getLang("confirmation"),
+                            onAccept: () async {
+                              await firestoreManager.deleteUser(user["email"]);
+                              widget.onEdit();
+                              Navigator.pop(context, false);
                             },
-                            icon: Icon(
-                              Icons.cancel,
-                              color: colors[theme]["mainTextColor"],
-                            )),
-                        // ? Eliminar
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return DeleteDialog(
-                                      theme: theme,
-                                      title: getLang("deleteUser"),
-                                      message: getLang("confirmation"),
-                                      onAccept: () async {
-                                        await firestoreManager
-                                            .deleteUser(user["email"]);
-                                        widget.onEdit();
-                                        Navigator.pop(context, false);
-                                      },
-                                    );
-                                  });
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: colors[theme]["headerBackgroundColor"],
-                            )),
-                      ],
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: colors[theme]["headerBackgroundColor"],
                     ),
-                    // ? Nombre
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        name: "username",
-                        controller: usernameController,
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("Username"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
-                        ]),
-                      ),
+                  ),
+                ],
+              ),
+
+              // ? Correo electronico
+              TextSelectionTheme(
+                data: getStyle("loginFieldSelectionTheme", theme),
+                child: FormBuilderTextField(
+                  name: "email",
+                  controller: emailController,
+                  readOnly: true,
+                  style: getStyle("normalTextStyle", theme),
+                  decoration: getTextFieldStyle(
+                      "defaultTextFieldStyle", theme, getLang("email"), ""),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                      errorText: getLang("formError-required"),
                     ),
-                    const SizedBox(height: 15),
-                    // ? Correo electronico
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        name: "email",
-                        readOnly: true,
-                        controller: emailController,
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("email"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
-                          FormBuilderValidators.email(
-                              errorText: getLang("formError-email"))
-                        ]),
-                      ),
+                    FormBuilderValidators.email(
+                      errorText: getLang("formError-email"),
+                    )
+                  ]),
+                ),
+              ),
+              const SizedBox(height: 15),
+              // ? Nombre
+              TextSelectionTheme(
+                data: getStyle("loginFieldSelectionTheme", theme),
+                child: FormBuilderTextField(
+                  name: "username",
+                  controller: usernameController,
+                  readOnly: !edit,
+                  style: getStyle("normalTextStyle", theme),
+                  decoration: getTextFieldStyle(
+                      "defaultTextFieldStyle", theme, getLang("username"), ""),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                      errorText: getLang("formError-required"),
                     ),
-                    const SizedBox(height: 15),
-                    // ? Contraseña
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        name: "password",
-                        controller: passwordController,
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("password"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
-                          FormBuilderValidators.minLength(8,
-                              errorText: getLang("formError-minLength"))
-                        ]),
-                      ),
+                  ]),
+                ),
+              ),
+              const SizedBox(height: 15),
+              // ? Contraseña
+              TextSelectionTheme(
+                data: getStyle("loginFieldSelectionTheme", theme),
+                child: FormBuilderTextField(
+                  name: "password",
+                  controller: passwordController,
+                  readOnly: !edit,
+                  style: getStyle("normalTextStyle", theme),
+                  decoration: getTextFieldStyle(
+                      "defaultTextFieldStyle", theme, getLang("password"), ""),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                      errorText: getLang("formError-required"),
                     ),
-                    const SizedBox(height: 15),
-                    // ? Nivel
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        name: "level",
-                        readOnly: true,
-                        controller: levelController,
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("level"), ""),
-                        onTap: () async {
+                    FormBuilderValidators.minLength(
+                      8,
+                      errorText: getLang("formError-minLength"),
+                    )
+                  ]),
+                ),
+              ),
+              const SizedBox(height: 15),
+              // ? Nivel
+              TextSelectionTheme(
+                data: getStyle("loginFieldSelectionTheme", theme),
+                child: FormBuilderTextField(
+                  name: "level",
+                  readOnly: true,
+                  controller: levelController,
+                  style: getStyle("normalTextStyle", theme),
+                  decoration: getTextFieldStyle(
+                      "defaultTextFieldStyle", theme, getLang("level"), ""),
+                  onTap: edit
+                      ? () async {
                           SelectDialog.showModal(context,
                               showSearchBox: false,
                               backgroundColor: colors[theme]
@@ -194,17 +214,21 @@ class _UserViewDialogState extends State<UserViewDialog> {
                             levelController.text = selected;
                             // setState(() {});
                           });
-                        },
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                              errorText: getLang("formError-required")),
-                        ]),
-                      ),
+                        }
+                      : null,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                      errorText: getLang("formError-required"),
                     ),
-                    const SizedBox(height: 15),
-                    OutlinedButton(
-                      style: getStyle("loginButtonStyle", theme),
-                      onPressed: () async {
+                  ]),
+                ),
+              ),
+              const SizedBox(height: 15),
+              edit
+                  ? DefaultButton(
+                      theme: theme,
+                      text: getLang("save"),
+                      onClick: () async {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           Map<String, dynamic> newUserData = {
                             "username": usernameController.text,
@@ -219,77 +243,11 @@ class _UserViewDialogState extends State<UserViewDialog> {
                           widget.onEdit();
                         }
                       },
-                      child: Text(
-                        getLang("save"),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            // ? Ver
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Expanded(child: SizedBox()),
-                      // ? Editar
-                      IconButton(
-                          onPressed: () {
-                            log("edit");
-                            edit = true;
-                            setState(() {});
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: colors[theme]["mainTextColor"],
-                          )),
-                      // ? Eliminar
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DeleteDialog(
-                                    theme: theme,
-                                    title: getLang("deleteUser"),
-                                    message: getLang("confirmation"),
-                                    onAccept: () async {
-                                      await firestoreManager
-                                          .deleteUser(user["email"]);
-                                      widget.onEdit();
-                                      Navigator.pop(context, false);
-                                    },
-                                  );
-                                });
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: colors[theme]["headerBackgroundColor"],
-                          )),
-                    ],
-                  ),
-                  ListDataText(
-                      theme: theme,
-                      title: getLang("username"),
-                      text: user["username"]),
-                  ListDataText(
-                      theme: theme,
-                      title: getLang("email"),
-                      text: user["email"]),
-                  ListDataText(
-                      theme: theme,
-                      title: getLang("password"),
-                      text: user["password"]),
-                  ListDataText(
-                      theme: theme,
-                      title: getLang("level"),
-                      text: user["level"] == 1
-                          ? getLang("worker")
-                          : getLang("admin")),
-                ],
-              ),
+                    )
+                  : const SizedBox.shrink(),
+            ],
+          ),
+        ),
       ),
     );
   }

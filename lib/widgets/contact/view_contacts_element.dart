@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/contact/contact_view.dart';

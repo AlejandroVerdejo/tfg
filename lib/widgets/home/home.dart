@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -7,6 +5,7 @@ import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/error_widget.dart';
 import 'package:tfg_library/widgets/home/popular_list.dart';
 import 'package:tfg_library/widgets/home/wait_list_reminder.dart';
+import 'package:tfg_library/widgets/home_button.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
 import 'package:tfg_library/widgets/text/normal_text.dart';
 
@@ -71,6 +70,7 @@ class HomeState extends State<Home> {
           var popularBooks = data["popularBooks"];
           var waitListAviability = data["waitListAviability"];
           return ListView(
+            shrinkWrap: true,
             children: [
               Container(
                 padding: bodyPadding,
@@ -82,59 +82,50 @@ class HomeState extends State<Home> {
                     level == 2
                         ? PopularList(theme: theme, popularBooks: popularBooks)
                         : const SizedBox.shrink(),
-                    const SizedBox(height: 30),
-                    // Crear nuevo prestamo
                     level <= 1
-                        ? OutlinedButton(
-                            style: getStyle("loginButtonStyle", theme),
-                            onPressed: () {
-                              widget.onScreenChange("rentBook");
-                            },
-                            child: NormalText(
-                              theme: theme,
-                              text: getLang("rentBook"),
-                              alignment: TextAlign.center,
+                        ? Center(
+                            child: Wrap(
+                              spacing: 50,
+                              runSpacing: 30,
+                              alignment: WrapAlignment.start,
+                              children: [
+                                // ? Añadir libro
+                                HomeButton(
+                                  theme: theme,
+                                  text: getLang("addBook"),
+                                  icon: Icons.book,
+                                  onClick: () {
+                                    widget.onScreenChange("addBook");
+                                  },
+                                ),
+                                // ? Nuevo prestamo
+                                HomeButton(
+                                  theme: theme,
+                                  text: getLang("rentBook"),
+                                  icon: Icons.book,
+                                  onClick: () {
+                                    widget.onScreenChange("rentBook");
+                                  },
+                                ),
+                                // ? Devolver libro
+                                HomeButton(
+                                  theme: theme,
+                                  text: getLang("returnBook"),
+                                  icon: Icons.book,
+                                  onClick: () {
+                                    widget.onScreenChange("returnBook");
+                                  },
+                                ),
+                                // ? Etiquetas
+                                HomeButton(
+                                  theme: theme,
+                                  text: "Gestionar etiquetas",
+                                  icon: Icons.label,
+                                  onClick: () {},
+                                )
+                              ],
                             ),
                           )
-                        : const SizedBox.shrink(),
-                    level <= 1
-                        ? const SizedBox(height: 30)
-                        : const SizedBox.shrink(),
-
-                    // Devolucion
-                    level <= 1
-                        ? OutlinedButton(
-                            style: getStyle("loginButtonStyle", theme),
-                            onPressed: () {
-                              widget.onScreenChange("returnBook");
-                            },
-                            child: NormalText(
-                              theme: theme,
-                              text: getLang("returnBook"),
-                              alignment: TextAlign.center,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                    level <= 1
-                        ? const SizedBox(height: 30)
-                        : const SizedBox.shrink(),
-
-                    // Añadir nuevo libro
-                    level <= 1
-                        ? OutlinedButton(
-                            style: getStyle("loginButtonStyle", theme),
-                            onPressed: () {
-                              widget.onScreenChange("addBook");
-                            },
-                            child: NormalText(
-                              theme: theme,
-                              text: getLang("addBook"),
-                              alignment: TextAlign.center,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                    level <= 1
-                        ? const SizedBox(height: 30)
                         : const SizedBox.shrink(),
                   ],
                 ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
-import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/catalog/book_list.dart';
 import 'package:tfg_library/widgets/error_widget.dart';

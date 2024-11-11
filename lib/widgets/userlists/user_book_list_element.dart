@@ -59,22 +59,23 @@ class _UserBookListElementState extends State<UserBookListElement> {
           child: Tooltip(
             message: getLang("deleteFromList"),
             child: IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DeleteDialog(
-                          theme: theme,
-                          title: getLang("deleteBookListDialog-title"),
-                          message: getLang("deleteBookListDialog-content"),
-                          onAccept: _delete,
-                        );
-                      });
-                },
-                icon: Icon(
-                  Icons.delete,
-                  color: colors[theme]["headerBackgroundColor"],
-                )),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DeleteDialog(
+                        theme: theme,
+                        title: getLang("deleteBookListDialog-title"),
+                        message: getLang("alertDialog-confirm"),
+                        onAccept: _delete,
+                      );
+                    });
+              },
+              icon: Icon(
+                Icons.delete,
+                color: colors[theme]["headerBackgroundColor"],
+              ),
+            ),
           ),
         ),
       ],
