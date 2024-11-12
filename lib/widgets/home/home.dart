@@ -7,7 +7,6 @@ import 'package:tfg_library/widgets/home/popular_list.dart';
 import 'package:tfg_library/widgets/home/wait_list_reminder.dart';
 import 'package:tfg_library/widgets/home_button.dart';
 import 'package:tfg_library/widgets/loading_widget.dart';
-import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -27,13 +26,17 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   Future<Map<String, dynamic>> _loadData() async {
-    List<String> popularBooks = await firestoreManager.getPopularity();
-    bool waitListAviability = await firestoreManager
-        .checkUserWaitListAviability(widget.user["email"]);
-    return {
-      "popularBooks": popularBooks,
-      "waitListAviability": waitListAviability,
-    };
+    if (widget.user["level"] == 2) {
+      List<String> popularBooks = await firestoreManager.getPopularity();
+      bool waitListAviability = await firestoreManager
+          .checkUserWaitListAviability(widget.user["email"]);
+      return {
+        "popularBooks": popularBooks,
+        "waitListAviability": waitListAviability,
+      };
+    } else {
+      return {};
+    }
   }
 
   void refreshTheme() {
@@ -67,68 +70,101 @@ class HomeState extends State<Home> {
           // Ejecucion
           var level = widget.user["level"];
           final data = snapshot.data!;
-          var popularBooks = data["popularBooks"];
-          var waitListAviability = data["waitListAviability"];
+          var popularBooks = [""];
+          var waitListAviability = false;
+          if (level == 2) {
+            popularBooks = data["popularBooks"];
+            waitListAviability = data["waitListAviability"];
+          }
           return ListView(
             shrinkWrap: true,
             children: [
               Container(
                 padding: bodyPadding,
-                child: Column(
-                  children: [
-                    waitListAviability && level == 2
-                        ? WaitListReminder(theme: theme, widget: widget)
-                        : const SizedBox.shrink(),
-                    level == 2
-                        ? PopularList(theme: theme, popularBooks: popularBooks)
-                        : const SizedBox.shrink(),
-                    level <= 1
-                        ? Center(
-                            child: Wrap(
-                              spacing: 50,
-                              runSpacing: 30,
-                              alignment: WrapAlignment.start,
-                              children: [
-                                // ? Añadir libro
-                                HomeButton(
-                                  theme: theme,
-                                  text: getLang("addBook"),
-                                  icon: Icons.book,
-                                  onClick: () {
-                                    widget.onScreenChange("addBook");
-                                  },
-                                ),
-                                // ? Nuevo prestamo
-                                HomeButton(
-                                  theme: theme,
-                                  text: getLang("rentBook"),
-                                  icon: Icons.book,
-                                  onClick: () {
-                                    widget.onScreenChange("rentBook");
-                                  },
-                                ),
-                                // ? Devolver libro
-                                HomeButton(
-                                  theme: theme,
-                                  text: getLang("returnBook"),
-                                  icon: Icons.book,
-                                  onClick: () {
-                                    widget.onScreenChange("returnBook");
-                                  },
-                                ),
-                                // ? Etiquetas
-                                HomeButton(
-                                  theme: theme,
-                                  text: "Gestionar etiquetas",
-                                  icon: Icons.label,
-                                  onClick: () {},
-                                )
-                              ],
+                child: level == 2
+                    ? Column(
+                        children: [
+                          waitListAviability
+                              // ? Recordatorio de libro disponible
+                              ? WaitListReminder(theme: theme, widget: widget)
+                              : const SizedBox.shrink(),
+                          // ? Libros mas populares
+                          PopularList(theme: theme, popularBooks: popularBooks),
+                          const SizedBox(height: 30),
+                          // Center(
+                          //   child: Wrap(
+                          //     spacing: 50,
+                          //     runSpacing: 30,
+                          //     alignment: WrapAlignment.start,
+                          //     children: [
+                          //       // ? Ir al catalogo
+                          //       HomeButton(
+                          //         theme: theme,
+                          //         text: "Ir al catalogo",
+                          //         icon: Icons.book,
+                          //         onClick: () {
+                          //           widget.onScreenChange("catalog");
+                          //         },
+                          //       ),
+                          //       // ? Ir a la lista de deseados
+                          //       HomeButton(
+                          //         theme: theme,
+                          //         text: "Ir a la lista de deseados",
+                          //         icon: Icons.bookmarks,
+                          //         onClick: () {
+                          //           widget.onScreenChange("wishlist");
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                        ],
+                      )
+                    : Center(
+                        child: Wrap(
+                          spacing: 50,
+                          runSpacing: 30,
+                          alignment: WrapAlignment.start,
+                          children: [
+                            // ? Añadir libro
+                            HomeButton(
+                              theme: theme,
+                              text: getLang("addBook"),
+                              icon: Icons.book,
+                              onClick: () {
+                                widget.onScreenChange("addBook");
+                              },
                             ),
-                          )
-                        : const SizedBox.shrink(),
-                  ],
-                ),
+                            // ? Nuevo prestamo
+                            HomeButton(
+                              theme: theme,
+                              text: getLang("rentBook"),
+                              icon: Icons.book,
+                              onClick: () {
+                                widget.onScreenChange("rentBook");
+                              },
+                            ),
+                            // ? Devolver libro
+                            HomeButton(
+                              theme: theme,
+                              text: getLang("returnBook"),
+                              icon: Icons.book,
+                              onClick: () {
+                                widget.onScreenChange("returnBook");
+                              },
+                            ),
+                            // ? Etiquetas
+                            HomeButton(
+                              theme: theme,
+                              text: "Gestionar etiquetas",
+                              icon: Icons.label,
+                              onClick: () {
+                                widget.onScreenChange("tags");
+                              },
+                            )
+                          ],
+                        ),
+                      ),
               ),
             ],
           );

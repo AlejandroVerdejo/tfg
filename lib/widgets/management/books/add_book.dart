@@ -4,7 +4,7 @@ import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/management/books/add_book_data.dart';
-import 'package:tfg_library/widgets/management/add_tags_dialog.dart';
+import 'package:tfg_library/widgets/management/tags/add_tags_dialog.dart';
 import 'package:tfg_library/styles.dart';
 
 class AddBook extends StatefulWidget {

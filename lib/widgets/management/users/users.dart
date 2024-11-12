@@ -5,7 +5,6 @@ import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/management/books/add_user_dialog.dart';
 import 'package:tfg_library/widgets/management/users/user_list.dart';
 import 'package:tfg_library/styles.dart';
-import 'package:tfg_library/widgets/text/normal_text.dart';
 
 class Users extends StatefulWidget {
   const Users({
@@ -16,19 +15,30 @@ class Users extends StatefulWidget {
   final String theme;
 
   @override
-  State<Users> createState() => _UsersState();
+  State<Users> createState() => UsersState();
 }
 
-class _UsersState extends State<Users> {
+class UsersState extends State<Users> {
   void _onUserAdded(Map user) async {
     setState(() {});
   }
 
   FirestoreManager firestoreManager = FirestoreManager();
+  String theme = "";
+
+  @override
+  void initState() {
+    super.initState();
+    theme = widget.theme;
+  }
+
+  void refreshTheme() {
+    theme = theme == "dark" ? "light" : "dark";
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    var theme = widget.theme;
     return Container(
       padding: bodyPadding,
       child: Column(

@@ -60,7 +60,6 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle("defaultTextFieldStyle",
                           theme, getLang("editorial"), ""),
-                      obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
                           FormBuilderValidators.required(
@@ -101,7 +100,6 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle("defaultTextFieldStyle",
                           theme, getLang("language"), ""),
-                      obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
                           FormBuilderValidators.required(
@@ -142,7 +140,6 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle("defaultTextFieldStyle",
                           theme, getLang("category"), ""),
-                      obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
                           FormBuilderValidators.required(
@@ -183,7 +180,6 @@ class _AddTagsDialogState extends State<AddTagsDialog> {
                       style: getStyle("normalTextStyle", theme),
                       decoration: getTextFieldStyle(
                           "defaultTextFieldStyle", theme, getLang("genre"), ""),
-                      obscureText: true,
                       validator: FormBuilderValidators.compose(
                         [
                           FormBuilderValidators.required(

@@ -584,6 +584,38 @@ class FirestoreManager {
     return popularBooks;
   }
 
+  // * Actualizara la lista de editoriales
+  Future<void> updateEditorials(List<String> editorials) async {
+    // Crea la referencia a los tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Actualiza el valor en la base de datos
+    await tagsRef.update({"editorials": editorials});
+  }
+
+  // * Actualizara la lista de generos
+  Future<void> updateGenres(List<String> genres) async {
+    // Crea la referencia a los tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Actualiza el valor en la base de datos
+    await tagsRef.update({"genres": genres});
+  }
+
+  // * Actualizara la lista de categorias
+  Future<void> updateCategories(List<String> categories) async {
+    // Crea la referencia a los tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Actualiza el valor en la base de datos
+    await tagsRef.update({"categories": categories});
+  }
+
+  // * Actualizara la lista de idiomas
+  Future<void> updateLanguages(List<String> language) async {
+    // Crea la referencia a los tags
+    final tagsRef = db.collection("Books").doc("Tags");
+    // Actualiza el valor en la base de datos
+    await tagsRef.update({"language": language});
+  }
+
   // ?
 
   //? |                                           |
@@ -853,7 +885,7 @@ class FirestoreManager {
     // Añade el comentario a la lista
     comments.add(newComment);
     // Actualiza el valor en la base de datos
-    contactRef.update({"comments": comments});
+    await contactRef.update({"comments": comments});
   }
 
   // * Eliminara un comentario del contacto
@@ -867,7 +899,15 @@ class FirestoreManager {
     // Elimina el comentario de la lista
     comments.removeAt(pos);
     // Actualiza el valor en la base de datos
-    contactRef.update({"comments": comments});
+    await contactRef.update({"comments": comments});
+  }
+
+  // * Actualizara la lista de tipos de contacto
+  Future<void> updateContactType(List<String> contactTypes) async {
+    // Crea la referencia a los tipos
+    final contactTypesRef = db.collection("Contact").doc("Data");
+    // Actualiza el valor en la base de datos
+    await contactTypesRef.update({"types": contactTypes});
   }
 
   // ?

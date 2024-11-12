@@ -121,6 +121,15 @@ const lang = {
     "type": "Tipo",
     "send-confirmation": "Se ha enviado correctamente",
     "catalog-hint": "Escribe un titulo para buscarlo",
+    "add": "Añadir",
+    "contactTypes": "Tipos de soporte",
+    "deleteContactTypeDialog-title":
+        "Se eliminara el siguiente tipo de soporte",
+    "deleteEditorial-title": "Se eliminara la siguiente editorial",
+    "deleteLanguage-title": "Se eliminara el siguiente idioma",
+    "deleteCategory-title": "Se eliminara la siguiente categoria",
+    "deleteGenre-title": "Se eliminara el siguiente genero",
+    "tags": "Etiquetas",
   }
 };
 

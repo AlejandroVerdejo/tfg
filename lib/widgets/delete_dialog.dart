@@ -49,6 +49,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
           child: NormalText(
             theme: theme,
             text: getLang("deleteBookListDialog-true"),
+            style: getStyle("selectedTextStyle", theme),
           ),
         ),
       ],

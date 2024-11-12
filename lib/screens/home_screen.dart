@@ -4,6 +4,7 @@ import 'package:tfg_library/widgets/management/books/add_book.dart';
 import 'package:tfg_library/widgets/management/books/edit_book.dart';
 import 'package:tfg_library/widgets/management/rents/rent_book.dart';
 import 'package:tfg_library/widgets/management/returns/return_book.dart';
+import 'package:tfg_library/widgets/management/tags/tags.dart';
 import 'package:tfg_library/widgets/management/users/users.dart';
 import 'package:tfg_library/widgets/catalog/catalog.dart';
 import 'package:tfg_library/widgets/contact/contact.dart';
@@ -53,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ContactState> contactChildKey = GlobalKey<ContactState>();
   final GlobalKey<ViewContactsState> viewContactsChildKey =
       GlobalKey<ViewContactsState>();
+  final GlobalKey<UsersState> usersChildKey = GlobalKey<UsersState>();
+  final GlobalKey<TagsState> tagsChildKey = GlobalKey<TagsState>();
 
   Widget? activeWigdet;
   String currentWidget = "";
@@ -90,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       // ? | USUARIOS |
       case "users":
-        activeWigdet = Users(theme: theme);
+        activeWigdet = Users(key: usersChildKey, theme: theme);
         appBarText = getLang("users");
         break;
       // ? | CATALOGO |
@@ -175,6 +178,14 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         appBarText = getLang("contacts");
         break;
+      // ? | ETIQUETAS |
+      case "tags":
+        activeWigdet = Tags(
+          key: tagsChildKey,
+          theme: theme,
+        );
+        appBarText = getLang("tags");
+        break;
     }
     setState(() {});
   }
@@ -225,6 +236,11 @@ class _HomeScreenState extends State<HomeScreen> {
         returnBookChildKey.currentState?.refreshTheme();
         break;
       case "tags":
+        tagsChildKey.currentState?.refreshTheme();
+        break;
+      case "users":
+        usersChildKey.currentState?.refreshTheme();
+        break;
     }
   }
 
