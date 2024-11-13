@@ -93,7 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       // ? | USUARIOS |
       case "users":
-        activeWigdet = Users(key: usersChildKey, theme: theme);
+        activeWigdet = Users(
+          key: usersChildKey,
+          theme: theme,
+          user: user,
+        );
         appBarText = getLang("users");
         break;
       // ? | CATALOGO |

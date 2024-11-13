@@ -33,7 +33,6 @@ class _UserBookListElementState extends State<UserBookListElement> {
             "correo@correo.com", widget.book["isbn"])
         : await firestoreManager.deleteUserWaitList(
             "correo@correo.com", widget.book["isbn"]);
-    // setState(() {});
     widget.onDelete();
   }
 

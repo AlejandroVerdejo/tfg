@@ -161,7 +161,7 @@ class HomeState extends State<Home> {
                               onClick: () {
                                 widget.onScreenChange("tags");
                               },
-                            )
+                            ),
                           ],
                         ),
                       ),

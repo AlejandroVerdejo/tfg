@@ -37,7 +37,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
           },
           child: NormalText(
             theme: theme,
-            text: getLang("deleteBookListDialog-false"),
+            text: getLang("cancel"),
           ),
         ),
         TextButton(
@@ -48,7 +48,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
           },
           child: NormalText(
             theme: theme,
-            text: getLang("deleteBookListDialog-true"),
+            text: getLang("delete"),
             style: getStyle("selectedTextStyle", theme),
           ),
         ),

@@ -10,11 +10,13 @@ class UserListElement extends StatefulWidget {
     super.key,
     required this.theme,
     required this.user,
+    required this.userElement,
     required this.onDelete,
   });
 
   final String theme;
   final Map<String, dynamic> user;
+  final Map<String, dynamic> userElement;
   final VoidCallback onDelete;
 
   @override
@@ -27,7 +29,7 @@ class _UserListElementState extends State<UserListElement> {
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
-    var user = widget.user;
+    var user = widget.userElement;
     return GestureDetector(
       child: Card(
         color: colors[theme]["secondaryBackgroundColor"],
@@ -95,6 +97,8 @@ class _UserListElementState extends State<UserListElement> {
                 user: user,
                 edit: false,
                 onEdit: widget.onDelete,
+                deleteAviable:
+                    user["email"] == widget.user["email"] ? false : true,
               );
             });
       },

@@ -484,7 +484,7 @@ class _BookEditState extends State<BookEdit> {
                                   onPressed: onPressed,
                                   child: NormalText(
                                     theme: theme,
-                                    text: getLang("selectDialogButton"),
+                                    text: getLang("accept"),
                                   ),
                                 );
                               });

@@ -453,7 +453,7 @@ class EditBookState extends State<EditBook> {
                                   onPressed: onPressed,
                                   child: NormalText(
                                     theme: theme,
-                                    text: getLang("selectDialogButton"),
+                                    text: getLang("accept"),
                                   ),
                                 );
                               });

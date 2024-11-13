@@ -8,6 +8,7 @@ import 'package:tfg_library/widgets/default_button.dart';
 import 'package:tfg_library/widgets/delete_dialog.dart';
 import 'package:tfg_library/widgets/management/select_dialog_field.dart';
 import 'package:tfg_library/styles.dart';
+import 'package:tfg_library/widgets/message_dialog.dart';
 
 class UserViewDialog extends StatefulWidget {
   const UserViewDialog({
@@ -16,12 +17,14 @@ class UserViewDialog extends StatefulWidget {
     required this.user,
     required this.edit,
     required this.onEdit,
+    required this.deleteAviable,
   });
 
   final String theme;
   final Map<String, dynamic> user;
   final bool edit;
   final VoidCallback onEdit;
+  final bool deleteAviable;
 
   @override
   State<UserViewDialog> createState() => _UserViewDialogState();
@@ -100,23 +103,36 @@ class _UserViewDialogState extends State<UserViewDialog> {
                         ),
                   // ? Eliminar
                   IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeleteDialog(
-                            theme: theme,
-                            title: getLang("deleteUser"),
-                            message: getLang("confirmation"),
-                            onAccept: () async {
-                              await firestoreManager.deleteUser(user["email"]);
-                              widget.onEdit();
-                              Navigator.pop(context, false);
-                            },
-                          );
-                        },
-                      );
-                    },
+                    onPressed: widget.deleteAviable
+                        ? () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DeleteDialog(
+                                  theme: theme,
+                                  title: getLang("deleteUser"),
+                                  message: getLang("confirmation"),
+                                  onAccept: () async {
+                                    await firestoreManager
+                                        .deleteUser(user["email"]);
+                                    widget.onEdit();
+                                    Navigator.pop(context, false);
+                                  },
+                                );
+                              },
+                            );
+                          }
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MessageDialog(
+                                  theme: theme,
+                                  message: getLang("userDeleteMessage-unable"),
+                                );
+                              },
+                            );
+                          },
                     icon: Icon(
                       Icons.delete,
                       color: colors[theme]["headerBackgroundColor"],
@@ -225,6 +241,7 @@ class _UserViewDialogState extends State<UserViewDialog> {
               ),
               const SizedBox(height: 15),
               edit
+                  // ? Guardar
                   ? DefaultButton(
                       theme: theme,
                       text: getLang("save"),

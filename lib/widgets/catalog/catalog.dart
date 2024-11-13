@@ -49,16 +49,21 @@ class CatalogState extends State<Catalog> {
 
   bool expanded = true;
 
+  Future<Map>? _futureData;
+
   @override
   void initState() {
     super.initState();
     // Asigna un valor diferente en la primera carga
     expanded = false;
     theme = widget.theme;
+    _futureData = _loadData();
   }
 
   void refresh() {
-    setState(() {});
+    setState(() {
+      _futureData = _loadData();
+    });
   }
 
   void refreshTheme() {
@@ -76,7 +81,7 @@ class CatalogState extends State<Catalog> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _loadData(),
+      future: _futureData,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Carga

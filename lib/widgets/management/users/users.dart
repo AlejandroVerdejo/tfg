@@ -7,12 +7,10 @@ import 'package:tfg_library/widgets/management/users/user_list.dart';
 import 'package:tfg_library/styles.dart';
 
 class Users extends StatefulWidget {
-  const Users({
-    super.key,
-    required this.theme,
-  });
+  const Users({super.key, required this.theme, required this.user});
 
   final String theme;
+  final Map<String, dynamic> user;
 
   @override
   State<Users> createState() => UsersState();
@@ -44,7 +42,10 @@ class UsersState extends State<Users> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          UserList(theme: theme),
+          UserList(
+            theme: theme,
+            user: widget.user,
+          ),
           const SizedBox(height: 30),
           DefaultButton(
             theme: theme,

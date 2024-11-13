@@ -47,8 +47,8 @@ const lang = {
     "email": "Correo electrónico",
     "alertDialog-confirm": "¿Estás seguro?",
     "deleteBookListDialog-title": "Se eliminará el libro de la lista",
-    "deleteBookListDialog-true": "Eliminar",
-    "deleteBookListDialog-false": "Cancelar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
     "deleteBookDialog-title": "Se eliminará el libro",
     "deleteAllBookDialog-title": "Se eliminarán todos los libros como este",
     "wishListToggle-add": "Libro añadido a la lista de deseados",
@@ -75,7 +75,6 @@ const lang = {
     "addTag-category": "Añadir categoría",
     "addTag-language": "Añadir idioma",
     "loadBook": "Cargar libro existente",
-    "selectDialogButton": "Aceptar",
     "formError-email":
         "Este campo debe contener una dirección de correo electrónico",
     "formError-required": "Este campo es obligatorio",
@@ -130,6 +129,8 @@ const lang = {
     "deleteCategory-title": "Se eliminara la siguiente categoria",
     "deleteGenre-title": "Se eliminara el siguiente genero",
     "tags": "Etiquetas",
+    "accept": "Aceptar",
+    "userDeleteMessage-unable": "No puedes eliminar tu propio usuario",
   }
 };
 

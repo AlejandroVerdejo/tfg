@@ -157,7 +157,7 @@ class ContactState extends State<Contact> {
                                     "prio": false,
                                     "type": typeController.text,
                                     "content": contentController.text
-                                        .replaceAll("\n", "<n><n>"),
+                                        .replaceAll("\n", "<n>"),
                                     "comments": [],
                                     "date": DateFormat("dd/MM/yyyy").format(
                                       DateTime.now(),

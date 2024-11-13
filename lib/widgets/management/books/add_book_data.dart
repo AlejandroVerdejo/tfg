@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -61,6 +62,8 @@ String description = "";
 
 Uint8List? image;
 
+bool buttonUsed = false;
+
 class AddBookDataState extends State<AddBookData> {
   Future<Map<String, dynamic>> _loadData() async {
     Map<String, List<String>> tags = await firestoreManager.getTags();
@@ -114,6 +117,8 @@ class AddBookDataState extends State<AddBookData> {
     description = "";
 
     image = null;
+
+    buttonUsed = false;
   }
 
   void loadBookData(Map book) {
@@ -188,421 +193,419 @@ class AddBookDataState extends State<AddBookData> {
             if (bookLoaded) {
               loadBookData(book);
             }
-            return Container(
-              width: double.maxFinite,
-              padding: const EdgeInsets.only(left: 60, right: 60),
-              child: FormBuilder(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // ? Titulo
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: titleController,
-                        readOnly: bookLoaded,
-                        name: "title",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("title"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
+            return FormBuilder(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // ? Titulo
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: titleController,
+                      readOnly: bookLoaded,
+                      name: "title",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, getLang("title"), ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
                     ),
-                    const SizedBox(height: 30),
-                    // ? Autor
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: authorController,
-                        readOnly: bookLoaded,
-                        name: "author",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("author"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Autor
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: authorController,
+                      readOnly: bookLoaded,
+                      name: "author",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle("defaultTextFieldStyle",
+                          theme, getLang("author"), ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
                     ),
-                    const SizedBox(height: 30),
-                    // ? Editorial
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: editorialController,
-                        readOnly: true,
-                        name: "editorial",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("editorial"), ""),
-                        onTap: !bookLoaded
-                            ? () async {
-                                SelectDialog.showModal(context,
-                                    showSearchBox: false,
-                                    backgroundColor: colors[theme]
-                                        ["mainBackgroundColor"],
-                                    selectedValue: editorial,
-                                    items: tags["editorials"],
-                                    itemBuilder: (context, item, isSelected) {
-                                  return SelectDialogField(
-                                    theme: theme,
-                                    item: item,
-                                    isSelected: isSelected,
-                                  );
-                                }, onChange: (String selected) {
-                                  editorial = selected;
-                                  editorialController.text = editorial;
-                                  // setState(() {});
-                                });
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Editorial
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: editorialController,
+                      readOnly: true,
+                      name: "editorial",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle("defaultTextFieldStyle",
+                          theme, getLang("editorial"), ""),
+                      onTap: !bookLoaded
+                          ? () async {
+                              SelectDialog.showModal(context,
+                                  showSearchBox: false,
+                                  backgroundColor: colors[theme]
+                                      ["mainBackgroundColor"],
+                                  selectedValue: editorial,
+                                  items: tags["editorials"],
+                                  itemBuilder: (context, item, isSelected) {
+                                return SelectDialogField(
+                                  theme: theme,
+                                  item: item,
+                                  isSelected: isSelected,
+                                );
+                              }, onChange: (String selected) {
+                                editorial = selected;
+                                editorialController.text = editorial;
+                                // setState(() {});
+                              });
+                            }
+                          : null,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Fecha de publicación
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: dateController,
+                      readOnly: true,
+                      name: "date",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, getLang("date"), ""),
+                      onTap: !bookLoaded
+                          ? () async {
+                              DateTime? datePicked = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1800),
+                                  lastDate: DateTime(2100),
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return Theme(
+                                        data:
+                                            getStyle("datePickerStyle", theme),
+                                        child: child!);
+                                  });
+                              if (datePicked != null) {
+                                // dateLoaded = true;
+                                dateController.text =
+                                    DateFormat("dd/MM/yyyy").format(datePicked);
+                                date =
+                                    DateFormat("dd/MM/yyyy").format(datePicked);
+                                // setState(() {});
                               }
-                            : null,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
+                            }
+                          : null,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
                     ),
-                    const SizedBox(height: 30),
-                    // ? Fecha de publicación
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: dateController,
-                        readOnly: true,
-                        name: "date",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("date"), ""),
-                        onTap: !bookLoaded
-                            ? () async {
-                                DateTime? datePicked = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1800),
-                                    lastDate: DateTime(2100),
-                                    builder:
-                                        (BuildContext context, Widget? child) {
-                                      return Theme(
-                                          data: getStyle(
-                                              "datePickerStyle", theme),
-                                          child: child!);
-                                    });
-                                if (datePicked != null) {
-                                  // dateLoaded = true;
-                                  dateController.text = DateFormat("dd/MM/yyyy")
-                                      .format(datePicked);
-                                  date = DateFormat("dd/MM/yyyy")
-                                      .format(datePicked);
-                                  // setState(() {});
-                                }
-                              }
-                            : null,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Paginas
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: pagesController,
+                      readOnly: bookLoaded,
+                      name: "pages",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, getLang("pages"), ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                        FormBuilderValidators.numeric(
+                          errorText: getLang("formError-numeric"),
+                        )
+                      ]),
                     ),
-                    const SizedBox(height: 30),
-                    // ? Paginas
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: pagesController,
-                        readOnly: bookLoaded,
-                        name: "pages",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("pages"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                          FormBuilderValidators.numeric(
-                            errorText: getLang("formError-numeric"),
-                          )
-                        ]),
-                      ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Idioma
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: languageController,
+                      readOnly: true,
+                      name: "language",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle("defaultTextFieldStyle",
+                          theme, getLang("language"), ""),
+                      onTap: !bookLoaded
+                          ? () async {
+                              SelectDialog.showModal(context,
+                                  showSearchBox: false,
+                                  backgroundColor: colors[theme]
+                                      ["mainBackgroundColor"],
+                                  selectedValue: language,
+                                  items: tags["languages"],
+                                  itemBuilder: (context, item, isSelected) {
+                                return SelectDialogField(
+                                  theme: theme,
+                                  item: item,
+                                  isSelected: isSelected,
+                                );
+                              }, onChange: (String selected) {
+                                language = selected;
+                                languageController.text = language;
+                                // setState(() {});
+                              });
+                            }
+                          : null,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
                     ),
-                    const SizedBox(height: 30),
-                    // ? Idioma
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: languageController,
-                        readOnly: true,
-                        name: "language",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("language"), ""),
-                        onTap: !bookLoaded
-                            ? () async {
-                                SelectDialog.showModal(context,
-                                    showSearchBox: false,
-                                    backgroundColor: colors[theme]
-                                        ["mainBackgroundColor"],
-                                    selectedValue: language,
-                                    items: tags["languages"],
-                                    itemBuilder: (context, item, isSelected) {
-                                  return SelectDialogField(
+                  ),
+                  const SizedBox(height: 30),
+                  // ? ISBN
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: isbnController,
+                      readOnly: bookLoaded,
+                      name: "isbn",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, getLang("isbn"), ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Edad
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: ageController,
+                      readOnly: bookLoaded,
+                      name: "age",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, getLang("age"), ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Estado
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: stateController,
+                      readOnly: true,
+                      name: "state",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle(
+                          "defaultTextFieldStyle", theme, getLang("state"), ""),
+                      onTap: () async {
+                        SelectDialog.showModal(context,
+                            showSearchBox: false,
+                            backgroundColor: colors[theme]
+                                ["mainBackgroundColor"],
+                            selectedValue: state,
+                            items: [getLang("aviable"), getLang("notAviable")],
+                            itemBuilder: (context, item, isSelected) {
+                          return SelectDialogField(
+                            theme: theme,
+                            item: item,
+                            isSelected: isSelected,
+                          );
+                        }, onChange: (String selected) {
+                          state = selected;
+                          stateController.text = state;
+                          // setState(() {});
+                        });
+                      },
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Categoria
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: categoryController,
+                      readOnly: true,
+                      name: "category",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle("defaultTextFieldStyle",
+                          theme, getLang("category"), ""),
+                      onTap: !bookLoaded
+                          ? () async {
+                              SelectDialog.showModal(context,
+                                  showSearchBox: false,
+                                  backgroundColor: colors[theme]
+                                      ["mainBackgroundColor"],
+                                  selectedValue: category,
+                                  items: tags["categories"],
+                                  itemBuilder: (context, item, isSelected) {
+                                return SelectDialogField(
+                                  theme: theme,
+                                  item: item,
+                                  isSelected: isSelected,
+                                );
+                              }, onChange: (String selected) {
+                                category = selected;
+                                categoryController.text = category;
+                                // setState(() {});
+                              });
+                            }
+                          : null,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Generos
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      controller: genresController,
+                      readOnly: true,
+                      name: "genres",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle("defaultTextFieldStyle",
+                          theme, getLang("genres"), ""),
+                      onTap: !bookLoaded
+                          ? () async {
+                              SelectDialog.showModal(context,
+                                  showSearchBox: false,
+                                  backgroundColor: colors[theme]
+                                      ["mainBackgroundColor"],
+                                  multipleSelectedValues: genres,
+                                  items: tags["genres"],
+                                  itemBuilder: (context, item, isSelected) {
+                                return SelectDialogField(
+                                  theme: theme,
+                                  item: item,
+                                  isSelected: isSelected,
+                                );
+                              }, onMultipleItemsChange:
+                                      (List<dynamic> selected) {
+                                genres = selected;
+                                genresController.text = genres.join(", ");
+                                // setState(() {});
+                              }, okButtonBuilder: (context, onPressed) {
+                                return TextButton(
+                                  onPressed: onPressed,
+                                  child: NormalText(
                                     theme: theme,
-                                    item: item,
-                                    isSelected: isSelected,
-                                  );
-                                }, onChange: (String selected) {
-                                  language = selected;
-                                  languageController.text = language;
-                                  // setState(() {});
-                                });
-                              }
-                            : null,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? ISBN
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: isbnController,
-                        readOnly: bookLoaded,
-                        name: "isbn",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("isbn"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? Edad
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: ageController,
-                        readOnly: bookLoaded,
-                        name: "age",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle(
-                            "defaultTextFieldStyle", theme, getLang("age"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? Estado
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: stateController,
-                        readOnly: true,
-                        name: "state",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("state"), ""),
-                        onTap: () async {
-                          SelectDialog.showModal(context,
-                              showSearchBox: false,
-                              backgroundColor: colors[theme]
-                                  ["mainBackgroundColor"],
-                              selectedValue: state,
-                              items: [
-                                getLang("aviable"),
-                                getLang("notAviable")
-                              ], itemBuilder: (context, item, isSelected) {
-                            return SelectDialogField(
-                              theme: theme,
-                              item: item,
-                              isSelected: isSelected,
-                            );
-                          }, onChange: (String selected) {
-                            state = selected;
-                            stateController.text = state;
-                            // setState(() {});
-                          });
-                        },
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? Categoria
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: categoryController,
-                        readOnly: true,
-                        name: "category",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("category"), ""),
-                        onTap: !bookLoaded
-                            ? () async {
-                                SelectDialog.showModal(context,
-                                    showSearchBox: false,
-                                    backgroundColor: colors[theme]
-                                        ["mainBackgroundColor"],
-                                    selectedValue: category,
-                                    items: tags["categories"],
-                                    itemBuilder: (context, item, isSelected) {
-                                  return SelectDialogField(
-                                    theme: theme,
-                                    item: item,
-                                    isSelected: isSelected,
-                                  );
-                                }, onChange: (String selected) {
-                                  category = selected;
-                                  categoryController.text = category;
-                                  // setState(() {});
-                                });
-                              }
-                            : null,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? Generos
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        controller: genresController,
-                        readOnly: true,
-                        name: "genres",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("genres"), ""),
-                        onTap: !bookLoaded
-                            ? () async {
-                                SelectDialog.showModal(context,
-                                    showSearchBox: false,
-                                    backgroundColor: colors[theme]
-                                        ["mainBackgroundColor"],
-                                    multipleSelectedValues: genres,
-                                    items: tags["genres"],
-                                    itemBuilder: (context, item, isSelected) {
-                                  return SelectDialogField(
-                                    theme: theme,
-                                    item: item,
-                                    isSelected: isSelected,
-                                  );
-                                }, onMultipleItemsChange:
-                                        (List<dynamic> selected) {
-                                  genres = selected;
-                                  genresController.text = genres.join(", ");
-                                  // setState(() {});
-                                }, okButtonBuilder: (context, onPressed) {
-                                  return TextButton(
-                                    onPressed: onPressed,
-                                    child: NormalText(
-                                      theme: theme,
-                                      text: getLang("selectDialogButton"),
-                                    ),
-                                  );
-                                });
-                              }
-                            : null,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? Sinopsis
-                    TextSelectionTheme(
-                      data: getStyle("loginFieldSelectionTheme", theme),
-                      child: FormBuilderTextField(
-                        maxLines: null,
-                        controller: descriptionController,
-                        readOnly: bookLoaded,
-                        name: "description",
-                        style: getStyle("normalTextStyle", theme),
-                        decoration: getTextFieldStyle("defaultTextFieldStyle",
-                            theme, getLang("sinopsis"), ""),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: getLang("formError-required"),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // ? Seleccionar imagen
-                    image == null
-                        ? GestureDetector(
-                            onTap: !loadBook
-                                ? () async {
-                                    _pickImage();
-                                  }
-                                : null,
-                            child: Container(
-                              color: colors[theme]["secondaryBackgroundColor"],
-                              constraints: const BoxConstraints(
-                                minWidth: 250,
-                                maxWidth: 300,
-                                minHeight: 350,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.image),
-                                  DescriptionRichText(
-                                    theme: theme,
-                                    text: getLang("imageSelect"),
+                                    text: getLang("accept"),
                                   ),
-                                ],
-                              ),
+                                );
+                              });
+                            }
+                          : null,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Sinopsis
+                  TextSelectionTheme(
+                    data: getStyle("loginFieldSelectionTheme", theme),
+                    child: FormBuilderTextField(
+                      maxLines: null,
+                      controller: descriptionController,
+                      readOnly: bookLoaded,
+                      name: "description",
+                      style: getStyle("normalTextStyle", theme),
+                      decoration: getTextFieldStyle("defaultTextFieldStyle",
+                          theme, getLang("sinopsis"), ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: getLang("formError-required"),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // ? Seleccionar imagen
+                  image == null
+                      ? GestureDetector(
+                          onTap: !loadBook
+                              ? () async {
+                                  _pickImage();
+                                }
+                              : null,
+                          child: Container(
+                            color: colors[theme]["secondaryBackgroundColor"],
+                            constraints: const BoxConstraints(
+                              minWidth: 250,
+                              maxWidth: 300,
+                              minHeight: 350,
                             ),
-                          )
-                        : GestureDetector(
-                            onTap: !loadBook
-                                ? () async {
-                                    _pickImage();
-                                  }
-                                : null,
-                            child: Container(
-                              constraints: const BoxConstraints(
-                                minWidth: 250,
-                                maxWidth: 300,
-                                minHeight: 350,
-                              ),
-                              child: Image.memory(
-                                image!,
-                                fit: BoxFit.cover,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.image),
+                                DescriptionRichText(
+                                  theme: theme,
+                                  text: getLang("imageSelect"),
+                                ),
+                              ],
                             ),
                           ),
-                    const SizedBox(height: 30),
-                    DefaultButton(
-                      theme: theme,
-                      text: getLang("addBook"),
-                      onClick: () async {
+                        )
+                      : GestureDetector(
+                          onTap: !loadBook
+                              ? () async {
+                                  _pickImage();
+                                }
+                              : null,
+                          child: Container(
+                            constraints: const BoxConstraints(
+                              minWidth: 250,
+                              maxWidth: 300,
+                              minHeight: 350,
+                            ),
+                            child: Image.memory(
+                              image!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                  const SizedBox(height: 30),
+                  // ? Añadir el libro
+                  DefaultButton(
+                    theme: theme,
+                    text: getLang("addBook"),
+                    onClick: () async {
+                      if (!buttonUsed) {
+                        buttonUsed = true;
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           Map<String, dynamic> book = {
                             "title": titleController.text,
@@ -633,13 +636,14 @@ class AddBookDataState extends State<AddBookData> {
                             getLang("addBook-success"),
                           );
                           widget.onRefresh();
-                        } else {}
-                      },
-                    ),
+                        }
+                        buttonUsed = false;
+                      }
+                    },
+                  ),
 
-                    const SizedBox(height: 30),
-                  ],
-                ),
+                  const SizedBox(height: 30),
+                ],
               ),
             );
           }

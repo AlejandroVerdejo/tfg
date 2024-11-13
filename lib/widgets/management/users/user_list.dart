@@ -9,9 +9,11 @@ class UserList extends StatefulWidget {
   const UserList({
     super.key,
     required this.theme,
+    required this.user,
   });
 
   final String theme;
+  final Map<String, dynamic> user;
 
   @override
   State<UserList> createState() => _UserListState();
@@ -54,7 +56,8 @@ class _UserListState extends State<UserList> {
             children: workers.map<Widget>((entry) {
               return UserListElement(
                 theme: theme,
-                user: entry.value,
+                user: widget.user,
+                userElement: entry.value,
                 onDelete: refresh,
               );
             }).toList(),

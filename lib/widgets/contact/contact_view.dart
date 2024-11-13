@@ -65,7 +65,7 @@ class _ContactViewState extends State<ContactView> {
   void initState() {
     super.initState();
     typeController.text = widget.contact["type"];
-    contentController.text = widget.contact["content"];
+    contentController.text = widget.contact["content"].replaceAll("<n>", "\n");
     commentController = TextEditingController();
     contactKey = widget.contactKey;
     contact = widget.contact;
@@ -169,7 +169,9 @@ class _ContactViewState extends State<ContactView> {
                                                             "${entry["date"]}  -  ${entry["user"]}"),
                                                     NormalRichText(
                                                         theme: theme,
-                                                        text: entry["comment"])
+                                                        text: entry["comment"]
+                                                            .replaceAll(
+                                                                "<n>", "\n"))
                                                   ],
                                                 ),
                                               )
@@ -233,7 +235,8 @@ class _ContactViewState extends State<ContactView> {
                                         "date": DateFormat("dd/MM/yyyy").format(
                                           DateTime.now(),
                                         ),
-                                        "comment": commentController.text,
+                                        "comment": commentController.text
+                                            .replaceAll("\n", "<n>"),
                                       };
                                       await firestoreManager.addComment(
                                           contactKey, newComment);
