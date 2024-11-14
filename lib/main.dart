@@ -14,7 +14,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirestoreManager firestoreManager = FirestoreManager();
   SharedPreferences prefs = await SharedPreferences
-      .getInstance(); // Esperar a que se carguen las preferencias
+      .getInstance(); // Espera a que se carguen las preferencias
   if (!prefs.containsKey("theme")) {
     // Si no existe la clave
     await prefs.setString(

@@ -37,6 +37,7 @@ class FirestoreManager {
       await db.collection("Books").doc(book["isbn"]).set({bookId: book});
       // Introduce el libro en la lista de popularidad
       final popRef = db.collection("Books").doc("Popularity");
+      // Crea el campo en la base de datos
       popRef.update({book["isbn"]: 0});
     }
   }
@@ -110,34 +111,34 @@ class FirestoreManager {
     Map<String, dynamic> result = {};
 
     // Recorre cada Documento
-    for (var claveExterna in books.keys) {
+    for (var exKey in books.keys) {
       // Valor combinado para "aviable"
-      bool valorCombinado = false;
+      bool mergedValue = false;
 
-      Map<String, dynamic> libroCombinado = {};
+      Map<String, dynamic> mergedBook = {};
 
       // Carga los libros
-      var subMapa = books[claveExterna];
+      var sub = books[exKey];
       // Recorre los libros del Documento
-      for (var claveInterna in subMapa.keys) {
+      for (var inKey in sub.keys) {
         // Carga el libro
-        var objeto = subMapa[claveInterna];
+        var book = sub[inKey];
         // Actualiza el valor del campo combinado en caso de que sea true
-        valorCombinado = valorCombinado || objeto["aviable"];
+        mergedValue = mergedValue || book["aviable"];
 
         // Si el libro no se ha cargado en libroCombinado
-        if (libroCombinado.isEmpty) {
+        if (mergedBook.isEmpty) {
           // Introduce la imagen
-          objeto["image"] = await storageManager.getImage(objeto["isbn"]);
+          book["image"] = await storageManager.getImage(book["isbn"]);
           // Carga la imagen
-          libroCombinado = objeto;
+          mergedBook = book;
         }
       }
 
       // Introduce el valor combinado
-      libroCombinado["aviable"] = valorCombinado;
+      mergedBook["aviable"] = mergedValue;
       // Carga el libro con los datos combinados
-      result[claveExterna] = libroCombinado;
+      result[exKey] = mergedBook;
     }
 
     return result;
@@ -935,7 +936,6 @@ class StorageManager {
   // * Añadira una imagen a la base de datos
   Future<void> addImage(Uint8List image, String name) async {
     // Crea la referencia para la imagen
-    // final imageRef = bookImagesRef.child(name);
     final imageRef = storage.ref("book-images/$name");
     // Sube el archivo a la base de datos
     UploadTask uploadTask = imageRef.putData(image);

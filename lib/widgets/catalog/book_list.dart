@@ -65,7 +65,7 @@ class _BookListState extends State<BookList> {
     );
     Map<String, dynamic> bookslist;
     bookslist = orderedBooks;
-    // Filtrar por libros que se encuentren en la | Wish List | enviada
+    // ? Filtrar por libros que se encuentren en la | Wish List | enviada
     if (widget.type == "wishlist") {
       var filteredBooks = Map.fromEntries(
         bookslist.entries.where(
@@ -74,7 +74,7 @@ class _BookListState extends State<BookList> {
       );
       bookslist = filteredBooks;
     }
-    // Filtrar por libros que se encuentren en la | Wait List | enviada
+    // ? Filtrar por libros que se encuentren en la | Wait List | enviada
     if (widget.type == "waitlist") {
       var filteredBooks = Map.fromEntries(
         bookslist.entries.where(
@@ -83,7 +83,7 @@ class _BookListState extends State<BookList> {
       );
       bookslist = filteredBooks;
     }
-    // Filtrar por | Categorias |
+    // ? Filtrar por | Categorias |
     if (widget.categoriesFilter != null &&
         widget.categoriesFilter!.isNotEmpty) {
       var filteredBooks = Map.fromEntries(
@@ -93,7 +93,7 @@ class _BookListState extends State<BookList> {
       );
       bookslist = filteredBooks;
     }
-    // Filtrar por | Generos |
+    // ? Filtrar por | Generos |
     if (widget.genresFilter != null && widget.genresFilter!.isNotEmpty) {
       var filteredBooks = Map.fromEntries(
         bookslist.entries.where(
@@ -107,7 +107,7 @@ class _BookListState extends State<BookList> {
       );
       bookslist = filteredBooks;
     }
-    // Filtrar por | Editoriales |
+    // ? Filtrar por | Editoriales |
     if (widget.editorialsFilter != null &&
         widget.editorialsFilter!.isNotEmpty) {
       var filteredBooks = Map.fromEntries(
@@ -117,7 +117,7 @@ class _BookListState extends State<BookList> {
       );
       bookslist = filteredBooks;
     }
-    // Filtrar por | Idiomas |
+    // ? Filtrar por | Idiomas |
     if (widget.languagesFilter != null && widget.languagesFilter!.isNotEmpty) {
       var filteredBooks = Map.fromEntries(
         bookslist.entries.where(
@@ -127,7 +127,7 @@ class _BookListState extends State<BookList> {
       bookslist = filteredBooks;
     }
 
-    // Filtrar por | Titulo |
+    // ? Filtrar por | Titulo |
     if (titleFilterController.text.isNotEmpty) {
       var filteredBooks = Map.fromEntries(
         bookslist.entries.where(

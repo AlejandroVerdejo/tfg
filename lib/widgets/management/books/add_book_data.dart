@@ -473,7 +473,6 @@ class AddBookDataState extends State<AddBookData> {
                               }, onChange: (String selected) {
                                 category = selected;
                                 categoryController.text = category;
-                                // setState(() {});
                               });
                             }
                           : null,

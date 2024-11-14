@@ -18,7 +18,6 @@ class RentDateText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    // String formattedTime = DateFormat('HH:mm').format(now);
     DateFormat format = DateFormat('dd/MM/yyyy');
     DateTime actualDate = format.parse(formattedDate);
     DateTime rentDate = format.parse(text);
