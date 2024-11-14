@@ -129,7 +129,15 @@ const lang = {
     "deleteGenre-title": "Se eliminará el siguiente género",
     "tags": "Etiquetas",
     "accept": "Aceptar",
-    "userDeleteMessage-unable": "No puedes eliminar tu propio usuario"
+    "userDeleteMessage-unable": "No puedes eliminar tu propio usuario",
+    "tagRegister-error": "Esa etiqueta ya esta registrada",
+    "bookNotAviable": "El libro no se encuentra disponible",
+    "usernameEmpty": "El nombre de usuario no puede estar vacío",
+    "closeApp": "¿Quieres salir de la aplicación?",
+    "quit": "Salir",
+    "catalogHomeShortcut": "Ir al catalogo",
+    "wishlistHomeShortcut": "Ir a la lista de deseados",
+    "waitlistHomeShortcut": "Ir a los recordatorios",
   }
 };
 

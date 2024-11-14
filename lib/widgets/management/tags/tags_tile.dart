@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -37,6 +39,14 @@ class _TagsTileState extends State<TagsTile> {
   void initState() {
     super.initState();
     tagsList = widget.tagsList;
+  }
+
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   List<String> tagsList = [];
@@ -148,13 +158,18 @@ class _TagsTileState extends State<TagsTile> {
                                 theme: theme,
                                 text: getLang("add"),
                                 onClick: () {
-                                  if (formKey.currentState
-                                          ?.saveAndValidate() ??
+                                  if (formKey.currentState?.saveAndValidate() ??
                                       false) {
-                                    tagsList.add(newTagController.text);
-                                    widget.onAdd(tagsList);
-                                    Navigator.pop(context, false);
-                                    setState(() {});
+                                    if (!tagsList
+                                        .contains(newTagController.text)) {
+                                      tagsList.add(newTagController.text);
+                                      widget.onAdd(tagsList);
+                                      Navigator.pop(context, false);
+                                      setState(() {});
+                                    } else {
+                                      showSnackBar(context,
+                                          getLang("tagRegister-error"));
+                                    }
                                   }
                                 })
                           ],

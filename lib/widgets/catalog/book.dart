@@ -154,6 +154,7 @@ class _BookState extends State<Book> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
+                                        // ? Editar
                                         Tooltip(
                                           message: getLang("editBook"),
                                           child: IconButton(
@@ -171,6 +172,7 @@ class _BookState extends State<Book> {
                                             ),
                                           ),
                                         ),
+                                        // ? Cambiar disponibilidad
                                         Tooltip(
                                           message: getLang("changeAviability"),
                                           child: IconButton(
@@ -187,8 +189,9 @@ class _BookState extends State<Book> {
                                             ),
                                           ),
                                         ),
+                                        // ? Eliminar este libro
                                         Tooltip(
-                                          message: "deleteBook",
+                                          message: getLang("deleteBook"),
                                           child: IconButton(
                                             onPressed: () {
                                               showDialog(
@@ -221,6 +224,7 @@ class _BookState extends State<Book> {
                                             ),
                                           ),
                                         ),
+                                        // ? Eliminar todos los libros como este
                                         Tooltip(
                                           message: getLang("deleteAllBooks"),
                                           child: IconButton(

@@ -75,7 +75,11 @@ class AddBookState extends State<AddBook> {
                     name: "bookId",
                     style: getStyle("normalTextStyle", theme),
                     decoration: getTextFieldStyle(
-                        "defaultTextFieldStyle", theme, getLang("bookId"), ""),
+                      "defaultTextFieldStyle",
+                      theme,
+                      getLang("bookId"),
+                      "",
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),

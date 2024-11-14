@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -321,10 +322,14 @@ class FirestoreManager {
     // Carga los datos del libro
     DocumentSnapshot doc = await bookRef.get();
     Map<String, dynamic> books = doc.data() as Map<String, dynamic>;
-    // Elimina el libro indicado
-    books.remove(id);
-    // Actualiza el valor en la base de datos
-    await bookRef.set(books);
+    if (books.length > 1) {
+      // Elimina el libro indicado
+      books.remove(id);
+      // Actualiza el valor en la base de datos
+      await bookRef.set(books);
+    } else {
+      await deleteAllBooks(isbn);
+    }
   }
 
   // * Eliminara el libro indicado
@@ -609,11 +614,11 @@ class FirestoreManager {
   }
 
   // * Actualizara la lista de idiomas
-  Future<void> updateLanguages(List<String> language) async {
+  Future<void> updateLanguages(List<String> languages) async {
     // Crea la referencia a los tags
     final tagsRef = db.collection("Books").doc("Tags");
     // Actualiza el valor en la base de datos
-    await tagsRef.update({"language": language});
+    await tagsRef.update({"languages": languages});
   }
 
   // ?

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -91,33 +93,42 @@ class HomeState extends State<Home> {
                           // ? Libros mas populares
                           PopularList(theme: theme, popularBooks: popularBooks),
                           const SizedBox(height: 30),
-                          // Center(
-                          //   child: Wrap(
-                          //     spacing: 50,
-                          //     runSpacing: 30,
-                          //     alignment: WrapAlignment.start,
-                          //     children: [
-                          //       // ? Ir al catalogo
-                          //       HomeButton(
-                          //         theme: theme,
-                          //         text: "Ir al catalogo",
-                          //         icon: Icons.book,
-                          //         onClick: () {
-                          //           widget.onScreenChange("catalog");
-                          //         },
-                          //       ),
-                          //       // ? Ir a la lista de deseados
-                          //       HomeButton(
-                          //         theme: theme,
-                          //         text: "Ir a la lista de deseados",
-                          //         icon: Icons.bookmarks,
-                          //         onClick: () {
-                          //           widget.onScreenChange("wishlist");
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
+                          Center(
+                            child: Wrap(
+                              spacing: 50,
+                              runSpacing: 30,
+                              alignment: WrapAlignment.start,
+                              children: [
+                                // ? Ir al catalogo
+                                HomeButton(
+                                  theme: theme,
+                                  text: getLang("catalogHomeShortcut"),
+                                  icon: Icons.book,
+                                  onClick: () {
+                                    widget.onScreenChange("catalog");
+                                  },
+                                ),
+                                // ? Ir a la lista de deseados
+                                HomeButton(
+                                  theme: theme,
+                                  text: getLang("wishlistHomeShortcut"),
+                                  icon: Icons.bookmarks,
+                                  onClick: () {
+                                    widget.onScreenChange("wishlist");
+                                  },
+                                ),
+                                // ? Ir a la lista de recordatorios
+                                HomeButton(
+                                  theme: theme,
+                                  text: getLang("waitlistHomeShortcut"),
+                                  icon: Icons.bookmarks,
+                                  onClick: () {
+                                    widget.onScreenChange("waitlist");
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       )
                     : Center(

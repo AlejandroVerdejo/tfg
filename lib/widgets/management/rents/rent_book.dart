@@ -223,20 +223,25 @@ class RentBookState extends State<RentBook> {
                 const SizedBox(height: 15),
                 BetterDivider(theme: theme),
                 const SizedBox(height: 15),
+                // ? Realizar prestamo
                 DefaultButton(
                   theme: theme,
                   text: getLang("rentBookAction"),
                   onClick: () async {
                     if (_formKey.currentState?.saveAndValidate() ?? false) {
                       if (userLoaded && bookLoaded) {
-                        await firestoreManager.newUserRent(user, book, date);
-                        showSnackBar(
-                          context,
-                          getLang("rentBook-success"),
-                        );
-                        setState(() {
-                          _update();
-                        });
+                        if (bookAviable) {
+                          await firestoreManager.newUserRent(user, book, date);
+                          showSnackBar(
+                            context,
+                            getLang("rentBook-success"),
+                          );
+                          setState(() {
+                            _update();
+                          });
+                        } else {
+                          showSnackBar(context, getLang("bookNotAviable"));
+                        }
                       } else {
                         showSnackBar(
                           context,

@@ -336,27 +336,27 @@ class EditBookState extends State<EditBook> {
                           ),
                         ),
                         const SizedBox(height: 30),
-                        // ? ISBN
-                        TextSelectionTheme(
-                          data: getStyle("loginFieldSelectionTheme", theme),
-                          child: FormBuilderTextField(
-                            controller: isbnController,
-                            readOnly: true,
-                            name: "isbn",
-                            style: getStyle("normalTextStyle", theme),
-                            decoration: getTextFieldStyle(
-                                "defaultTextFieldStyle",
-                                theme,
-                                getLang("isbn"),
-                                ""),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: getLang("formError-required"),
-                              ),
-                            ]),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
+                        // // ? ISBN
+                        // TextSelectionTheme(
+                        //   data: getStyle("loginFieldSelectionTheme", theme),
+                        //   child: FormBuilderTextField(
+                        //     controller: isbnController,
+                        //     readOnly: true,
+                        //     name: "isbn",
+                        //     style: getStyle("normalTextStyle", theme),
+                        //     decoration: getTextFieldStyle(
+                        //         "defaultTextFieldStyle",
+                        //         theme,
+                        //         getLang("isbn"),
+                        //         ""),
+                        //     validator: FormBuilderValidators.compose([
+                        //       FormBuilderValidators.required(
+                        //         errorText: getLang("formError-required"),
+                        //       ),
+                        //     ]),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 30),
                         // ? Edad
                         TextSelectionTheme(
                           data: getStyle("loginFieldSelectionTheme", theme),

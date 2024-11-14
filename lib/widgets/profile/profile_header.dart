@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
+import 'package:tfg_library/lang.dart';
 import 'package:tfg_library/styles.dart';
 import 'package:tfg_library/widgets/text/description_richtext.dart';
 import 'package:tfg_library/widgets/text/header_text.dart';
@@ -56,6 +57,14 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     }
   }
 
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = widget.theme;
@@ -75,6 +84,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   child: SizedBox(),
                 ),
                 !edit
+                    // ? Editar
                     ? IconButton(
                         onPressed: () {
                           edit = true;
@@ -88,6 +98,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       )
                     : const SizedBox.shrink(),
                 edit
+                    // ? Guardar
                     ? IconButton(
                         onPressed: () async {
                           edit = false;
@@ -96,9 +107,13 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                             await storageManager.setPFP(image!, user["email"]);
                           }
                           if (nameUpdated) {
-                            user["username"] = nameController.text;
-                            await firestoreManager.updateUsername(
-                                user["email"], user["username"]);
+                            if (nameController.text.isNotEmpty) {
+                              user["username"] = nameController.text;
+                              await firestoreManager.updateUsername(
+                                  user["email"], user["username"]);
+                            } else {
+                              showSnackBar(context, getLang("usernameEmpty"));
+                            }
                           }
                           pfpUpdated = false;
                           nameUpdated = false;
@@ -112,6 +127,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       )
                     : const SizedBox.shrink(),
                 edit
+                    // ? Cancelar
                     ? IconButton(
                         onPressed: () {
                           edit = false;

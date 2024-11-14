@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/widgets/management/books/add_book.dart';
@@ -10,6 +13,7 @@ import 'package:tfg_library/widgets/catalog/catalog.dart';
 import 'package:tfg_library/widgets/contact/contact.dart';
 import 'package:tfg_library/widgets/contact/view_contacts.dart';
 import 'package:tfg_library/widgets/profile/profile.dart';
+import 'package:tfg_library/widgets/text/normal_text.dart';
 import 'package:tfg_library/widgets/userlists/wait_list.dart';
 import 'package:tfg_library/widgets/userlists/wish_list.dart';
 import 'package:tfg_library/widgets/home/home.dart';
@@ -286,7 +290,91 @@ class _HomeScreenState extends State<HomeScreen> {
         onScreenChange: updateScreen,
       ),
       backgroundColor: colors[theme]["mainBackgroundColor"],
-      body: activeWigdet!,
+      // ? Controla el boton de retroceso en Android
+      body: WillPopScope(
+          onWillPop: () async {
+            String screen = currentWidget;
+            if (screen.contains("editBook")) {
+              var splitted = screen.split("|");
+              screen = splitted[0];
+            }
+            bool? dialog;
+            switch (screen) {
+              case "home":
+                dialog = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: colors[theme]["mainBackgroundColor"],
+                      content: NormalText(
+                        theme: theme,
+                        text: getLang("closeApp"),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false);
+                          },
+                          child: NormalText(
+                            theme: theme,
+                            text: getLang("cancel"),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            exit(0);
+                          },
+                          child: NormalText(
+                            theme: theme,
+                            text: getLang("quit"),
+                            style: getStyle("selectedTextStyle", theme),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                );
+                break;
+              case "profile":
+                updateScreen("home");
+                break;
+              case "users":
+                updateScreen("home");
+                break;
+              case "catalog":
+                updateScreen("home");
+                break;
+              case "wishlist":
+                updateScreen("home");
+                break;
+              case "waitlist":
+                updateScreen("home");
+                break;
+              case "addBook":
+                updateScreen("home");
+                break;
+              case "editBook":
+                updateScreen("catalog");
+                break;
+              case "rentBook":
+                updateScreen("home");
+                break;
+              case "returnBook":
+                updateScreen("home");
+                break;
+              case "contact":
+                updateScreen("home");
+                break;
+              case "contacts":
+                updateScreen("home");
+                break;
+              case "tags":
+                updateScreen("home");
+                break;
+            }
+            return dialog ?? false;
+          },
+          child: activeWigdet!),
     );
   }
 }
