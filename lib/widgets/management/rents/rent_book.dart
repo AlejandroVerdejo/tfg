@@ -86,11 +86,11 @@ class RentBookState extends State<RentBook> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: bodyPadding,
-      child: ListView(
-        children: [
-          FormBuilder(
+    return ListView(
+      children: [
+        Container(
+          padding: bodyPadding,
+          child: FormBuilder(
             key: _formKey,
             child: Column(
               children: [
@@ -249,8 +249,8 @@ class RentBookState extends State<RentBook> {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

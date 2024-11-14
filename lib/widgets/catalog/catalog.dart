@@ -89,6 +89,7 @@ class CatalogState extends State<Catalog> {
         } else if (snapshot.hasError) {
           // Error
           return const LoadingErrorWidget();
+          // return Center(child: Text(snapshot.error.toString()),);
         } else {
           // Ejecucion
           final data = snapshot.data!;
