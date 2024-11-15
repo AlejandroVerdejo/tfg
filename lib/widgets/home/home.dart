@@ -120,7 +120,7 @@ class HomeState extends State<Home> {
                                 HomeButton(
                                   theme: theme,
                                   text: getLang("waitlistHomeShortcut"),
-                                  icon: Icons.bookmarks,
+                                  icon: Icons.timer,
                                   onClick: () {
                                     widget.onScreenChange("waitlist");
                                   },

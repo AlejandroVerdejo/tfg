@@ -30,9 +30,9 @@ class _UserBookListElementState extends State<UserBookListElement> {
     FirestoreManager firestoreManager = FirestoreManager();
     widget.type == "wishlist"
         ? await firestoreManager.deleteUserWishList(
-            "correo@correo.com", widget.book["isbn"])
+            widget.user["email"], widget.book["isbn"])
         : await firestoreManager.deleteUserWaitList(
-            "correo@correo.com", widget.book["isbn"]);
+            widget.user["email"], widget.book["isbn"]);
     widget.onDelete();
   }
 
@@ -52,6 +52,7 @@ class _UserBookListElementState extends State<UserBookListElement> {
           type: widget.type,
           onClose: _refresh,
         ),
+        // ? Eliminar de la lista
         Positioned(
           top: 0,
           right: 0,
