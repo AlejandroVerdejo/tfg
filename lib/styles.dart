@@ -8,7 +8,6 @@ bool isAndroid = !kIsWeb && Platform.isAndroid ? true : false;
 
 EdgeInsets bodyPadding = isAndroid
     ? const EdgeInsets.only(top: 15, left: 20, bottom: 5, right: 20)
-    // : const EdgeInsets.only(top: 10, left: 60, bottom: 10, right: 60);
     : const EdgeInsets.only(top: 30, left: 50, bottom: 10, right: 50);
 EdgeInsets expansionPadding = isAndroid
     ? const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 5)
@@ -58,7 +57,7 @@ const Map<String, dynamic> colors = {
     "headerBackgroundColor": Color.fromRGBO(187, 101, 136, 1),
     "headerBorderColor": Color.fromRGBO(105, 41, 67, 1),
     "mainTextColor": Color.fromRGBO(221, 219, 221, 1),
-    "headerTextColor": Color.fromRGBO(242, 242, 243, 1),
+    "headerTextColor": Color.fromRGBO(221, 219, 221, 1),
     "barTextColor": Color.fromRGBO(242, 242, 243, 1),
     "linkTextColor": Color.fromRGBO(187, 101, 136, 1),
     "chipBackgroundColor": Color.fromRGBO(187, 101, 136, 1),
@@ -79,11 +78,11 @@ getStyle(String style, String theme) {
       fontSize: isAndroid ? 11 : 16,
       color: colors[theme]["mainTextColor"],
     ),
-    "cardTextStyle": GoogleFonts.nunito(
-      fontWeight: FontWeight.w500,
-      fontSize: isAndroid ? 10 : 20,
-      color: colors[theme]["mainTextColor"],
-    ),
+    // "cardTextStyle": GoogleFonts.nunito(
+    //   fontWeight: FontWeight.w500,
+    //   fontSize: isAndroid ? 10 : 20,
+    //   color: colors[theme]["mainTextColor"],
+    // ),
     "titleTextStyle": GoogleFonts.nunito(
       fontWeight: FontWeight.bold,
       fontSize: isAndroid ? 14 : 20,
@@ -158,9 +157,7 @@ getStyle(String style, String theme) {
     ),
     "filtersButtonStyle": OutlinedButton.styleFrom(
       fixedSize: isAndroid ? const Size(200, 30) : const Size(300, 50),
-      // foregroundColor: colors[theme]["mainTextColor"],
       foregroundColor: colors[theme]["headerTextColor"],
-      // backgroundColor: colors[theme]["chipBackgroundColor"],
       side: const BorderSide(color: Colors.transparent),
       backgroundColor: colors[theme]["headerBackgroundColor"],
       textStyle: GoogleFonts.nunito(
