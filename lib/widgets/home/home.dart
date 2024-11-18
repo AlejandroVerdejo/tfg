@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tfg_library/firebase/firebase_manager.dart';
 import 'package:tfg_library/lang.dart';
@@ -149,7 +148,7 @@ class HomeState extends State<Home> {
                             HomeButton(
                               theme: theme,
                               text: getLang("rentBook"),
-                              icon: Icons.book,
+                              icon: Icons.menu_book,
                               onClick: () {
                                 widget.onScreenChange("rentBook");
                               },
@@ -158,7 +157,7 @@ class HomeState extends State<Home> {
                             HomeButton(
                               theme: theme,
                               text: getLang("returnBook"),
-                              icon: Icons.book,
+                              icon: Icons.library_books,
                               onClick: () {
                                 widget.onScreenChange("returnBook");
                               },
